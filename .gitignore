@@ -104,6 +104,25 @@ react-native-debugger/
 # Metro bundler cache
 .cache/
 
-# dotenv ȯ�� ���� ����
+# dotenv ȯ�� ���� ����
 .env
 .env.*
+
+# Xcode 사용자 설정 및 빌드 관련
+ios/DerivedData/
+ios/build/
+*.xcworkspace
+*.xcuserdata/
+*.xcuserstate
+*.xcsettings
+
+# Xcode 자동 생성 파일
+ios/*.xcodeproj/project.xcworkspace/
+ios/*.xcodeproj/xcuserdata/
+ios/*.xcodeproj/project.xcuserdatad/
+
+# Ruby gem 관련 (CocoaPods 설치용)
+ios/Gemfile.lock
+
+# 기타
+ios/.DS_Store
