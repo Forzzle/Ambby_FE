@@ -1,11 +1,13 @@
 // App.jsx
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
+import SearchPage from './src/pages/SearchPage';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <Text>Hello, world!</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <SearchPage />
     </SafeAreaView>
   );
 };
