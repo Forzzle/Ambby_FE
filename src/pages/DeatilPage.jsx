@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +11,7 @@ import {
 import {storeInfo} from '../assets/dummyData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RatingStars from '../components/RatingStars';
+import DetailTabView from '../components/DetailTabView';
 
 const certConfig = {
   kto: {
@@ -37,43 +39,47 @@ const DetailPage = ({navigation}) => {
           <Ionicons name="arrow-back" size={24} />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        {storeInfo?.certification && (
-          <View
-            style={[
-              styles.certBanner,
-              {backgroundColor: certInfo?.backgroundColor},
-            ]}>
-            <Text>{certInfo?.label}</Text>
-          </View>
-        )}
-        <Image
-          style={styles.img}
-          source={{uri: storeInfo?.image}}
-          resizeMode="cover"
-        />
 
-        <View style={[styles.section, {gap: 4}]}>
-          <Text style={styles.title}>{storeInfo.name}</Text>
-          <TouchableOpacity style={{flexDirection: 'row'}}>
-            <Text>{storeInfo.status} ∙</Text>
-            <Text>{storeInfo.hours}</Text>
-          </TouchableOpacity>
-          <Text>{storeInfo.address}</Text>
-          <View style={{flexDirection: 'row'}}>
-            <RatingStars
-              rating={storeInfo.rating}
-              reviewCount={storeInfo.reviewCount}
-            />
-            <Text>{storeInfo.rating} </Text>
-            <Text>({storeInfo.reviewCount})</Text>
+      <ScrollView contentContainerStyle={{paddingBottom: 100}}>
+        <View style={styles.container}>
+          {storeInfo?.certification && (
+            <View
+              style={[
+                styles.certBanner,
+                {backgroundColor: certInfo?.backgroundColor},
+              ]}>
+              <Text>{certInfo?.label}</Text>
+            </View>
+          )}
+
+          <Image
+            style={styles.img}
+            source={{uri: storeInfo?.image}}
+            resizeMode="cover"
+          />
+
+          <View style={[styles.section, {gap: 4}]}>
+            <Text style={styles.title}>{storeInfo.name}</Text>
+            <TouchableOpacity style={{flexDirection: 'row'}}>
+              <Text>{storeInfo.status} ∙ </Text>
+              <Text>{storeInfo.hours}</Text>
+            </TouchableOpacity>
+            <Text>{storeInfo.address}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <RatingStars
+                rating={storeInfo.rating}
+                reviewCount={storeInfo.reviewCount}
+              />
+              <Text>{storeInfo.rating} </Text>
+              <Text>({storeInfo.reviewCount})</Text>
+            </View>
+          </View>
+
+          <View style={{height: '100%'}}>
+            <DetailTabView />
           </View>
         </View>
-
-        <View style={styles.section}>
-          <Text>탭뷰구현</Text>
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -97,7 +103,6 @@ const styles = StyleSheet.create({
   },
   certBanner: {
     padding: 20,
-    backgroundColor: 'lightgrey',
     alignItems: 'center',
   },
   img: {
@@ -106,6 +111,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 800,
+    fontWeight: '800',
   },
 });
