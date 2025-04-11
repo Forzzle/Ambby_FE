@@ -11,7 +11,6 @@ import {
   View,
 } from 'react-native';
 import {storeInfo, reviewInfo, accessibilityInfo} from '../assets/dummyData';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
 
@@ -52,12 +51,6 @@ const DetailPage = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={24} />
-        </TouchableOpacity>
-      </View>
-
       <ScrollView contentContainerStyle={{paddingBottom: 260}}>
         <View style={styles.container}>
           {storeInfo?.certification && (
@@ -130,10 +123,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
+
   container: {
     gap: 10,
   },
