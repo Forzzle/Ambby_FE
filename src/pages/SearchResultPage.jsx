@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -22,6 +23,8 @@ const SearchResultPage = ({route}) => {
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const navigation = useNavigation();
+
   useEffect(() => {
     loadMore(); // 처음 5개 로딩
   }, []);
@@ -36,13 +39,15 @@ const SearchResultPage = ({route}) => {
   };
 
   const renderItem = ({item}) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('DetailPage', {storeId: item.id})}
+      style={styles.card}>
       <Text style={styles.title}>
         {item.name}
         <Text style={styles.category}>{item.category}</Text>
       </Text>
       <Text style={styles.address}>{item.address}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
