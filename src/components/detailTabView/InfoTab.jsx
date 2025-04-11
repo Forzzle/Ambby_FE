@@ -6,31 +6,24 @@ const InfoTab = ({accessibilityInfo}) => {
   return (
     <View style={styles.container}>
       <Text>{baseInfo.description}</Text>
-
-      {options?.wheelchairAccessibleEntrance && (
-        <View>
-          <Text style={styles.title}>휠체어 입구</Text>
-          <Text style={styles.content}>
-            {options.wheelchairAccessibleEntrance}
-          </Text>
-        </View>
-      )}
-      {options?.wheelchairAccessibleParking && (
-        <View>
-          <Text style={styles.title}>장애인 주차장</Text>
-          <Text style={styles.content}>
-            {options.wheelchairAccessibleParking}
-          </Text>
-        </View>
-      )}
-      {options?.wheelchairAccessibleSeating && (
-        <View>
-          <Text style={styles.title}>휠체어 가능 자리</Text>
-          <Text style={styles.content}>
-            {options.wheelchairAccessibleSeating}
-          </Text>
-        </View>
-      )}
+      <View>
+        <Text style={styles.title}>휠체어 입구</Text>
+        <Text style={styles.content}>
+          {options.wheelchairAccessibleEntrance ? '있음' : '없음'}
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.title}>장애인 주차장</Text>
+        <Text style={styles.content}>
+          {options.wheelchairAccessibleParking ? '있음' : '없음'}
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.title}>휠체어 가능 자리</Text>
+        <Text style={styles.content}>
+          {options.wheelchairAccessibleSeating ? '있음' : '없음'}
+        </Text>
+      </View>
     </View>
   );
 };
