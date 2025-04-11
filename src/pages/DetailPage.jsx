@@ -62,19 +62,20 @@ const StoreOverview = ({storeInfo}) => {
 };
 const DetailPage = ({route}) => {
   const {placeId} = route.params;
+  const [loading, setLoading] = useState(true);
   const [storeInfo, setStoreInfo] = useState([]);
   const [reviewInfo, setReciewInfo] = useState([]);
   const certInfo = certConfig[storeInfo?.certification] || null;
-
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
         setStoreInfo(res.data?.placeDetail);
         setReciewInfo(res.data?.reviewSummary);
-        console.log(res.data);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -91,57 +92,61 @@ const DetailPage = ({route}) => {
     }
   };
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={{paddingBottom: 200}}>
-        <View style={styles.container}>
-          {storeInfo?.certification && (
-            <View
-              style={[
-                styles.certBanner,
-                {backgroundColor: certInfo?.backgroundColor},
-              ]}>
-              <Text>{certInfo?.label}</Text>
-            </View>
-          )}
-
-          <Image
-            style={styles.img}
-            source={{uri: storeInfo?.image}}
-            resizeMode="cover"
-          />
-          <StoreOverview storeInfo={storeInfo} />
-
-          <View style={{height: '100%', paddingBottom: 180}}>
-            <DetailTabView
-              reviewInfo={reviewInfo}
-              accessibilityInfo={{
-                baseInfo: accessibilityInfo,
-                options: storeInfo.accessibilityOptions,
-              }}
-            />
-          </View>
-        </View>
-      </ScrollView>
-      <View style={styles.bottomBtnContainer}>
-        <TouchableOpacity style={styles.mapBtn}>
-          <Text style={styles.bottomBtnText}>구글맵</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
-          <Text style={styles.bottomBtnText}>전화 문의하기</Text>
-        </TouchableOpacity>
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>로딩..(디자인 추후 구현)</Text>
       </View>
-    </SafeAreaView>
-  );
+    );
+  } else {
+    return (
+      <View>
+        <ScrollView contentContainerStyle={{paddingBottom: 200}}>
+          <View style={styles.container}>
+            {storeInfo?.certification && (
+              <View
+                style={[
+                  styles.certBanner,
+                  {backgroundColor: certInfo?.backgroundColor},
+                ]}>
+                <Text>{certInfo?.label}</Text>
+              </View>
+            )}
+
+            <Image
+              style={styles.img}
+              source={{uri: storeInfo?.image}}
+              resizeMode="cover"
+            />
+            <StoreOverview storeInfo={storeInfo} />
+
+            <View style={{height: '100%', paddingBottom: 180}}>
+              <DetailTabView
+                reviewInfo={reviewInfo}
+                accessibilityInfo={{
+                  baseInfo: accessibilityInfo,
+                  options: storeInfo.accessibilityOptions,
+                }}
+              />
+            </View>
+          </View>
+        </ScrollView>
+        <View style={styles.bottomBtnContainer}>
+          <TouchableOpacity style={styles.mapBtn}>
+            <Text style={styles.bottomBtnText}>구글맵</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
+            <Text style={styles.bottomBtnText}>전화 문의하기</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 };
 
 export default DetailPage;
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-
   container: {
     gap: 10,
   },
