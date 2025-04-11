@@ -9,17 +9,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const fullData = Array.from({length: 20}, (_, i) => ({
-  id: `${i}`,
-  name: `라이옥 베트남 쌀국수 본점 ${i + 1}`,
-  category: i % 2 === 0 ? '음식점' : '해수욕장',
-  address: '부산광역시 남구',
-}));
-
 const ITEMS_PER_PAGE = 5;
 
 const SearchResultPage = ({route}) => {
-  const {query} = route.params;
+  const {data, query} = route.params;
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -30,10 +23,7 @@ const SearchResultPage = ({route}) => {
   }, []);
 
   const loadMore = () => {
-    const nextData = fullData.slice(
-      currentIndex,
-      currentIndex + ITEMS_PER_PAGE,
-    );
+    const nextData = data.slice(currentIndex, currentIndex + ITEMS_PER_PAGE);
     setVisibleData(prev => [...prev, ...nextData]);
     setCurrentIndex(prev => prev + ITEMS_PER_PAGE);
   };
@@ -42,11 +32,11 @@ const SearchResultPage = ({route}) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailPage', {storeId: item.id})}
       style={styles.card}>
-      <Text style={styles.title}>
-        {item.name}
+      <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+        <Text style={styles.title}>{item.name} </Text>
         <Text style={styles.category}>{item.category}</Text>
-      </Text>
-      <Text style={styles.address}>{item.address}</Text>
+      </View>
+      <Text style={styles.address}>{item.simpleAddress}</Text>
     </TouchableOpacity>
   );
 
@@ -67,7 +57,7 @@ const SearchResultPage = ({route}) => {
         contentContainerStyle={{paddingBottom: 20}}
       />
 
-      {currentIndex < fullData.length && (
+      {currentIndex < data.length && (
         <TouchableOpacity style={styles.button} onPress={loadMore}>
           <Text style={styles.buttonText}>더보기</Text>
         </TouchableOpacity>

@@ -5,9 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {searchPlaces} from '../apis/placeApi';
 
 const SearchPage = () => {
   const navigation = useNavigation();
@@ -15,16 +15,8 @@ const SearchPage = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(
-        `http://35.216.111.57:8080/api/gemini?prompt=${encodeURIComponent(
-          prompt,
-        )}`,
-      );
-      const result = await response.json();
-      console.log('응답 데이터:', result);
-      //Alert.alert('응답 결과', result.data);
-      if (!prompt.trim()) return;
-      navigation.navigate('SearchResult', {query: prompt});
+      const res = await searchPlaces(prompt);
+      navigation.navigate('SearchResult', {data: res.data, query: prompt});
     } catch (error) {
       console.error('API 호출 에러:', error);
     }
