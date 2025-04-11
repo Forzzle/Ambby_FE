@@ -104,7 +104,7 @@ const DetailPage = ({navigation}) => {
             </View>
           </View>
 
-          <View style={{height: '100%'}}>
+          <View style={{height: '100%', paddingBottom: 70}}>
             <DetailTabView
               reviewInfo={reviewInfo}
               accessibilityInfo={accessibilityInfo}
