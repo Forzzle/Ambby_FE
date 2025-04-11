@@ -1,31 +1,27 @@
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {TabView, TabBar} from 'react-native-tab-view';
+import {Text, useWindowDimensions} from 'react-native';
 import {useState} from 'react';
+import ReviewTab from './ReviewTab';
+import InfoTab from './InfoTab';
 
-const FirstRoute = () => (
-  <View style={styles.container}>
-    <Text>가게 정보</Text>
-  </View>
-);
-
-const SecondRoute = () => (
-  <View style={styles.container}>
-    <Text>리뷰</Text>
-  </View>
-);
-
-const renderScene = SceneMap({
-  info: FirstRoute,
-  review: SecondRoute,
-});
-
-const DetailTabView = () => {
+const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'info', title: '정보'},
     {key: 'review', title: '리뷰'},
+    {key: 'info', title: '정보'},
   ]);
+
+  const renderScene = ({route}) => {
+    switch (route.key) {
+      case 'review':
+        return <ReviewTab reviewInfo={reviewInfo} />;
+      case 'info':
+        return <InfoTab accessibilityInfo={accessibilityInfo} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <TabView
@@ -52,10 +48,3 @@ const DetailTabView = () => {
 };
 
 export default DetailTabView;
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: 'lightgrey',
-  },
-});

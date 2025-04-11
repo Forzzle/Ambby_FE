@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
+  Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -8,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {storeInfo} from '../assets/dummyData';
+import {storeInfo, reviewInfo, accessibilityInfo} from '../assets/dummyData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RatingStars from '../components/RatingStars';
-import DetailTabView from '../components/DetailTabView';
+import DetailTabView from '../components/detailTabView/DetailTabView';
 
 const certConfig = {
   kto: {
@@ -33,13 +35,19 @@ const DetailPage = ({navigation}) => {
   };
 
   const handleCallPress = () => {
-    if (storeInfo.tel != '' && storeInfo.tel.length > 0) {
+    if (storeInfo.tel !== '' && storeInfo.tel.length > 0) {
       if (Platform.OS === 'android') {
         Linking.openURL(`tel:${storeInfo.tel}`);
       } else {
         Linking.openURL(`tel://${storeInfo.tel}`);
       }
     }
+  };
+
+  const [openHoursMore, setOpenHoursMore] = useState(false);
+
+  const handleToggle = () => {
+    setOpenHoursMore(prev => !prev);
   };
 
   return (
@@ -50,7 +58,7 @@ const DetailPage = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={{paddingBottom: 100}}>
+      <ScrollView contentContainerStyle={{paddingBottom: 260}}>
         <View style={styles.container}>
           {storeInfo?.certification && (
             <View
@@ -70,10 +78,21 @@ const DetailPage = ({navigation}) => {
 
           <View style={[styles.section, {gap: 4}]}>
             <Text style={styles.title}>{storeInfo.name}</Text>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={handleToggle}
+              style={{flexDirection: 'row'}}>
               <Text>{storeInfo.status} ∙ </Text>
               <Text>{storeInfo.hours}</Text>
             </TouchableOpacity>
+            {openHoursMore && (
+              <View>
+                {Object.entries(storeInfo.weeklyHours).map(([day, hours]) => (
+                  <Text key={day}>
+                    {day}: {hours}
+                  </Text>
+                ))}
+              </View>
+            )}
             <Text>{storeInfo.address}</Text>
             <View style={{flexDirection: 'row'}}>
               <RatingStars
@@ -86,7 +105,10 @@ const DetailPage = ({navigation}) => {
           </View>
 
           <View style={{height: '100%'}}>
-            <DetailTabView />
+            <DetailTabView
+              reviewInfo={reviewInfo}
+              accessibilityInfo={accessibilityInfo}
+            />
           </View>
         </View>
       </ScrollView>
