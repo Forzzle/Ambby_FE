@@ -2,7 +2,7 @@
 name: 💡 Feature Request
 about: 새로운 기능을 제안할 때 사용해주세요.
 title: '[Feature] '
-labels: enhancement
+labels: feature
 assignees: ''
 ---
 
