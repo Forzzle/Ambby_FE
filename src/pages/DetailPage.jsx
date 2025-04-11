@@ -72,6 +72,7 @@ const DetailPage = ({route}) => {
         const res = await getDetail(placeId);
         setStoreInfo(res.data?.placeDetail);
         setReciewInfo(res.data?.reviewSummary);
+        console.log(res.data);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
       }
@@ -92,7 +93,7 @@ const DetailPage = ({route}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={{paddingBottom: 260}}>
+      <ScrollView contentContainerStyle={{paddingBottom: 200}}>
         <View style={styles.container}>
           {storeInfo?.certification && (
             <View
@@ -111,7 +112,7 @@ const DetailPage = ({route}) => {
           />
           <StoreOverview storeInfo={storeInfo} />
 
-          <View style={{height: '100%', paddingBottom: 70}}>
+          <View style={{height: '100%', paddingBottom: 180}}>
             <DetailTabView
               reviewInfo={reviewInfo}
               accessibilityInfo={{
