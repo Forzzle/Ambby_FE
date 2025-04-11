@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Linking,
@@ -10,9 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {storeInfo, reviewInfo, accessibilityInfo} from '../assets/dummyData';
+import {accessibilityInfo} from '../assets/dummyData';
 import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
+import {getDetail} from '../apis/placeApi';
 
 const certConfig = {
   kto: {
@@ -24,29 +25,69 @@ const certConfig = {
     backgroundColor: '#ccbfff',
   },
 };
-
-const DetailPage = ({navigation}) => {
-  const certInfo = certConfig[storeInfo?.certification] || null;
-
-  const handleGoBack = () => {
-    navigation?.goBack();
-    console.log('back');
-  };
-
-  const handleCallPress = () => {
-    if (storeInfo.tel !== '' && storeInfo.tel.length > 0) {
-      if (Platform.OS === 'android') {
-        Linking.openURL(`tel:${storeInfo.tel}`);
-      } else {
-        Linking.openURL(`tel://${storeInfo.tel}`);
-      }
-    }
-  };
-
+const StoreOverview = ({storeInfo}) => {
   const [openHoursMore, setOpenHoursMore] = useState(false);
-
   const handleToggle = () => {
     setOpenHoursMore(prev => !prev);
+  };
+  return (
+    <View style={[styles.section, {gap: 4}]}>
+      <View style={{flexDirection: 'row', alignItems: 'baseline', gap: 6}}>
+        <Text style={styles.title}>{storeInfo?.displayName?.text}</Text>
+        <Text>{storeInfo?.primaryTypeDisplayName?.text}</Text>
+      </View>
+      <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
+        <Text>
+          {storeInfo?.regularOpeningHours?.openNow ? '영업중' : '영업종료'}
+        </Text>
+        <Text>{storeInfo?.hours}</Text>
+      </TouchableOpacity>
+      {openHoursMore && (
+        <View>
+          {storeInfo?.regularOpeningHours?.weekdayDescriptions.map(
+            (description, index) => (
+              <Text key={index}>{description}</Text>
+            ),
+          )}
+        </View>
+      )}
+      <Text>{storeInfo?.formattedAddress}</Text>
+      <View style={{flexDirection: 'row'}}>
+        <RatingStars rating={storeInfo?.rating} />
+        <Text>{storeInfo?.rating} </Text>
+        <Text>({storeInfo?.userRatingCount})</Text>
+      </View>
+    </View>
+  );
+};
+const DetailPage = ({route}) => {
+  const {placeId} = route.params;
+  const [storeInfo, setStoreInfo] = useState([]);
+  const [reviewInfo, setReciewInfo] = useState([]);
+  const certInfo = certConfig[storeInfo?.certification] || null;
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await getDetail(placeId);
+        setStoreInfo(res.data?.placeDetail);
+        setReciewInfo(res.data?.reviewSummary);
+      } catch (error) {
+        console.error('상세 정보 가져오기 오류:', error);
+      }
+    };
+
+    fetchDetail();
+  }, [placeId]);
+
+  const handleCallPress = () => {
+    if (storeInfo.tel !== '' && storeInfo.nationalPhoneNumber.length > 0) {
+      if (Platform.OS === 'android') {
+        Linking.openURL(`tel:${storeInfo.nationalPhoneNumber}`);
+      } else {
+        Linking.openURL(`tel://${storeInfo.nationalPhoneNumber}`);
+      }
+    }
   };
 
   return (
@@ -68,39 +109,15 @@ const DetailPage = ({navigation}) => {
             source={{uri: storeInfo?.image}}
             resizeMode="cover"
           />
-
-          <View style={[styles.section, {gap: 4}]}>
-            <Text style={styles.title}>{storeInfo.name}</Text>
-            <TouchableOpacity
-              onPress={handleToggle}
-              style={{flexDirection: 'row'}}>
-              <Text>{storeInfo.status} ∙ </Text>
-              <Text>{storeInfo.hours}</Text>
-            </TouchableOpacity>
-            {openHoursMore && (
-              <View>
-                {Object.entries(storeInfo.weeklyHours).map(([day, hours]) => (
-                  <Text key={day}>
-                    {day}: {hours}
-                  </Text>
-                ))}
-              </View>
-            )}
-            <Text>{storeInfo.address}</Text>
-            <View style={{flexDirection: 'row'}}>
-              <RatingStars
-                rating={storeInfo.rating}
-                reviewCount={storeInfo.reviewCount}
-              />
-              <Text>{storeInfo.rating} </Text>
-              <Text>({storeInfo.reviewCount})</Text>
-            </View>
-          </View>
+          <StoreOverview storeInfo={storeInfo} />
 
           <View style={{height: '100%', paddingBottom: 70}}>
             <DetailTabView
               reviewInfo={reviewInfo}
-              accessibilityInfo={accessibilityInfo}
+              accessibilityInfo={{
+                baseInfo: accessibilityInfo,
+                options: storeInfo.accessibilityOptions,
+              }}
             />
           </View>
         </View>

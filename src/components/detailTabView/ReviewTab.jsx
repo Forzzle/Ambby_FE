@@ -2,8 +2,10 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 const ReviewInfoView = ({reviewInfo}) => {
+  console.log(reviewInfo);
   return (
     <View style={styles.container}>
+      <Text>{reviewInfo}</Text>
       {reviewInfo?.advantages && (
         <View>
           <Text style={styles.title}>장점</Text>

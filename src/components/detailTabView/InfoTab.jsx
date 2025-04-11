@@ -2,19 +2,33 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 const InfoTab = ({accessibilityInfo}) => {
+  const {baseInfo, options} = accessibilityInfo;
   return (
     <View style={styles.container}>
-      <Text>{accessibilityInfo.description}</Text>
-      {accessibilityInfo?.brailleBlock && (
+      <Text>{baseInfo.description}</Text>
+
+      {options?.wheelchairAccessibleEntrance && (
         <View>
-          <Text style={styles.title}>점자블록</Text>
-          <Text style={styles.content}>{accessibilityInfo.brailleBlock}</Text>
+          <Text style={styles.title}>휠체어 입구</Text>
+          <Text style={styles.content}>
+            {options.wheelchairAccessibleEntrance}
+          </Text>
         </View>
       )}
-      {accessibilityInfo?.braillePanel && (
+      {options?.wheelchairAccessibleParking && (
         <View>
-          <Text style={styles.title}>점자안내판</Text>
-          <Text style={styles.content}>{accessibilityInfo.braillePanel}</Text>
+          <Text style={styles.title}>장애인 주차장</Text>
+          <Text style={styles.content}>
+            {options.wheelchairAccessibleParking}
+          </Text>
+        </View>
+      )}
+      {options?.wheelchairAccessibleSeating && (
+        <View>
+          <Text style={styles.title}>휠체어 가능 자리</Text>
+          <Text style={styles.content}>
+            {options.wheelchairAccessibleSeating}
+          </Text>
         </View>
       )}
     </View>

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const RatingStars = ({rating = 0, reviewCount = 0}) => {
+const RatingStars = ({rating = 0}) => {
   const maxStars = 5;
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating - fullStars >= 0.5;

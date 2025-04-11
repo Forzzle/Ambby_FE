@@ -30,7 +30,7 @@ const SearchResultPage = ({route}) => {
 
   const renderItem = ({item}) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailPage', {storeId: item.id})}
+      onPress={() => navigation.navigate('DetailPage', {placeId: item.id})}
       style={styles.card}>
       <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
         <Text style={styles.title}>{item.name} </Text>
