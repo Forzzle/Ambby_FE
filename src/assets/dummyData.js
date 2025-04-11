@@ -19,6 +19,7 @@ export const storeInfo = {
   rating: 4.5,
   reviewCount: 86,
   certification: 'kto', // 'kto' | 'hodeum' | null
+  tel: '01012345678',
 };
 
 export const reviewInfo = {

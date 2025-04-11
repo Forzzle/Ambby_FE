@@ -32,6 +32,16 @@ const DetailPage = ({navigation}) => {
     console.log('back');
   };
 
+  const handleCallPress = () => {
+    if (storeInfo.tel != '' && storeInfo.tel.length > 0) {
+      if (Platform.OS === 'android') {
+        Linking.openURL(`tel:${storeInfo.tel}`);
+      } else {
+        Linking.openURL(`tel://${storeInfo.tel}`);
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -80,6 +90,14 @@ const DetailPage = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      <View style={styles.bottomBtnContainer}>
+        <TouchableOpacity style={styles.mapBtn}>
+          <Text style={styles.bottomBtnText}>구글맵</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
+          <Text style={styles.bottomBtnText}>전화 문의하기</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -112,5 +130,33 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '800',
+  },
+  bottomBtnContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 16,
+    flexDirection: 'row',
+    gap: 10,
+  },
+  callBtn: {
+    backgroundColor: 'black',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+  },
+  mapBtn: {
+    backgroundColor: 'black',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    aspectRatio: 1.5,
+  },
+  bottomBtnText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
