@@ -4,12 +4,20 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SearchPage from './src/pages/SearchPage';
 import SearchResultPage from './src/pages/SearchResultPage';
 import DetailPage from './src/pages/DetailPage';
+import SoundPage from './src/pages/SoundPage';
 
 const Stack = createStackNavigator();
 
+console.log('✅ App 컴포넌트 진입 확인');
+
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Search">
+    <Stack.Navigator initialRouteName="Sound">
+      <Stack.Screen
+        name="Sound"
+        component={SoundPage}
+        options={{title: '사운드 테스트'}}
+      />
       <Stack.Screen
         name="Search"
         component={SearchPage}
