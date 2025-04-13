@@ -5,28 +5,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {searchPlaces} from '../apis/placeApi';
 
 const SearchPage = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState('');
 
   const handleSearch = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(
-        `http://35.216.111.57:8080/api/gemini?prompt=${encodeURIComponent(
-          prompt,
-        )}`,
-      );
-      const result = await response.json();
-      console.log('응답 데이터:', result);
-      //Alert.alert('응답 결과', result.data);
-      if (!prompt.trim()) return;
-      navigation.navigate('SearchResult', {query: prompt});
+      const res = await searchPlaces(prompt);
+      navigation.navigate('SearchResult', {data: res.data, query: prompt});
     } catch (error) {
       console.error('API 호출 에러:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +43,7 @@ const SearchPage = () => {
       <TouchableOpacity style={styles.button} onPress={handleSearch}>
         <Text style={styles.buttonText}>검색하기</Text>
       </TouchableOpacity>
+      {loading && <Text style={{marginTop: 10}}>검색중입니다..</Text>}
     </View>
   );
 };

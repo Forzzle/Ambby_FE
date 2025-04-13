@@ -1,27 +1,17 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import Markdown from 'react-native-markdown-display';
 
 const ReviewInfoView = ({reviewInfo}) => {
+  if (typeof reviewInfo !== 'string') {
+    return null;
+  }
+
+  const cleanedMarkdown = reviewInfo.replace(/^## 리뷰 요약\s*/i, '');
+
   return (
     <View style={styles.container}>
-      {reviewInfo?.advantages && (
-        <View>
-          <Text style={styles.title}>장점</Text>
-          <Text style={styles.content}>{reviewInfo.advantages}</Text>
-        </View>
-      )}
-      {reviewInfo?.disadvantages && (
-        <View>
-          <Text style={styles.title}>단점</Text>
-          <Text style={styles.content}>{reviewInfo.disadvantages}</Text>
-        </View>
-      )}
-      {reviewInfo?.accessibility && (
-        <View>
-          <Text style={styles.title}>편의시설</Text>
-          <Text style={styles.content}>{reviewInfo.accessibility}</Text>
-        </View>
-      )}
+      <Markdown>{cleanedMarkdown}</Markdown>
     </View>
   );
 };
@@ -30,15 +20,10 @@ export default ReviewInfoView;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    paddingTop: 10,
     gap: 16,
     backgroundColor: 'lightgrey',
-  },
-  title: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  content: {
-    color: '#555',
   },
 });
