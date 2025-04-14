@@ -12,12 +12,7 @@ console.log('✅ App 컴포넌트 진입 확인');
 
 const App = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Sound">
-      <Stack.Screen
-        name="Sound"
-        component={SoundPage}
-        options={{title: '사운드 테스트'}}
-      />
+    <Stack.Navigator initialRouteName="Search">
       <Stack.Screen
         name="Search"
         component={SearchPage}
@@ -32,6 +27,11 @@ const App = () => (
         name="DetailPage"
         component={DetailPage}
         options={{title: '상세페이지'}}
+      />
+      <Stack.Screen
+        name="Sound"
+        component={SoundPage}
+        options={{title: '사운드 테스트'}}
       />
     </Stack.Navigator>
   </NavigationContainer>
