@@ -47,6 +47,11 @@ const SearchPage = () => {
         onPress={() => navigation.navigate('VisionSetting')}>
         <Text style={styles.buttonText}>시각정보 설정</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('BookMarkPage')}>
+        <Text style={styles.buttonText}>북마크 모아보기</Text>
+      </TouchableOpacity>
       {loading && <Text style={{marginTop: 10}}>검색중입니다..</Text>}
     </View>
   );

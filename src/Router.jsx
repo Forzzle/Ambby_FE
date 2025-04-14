@@ -6,6 +6,7 @@ import SearchResultPage from './pages/SearchResultPage';
 import DetailPage from './pages/DetailPage';
 import SoundPage from './pages/SoundPage';
 import VisionSettingScreen from './pages/VisionSettingPage';
+import BookMarkPage from './pages/BookMarkPage';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,11 @@ const Router = () => {
         name="Sound"
         component={SoundPage}
         options={{title: '사운드 테스트'}}
+      />
+      <Stack.Screen
+        name="BookMarkPage"
+        component={BookMarkPage}
+        options={{title: '나의 북마크'}}
       />
       <Stack.Screen
         name="VisionSetting"
