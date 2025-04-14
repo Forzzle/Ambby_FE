@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -27,6 +26,17 @@ const SearchResultPage = ({route}) => {
     setCurrentIndex(prev => prev + ITEMS_PER_PAGE);
   };
 
+  const renderFooter = () => {
+    if (currentIndex >= data.length) {
+      return null;
+    }
+    return (
+      <TouchableOpacity style={styles.button} onPress={loadMore}>
+        <Text style={styles.buttonText}>더보기</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -42,13 +52,11 @@ const SearchResultPage = ({route}) => {
         keyExtractor={item => item.id}
         renderItem={({item}) => <ListCard item={item} />}
         contentContainerStyle={{paddingBottom: 20}}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={
+          <Text style={styles.empty}>북마크된 장소가 없습니다.</Text>
+        }
       />
-
-      {currentIndex < data.length && (
-        <TouchableOpacity style={styles.button} onPress={loadMore}>
-          <Text style={styles.buttonText}>더보기</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 };
@@ -98,14 +106,14 @@ const styles = StyleSheet.create({
     color: '#444',
   },
   button: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#2e2e2e',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 8,
   },
   buttonText: {
-    color: '#333',
+    color: 'white',
     fontWeight: 'bold',
   },
 });

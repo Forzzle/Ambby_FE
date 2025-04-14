@@ -38,9 +38,9 @@ const StoreOverview = ({storeInfo}) => {
   };
   return (
     <View style={[styles.section, {gap: 4}]}>
-      <View style={{flexDirection: 'row', alignItems: 'baseline', gap: 6}}>
+      <View style={{flexDirection: 'row', gap: 6}}>
         <Text style={styles.title}>{storeInfo?.displayName?.text}</Text>
-        <Text style={{marginRight: 'auto'}}>
+        <Text style={styles.category}>
           {storeInfo?.primaryTypeDisplayName?.text}
         </Text>
         <BookMarkBtn place={bookMarkPlace} />
@@ -174,6 +174,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '800',
+    width: 'auto',
+    maxWidth: '80%',
+  },
+  category: {
+    marginRight: 'auto',
+    alignSelf: 'flex-end',
   },
   bottomBtnContainer: {
     position: 'absolute',
