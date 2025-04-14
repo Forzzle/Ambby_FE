@@ -5,6 +5,7 @@ import SearchPage from './src/pages/SearchPage';
 import SearchResultPage from './src/pages/SearchResultPage';
 import DetailPage from './src/pages/DetailPage';
 import SoundPage from './src/pages/SoundPage';
+import BookMarkPage from './src/pages/BookMarkPage';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,11 @@ const App = () => (
         name="DetailPage"
         component={DetailPage}
         options={{title: '상세페이지'}}
+      />
+      <Stack.Screen
+        name="BookMarkPage"
+        component={BookMarkPage}
+        options={{title: '나의 북마크'}}
       />
       <Stack.Screen
         name="Sound"

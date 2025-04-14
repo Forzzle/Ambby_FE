@@ -3,7 +3,6 @@ import {
   Image,
   Linking,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import {accessibilityInfo} from '../assets/dummyData';
 import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
 import {getDetail} from '../apis/placeApi';
+import BookMarkBtn from '../components/BookMarkBtn';
 
 const certConfig = {
   kto: {
@@ -26,6 +26,7 @@ const certConfig = {
   },
 };
 const StoreOverview = ({storeInfo}) => {
+  console.log(storeInfo);
   const [openHoursMore, setOpenHoursMore] = useState(false);
   const handleToggle = () => {
     setOpenHoursMore(prev => !prev);
@@ -34,7 +35,10 @@ const StoreOverview = ({storeInfo}) => {
     <View style={[styles.section, {gap: 4}]}>
       <View style={{flexDirection: 'row', alignItems: 'baseline', gap: 6}}>
         <Text style={styles.title}>{storeInfo?.displayName?.text}</Text>
-        <Text>{storeInfo?.primaryTypeDisplayName?.text}</Text>
+        <Text style={{marginRight: 'auto'}}>
+          {storeInfo?.primaryTypeDisplayName?.text}
+        </Text>
+        <BookMarkBtn placeId={storeInfo.id} />
       </View>
       <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
         <Text>
