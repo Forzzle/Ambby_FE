@@ -26,10 +26,15 @@ const certConfig = {
   },
 };
 const StoreOverview = ({storeInfo}) => {
-  console.log(storeInfo);
   const [openHoursMore, setOpenHoursMore] = useState(false);
   const handleToggle = () => {
     setOpenHoursMore(prev => !prev);
+  };
+  const bookMarkPlace = {
+    id: storeInfo.id,
+    name: storeInfo?.displayName?.text,
+    simpleAddress: storeInfo?.formattedAddress,
+    category: storeInfo?.primaryTypeDisplayName?.text,
   };
   return (
     <View style={[styles.section, {gap: 4}]}>
@@ -38,7 +43,7 @@ const StoreOverview = ({storeInfo}) => {
         <Text style={{marginRight: 'auto'}}>
           {storeInfo?.primaryTypeDisplayName?.text}
         </Text>
-        <BookMarkBtn placeId={storeInfo.id} />
+        <BookMarkBtn place={bookMarkPlace} />
       </View>
       <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
         <Text>

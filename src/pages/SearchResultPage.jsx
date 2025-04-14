@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import ListCard from '../components/ListCard';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -15,8 +16,6 @@ const SearchResultPage = ({route}) => {
   const {data, query} = route.params;
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     loadMore(); // 처음 5개 로딩
@@ -27,18 +26,6 @@ const SearchResultPage = ({route}) => {
     setVisibleData(prev => [...prev, ...nextData]);
     setCurrentIndex(prev => prev + ITEMS_PER_PAGE);
   };
-
-  const renderItem = ({item}) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('DetailPage', {placeId: item.id})}
-      style={styles.card}>
-      <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-        <Text style={styles.title}>{item.name} </Text>
-        <Text style={styles.category}>{item.category}</Text>
-      </View>
-      <Text style={styles.address}>{item.simpleAddress}</Text>
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.container}>
@@ -53,7 +40,7 @@ const SearchResultPage = ({route}) => {
       <FlatList
         data={visibleData}
         keyExtractor={item => item.id}
-        renderItem={renderItem}
+        renderItem={({item}) => <ListCard item={item} />}
         contentContainerStyle={{paddingBottom: 20}}
       />
 

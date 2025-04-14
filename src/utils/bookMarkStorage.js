@@ -12,32 +12,23 @@ export const getBookmarks = async () => {
   }
 };
 
-export const isBookmarked = async id => {
+export const isBookmarked = async place => {
   const bookmarks = await getBookmarks();
-  return bookmarks.includes(id);
+  return bookmarks.some(item => item.id === place.id);
 };
 
-export const addBookmark = async id => {
+export const addBookmark = async place => {
+  console.log(place);
   const bookmarks = await getBookmarks();
-  if (!bookmarks.includes(id)) {
-    bookmarks.push(id);
+  const exists = bookmarks.some(item => item.id === place.id);
+  if (!exists) {
+    bookmarks.push(place);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
   }
 };
 
-export const removeBookmark = async id => {
+export const removeBookmark = async place => {
   const bookmarks = await getBookmarks();
-  const updated = bookmarks.filter(item => item !== id);
+  const updated = bookmarks.filter(item => item.id !== place.id);
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-};
-
-//아이콘 변경
-export const toggleBookmark = async id => {
-  const bookmarked = await isBookmarked(id);
-  if (bookmarked) {
-    await removeBookmark(id);
-  } else {
-    await addBookmark(id);
-  }
-  return !bookmarked;
 };

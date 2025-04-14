@@ -1,36 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {getBookmarks} from '../utils/bookMarkStorage';
 import {useIsFocused} from '@react-navigation/native';
+import ListCard from '../components/ListCard';
 
-const BookMarkPage = ({navigation}) => {
+const BookMarkPage = () => {
   const [places, setPlaces] = useState([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       const loadBookmarkedPlaces = async () => {
-        const ids = await getBookmarks();
-        setPlaces(ids?.map(res => res));
+        const place = await getBookmarks();
+        setPlaces(place);
       };
       loadBookmarkedPlaces();
     }
+    console.log(places);
   }, [isFocused]);
-
-  const renderItem = ({item}) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => navigation.navigate('DetailPage', {placeId: item})}>
-      <Text>{item}</Text>
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.container}>
       <FlatList
         data={places}
         keyExtractor={item => item?.id?.toString()}
-        renderItem={renderItem}
+        renderItem={({item}) => <ListCard item={item} />}
         ListEmptyComponent={
           <Text style={styles.empty}>북마크한 장소가 없어요!</Text>
         }

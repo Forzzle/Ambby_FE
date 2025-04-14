@@ -3,26 +3,26 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   addBookmark,
-  removeBookmark,
   isBookmarked,
+  removeBookmark,
 } from '../utils/bookMarkStorage';
 
-const BookmarkButton = ({placeId, size = 20}) => {
+const BookMarkBtn = ({place, size = 20}) => {
   const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
     const checkBookmark = async () => {
-      const isMarked = await isBookmarked(placeId);
+      const isMarked = await isBookmarked(place);
       setBookmarked(isMarked);
     };
     checkBookmark();
-  }, [placeId]);
+  }, [place]);
 
   const toggleBookmark = async () => {
     if (bookmarked) {
-      await removeBookmark(placeId);
+      await removeBookmark(place);
     } else {
-      await addBookmark(placeId);
+      await addBookmark(place);
     }
     setBookmarked(!bookmarked);
   };
@@ -34,4 +34,4 @@ const BookmarkButton = ({placeId, size = 20}) => {
   );
 };
 
-export default BookmarkButton;
+export default BookMarkBtn;
