@@ -3,7 +3,6 @@ import {
   Image,
   Linking,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import {accessibilityInfo} from '../assets/dummyData';
 import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
 import {getDetail} from '../apis/placeApi';
+import BookMarkBtn from '../components/BookMarkBtn';
 
 const certConfig = {
   kto: {
@@ -30,11 +30,20 @@ const StoreOverview = ({storeInfo}) => {
   const handleToggle = () => {
     setOpenHoursMore(prev => !prev);
   };
+  const bookMarkPlace = {
+    id: storeInfo.id,
+    name: storeInfo?.displayName?.text,
+    simpleAddress: storeInfo?.formattedAddress,
+    category: storeInfo?.primaryTypeDisplayName?.text,
+  };
   return (
     <View style={[styles.section, {gap: 4}]}>
-      <View style={{flexDirection: 'row', alignItems: 'baseline', gap: 6}}>
+      <View style={{flexDirection: 'row', gap: 6}}>
         <Text style={styles.title}>{storeInfo?.displayName?.text}</Text>
-        <Text>{storeInfo?.primaryTypeDisplayName?.text}</Text>
+        <Text style={styles.category}>
+          {storeInfo?.primaryTypeDisplayName?.text}
+        </Text>
+        <BookMarkBtn place={bookMarkPlace} />
       </View>
       <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
         <Text>
@@ -165,6 +174,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '800',
+    width: 'auto',
+    maxWidth: '80%',
+  },
+  category: {
+    marginRight: 'auto',
+    alignSelf: 'flex-end',
   },
   bottomBtnContainer: {
     position: 'absolute',
