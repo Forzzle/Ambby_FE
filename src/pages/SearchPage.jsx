@@ -39,7 +39,6 @@ const SearchPage = () => {
         accessibilityLabel="가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요. 상세할수록 좋습니다"
         placeholderTextColor="#888"
       />
-
       <TouchableOpacity style={styles.button} onPress={handleSearch}>
         <Text style={styles.buttonText}>검색하기</Text>
       </TouchableOpacity>

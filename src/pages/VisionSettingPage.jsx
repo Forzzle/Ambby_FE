@@ -1,37 +1,21 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useVision} from '../contexts/visionContext';
 import {useNavigation} from '@react-navigation/native';
 
 const visionOptions = ['비장애', '저시력', '전맹'];
 
-const VisionSettingScreen = () => {
-  const [selected, setSelected] = useState(null);
+const VisionSettingPage = () => {
+  const {visionMode, updateVisionMode} = useVision(); //context로 관리
+  const [selected, setSelected] = useState(visionMode);
   const navigation = useNavigation();
 
-  const saveSelection = async value => {
-    try {
-      await AsyncStorage.setItem('visionSetting', value);
+  const saveSelection = async () => {
+    if (selected) {
+      await updateVisionMode(selected);
       navigation.navigate('Search');
-    } catch (e) {
-      console.error('설정 저장 실패', e);
     }
   };
-
-  const loadSelection = async () => {
-    try {
-      const value = await AsyncStorage.getItem('visionSetting');
-      if (value !== null) {
-        setSelected(value);
-      }
-    } catch (e) {
-      console.error('설정 불러오기 실패', e);
-    }
-  };
-
-  useEffect(() => {
-    loadSelection();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -51,7 +35,7 @@ const VisionSettingScreen = () => {
       ))}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => saveSelection(selected)}
+        onPress={saveSelection}
         disabled={!selected}>
         <Text style={styles.buttonText}>저장하기</Text>
       </TouchableOpacity>
@@ -59,7 +43,7 @@ const VisionSettingScreen = () => {
   );
 };
 
-export default VisionSettingScreen;
+export default VisionSettingPage;
 
 const styles = StyleSheet.create({
   container: {
