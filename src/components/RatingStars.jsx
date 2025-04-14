@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const RatingStars = ({rating = 0}) => {
   const {theme} = useTheme();

@@ -1,7 +1,7 @@
 import {TabView, TabBar} from 'react-native-tab-view';
 import {Text, useWindowDimensions} from 'react-native';
 import {useState} from 'react';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '../../contexts/themeContext';
 import ReviewTab from './ReviewTab';
 import InfoTab from './InfoTab';
 

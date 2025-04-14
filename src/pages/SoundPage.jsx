@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import SoundButton from '../components/SoundButton';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const SoundPage = () => {
   const {theme} = useTheme(); // 테마 가져오기

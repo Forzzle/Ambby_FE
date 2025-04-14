@@ -3,7 +3,7 @@ import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {getBookmarks} from '../utils/bookMarkStorage';
 import {useIsFocused} from '@react-navigation/native';
 import ListCard from '../components/ListCard';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const ITEMS_PER_PAGE = 5;
 

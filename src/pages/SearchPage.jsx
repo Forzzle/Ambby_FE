@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {searchPlaces} from '../apis/placeApi';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const SearchPage = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState('');
-  const {theme} = useTheme(); // ✅ 테마 정보 가져오기
+  const {theme} = useTheme();
 
   const handleSearch = async () => {
     setLoading(true);
@@ -55,6 +55,27 @@ const SearchPage = () => {
         onPress={handleSearch}>
         <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
           검색하기
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={() => navigation.navigate('VisionSetting')}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          시각정보 설정
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={() => navigation.navigate('BookMarkPage')}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          북마크 모아보기
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={() => navigation.navigate('Setting')}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          색상 테마 설정
         </Text>
       </TouchableOpacity>
       {loading && (

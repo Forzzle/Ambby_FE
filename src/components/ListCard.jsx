@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const ListCard = ({item}) => {
   const navigation = useNavigation();
@@ -10,12 +10,12 @@ const ListCard = ({item}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('DetailPage', {placeId: item.id})}
-      style={[styles.card, {backgroundColor: theme.colors.background}]}>
+      style={[styles.card, {borderColor: theme.colors.border}]}>
       <View style={styles.row}>
         <Text style={[styles.title, {color: theme.colors.text}]}>
           {item.name}
         </Text>
-        <Text style={[styles.category, {color: theme.colors.text}]}>
+        <Text style={[styles.category, {color: theme.colors.primary}]}>
           {item.category}
         </Text>
       </View>
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
     flex: 1,
+    borderWidth: 1,
   },
   title: {
     fontSize: 16,

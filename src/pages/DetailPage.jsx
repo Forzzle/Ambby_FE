@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 import {
   Image,
   Linking,
@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableOpaㅅcity,
   View,
 } from 'react-native';
 import {accessibilityInfo} from '../assets/dummyData';
@@ -46,10 +46,20 @@ const StoreOverview = ({storeInfo}) => {
       ]}>
       <View style={{flexDirection: 'row', gap: 6}}>
         <Text
-          style={{color: theme.colors.text, fontWeight: 'bold', fontSize: 18}}>
+          style={{
+            color: theme.colors.text,
+            fontWeight: 'bold',
+            fontSize: 18,
+            maxWidth: '80%',
+          }}>
           {storeInfo?.displayName?.text}
         </Text>
-        <Text style={{color: theme.colors.text}}>
+        <Text
+          style={{
+            color: theme.colors.primary,
+            marginRight: 'auto',
+            alignSelf: 'flex-end',
+          }}>
           {storeInfo?.primaryTypeDisplayName?.text}
         </Text>
         <BookMarkBtn place={bookMarkPlace} />

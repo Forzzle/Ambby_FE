@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ListCard from '../components/ListCard';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const ITEMS_PER_PAGE = 5;
 

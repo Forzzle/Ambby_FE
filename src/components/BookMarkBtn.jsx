@@ -6,7 +6,7 @@ import {
   isBookmarked,
   removeBookmark,
 } from '../utils/bookMarkStorage';
-import {useTheme} from '../context/ThemeContext';
+import {useTheme} from '../contexts/themeContext';
 
 const BookMarkBtn = ({place, size = 20}) => {
   const [bookmarked, setBookmarked] = useState(false);

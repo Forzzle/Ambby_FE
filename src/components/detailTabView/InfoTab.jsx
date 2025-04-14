@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '../../contexts/themeContext';
 
 const InfoTab = ({accessibilityInfo}) => {
   const {baseInfo, options} = accessibilityInfo;
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   description: {
-    fontSize: 16,
     marginBottom: 12,
   },
   title: {

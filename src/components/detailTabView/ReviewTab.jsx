@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import {useTheme} from '../../context/ThemeContext';
+import {useTheme} from '../../contexts/themeContext';
 
 const ReviewInfoView = ({reviewInfo}) => {
   const {theme} = useTheme();
