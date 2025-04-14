@@ -14,35 +14,6 @@ const Stack = createStackNavigator();
 console.log('✅ App 컴포넌트 진입 확인');
 
 const App = () => (
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName="Search">
-      <Stack.Screen
-        name="Search"
-        component={SearchPage}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="SearchResult"
-        component={SearchResultPage}
-        options={{title: '검색 결과'}}
-      />
-      <Stack.Screen
-        name="DetailPage"
-        component={DetailPage}
-        options={{title: '상세페이지'}}
-      />
-      <Stack.Screen
-        name="BookMarkPage"
-        component={BookMarkPage}
-        options={{title: '나의 북마크'}}
-      />
-      <Stack.Screen
-        name="Sound"
-        component={SoundPage}
-        options={{title: '사운드 테스트'}}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
   <ThemeProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Setting">
@@ -70,6 +41,11 @@ const App = () => (
           name="Sound"
           component={SoundPage}
           options={{title: '사운드 테스트'}}
+        />
+        <Stack.Screen
+          name="BookMarkPage"
+          component={BookMarkPage}
+          options={{title: '나의 북마크'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useTheme} from '../context/ThemeContext';
 import {
   Image,
   Linking,
@@ -26,6 +27,7 @@ const certConfig = {
   },
 };
 const StoreOverview = ({storeInfo}) => {
+  const {theme} = useTheme();
   const [openHoursMore, setOpenHoursMore] = useState(false);
   const handleToggle = () => {
     setOpenHoursMore(prev => !prev);
@@ -37,40 +39,55 @@ const StoreOverview = ({storeInfo}) => {
     category: storeInfo?.primaryTypeDisplayName?.text,
   };
   return (
-    <View style={[styles.section, {gap: 4}]}>
+    <View
+      style={[
+        styles.section,
+        {gap: 4, backgroundColor: theme.colors.background},
+      ]}>
       <View style={{flexDirection: 'row', gap: 6}}>
-        <Text style={styles.title}>{storeInfo?.displayName?.text}</Text>
-        <Text style={styles.category}>
+        <Text
+          style={{color: theme.colors.text, fontWeight: 'bold', fontSize: 18}}>
+          {storeInfo?.displayName?.text}
+        </Text>
+        <Text style={{color: theme.colors.text}}>
           {storeInfo?.primaryTypeDisplayName?.text}
         </Text>
         <BookMarkBtn place={bookMarkPlace} />
       </View>
       <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
-        <Text>
+        <Text style={{color: theme.colors.text}}>
           {storeInfo?.regularOpeningHours?.openNow ? '영업중' : '영업종료'}
         </Text>
-        <Text>{storeInfo?.hours}</Text>
+        <Text style={{color: theme.colors.text}}>{storeInfo?.hours}</Text>
       </TouchableOpacity>
       {openHoursMore && (
         <View>
           {storeInfo?.regularOpeningHours?.weekdayDescriptions.map(
-            (description, index) => (
-              <Text key={index}>{description}</Text>
+            (desc, i) => (
+              <Text key={i} style={{color: theme.colors.text}}>
+                {desc}
+              </Text>
             ),
           )}
         </View>
       )}
-      <Text>{storeInfo?.formattedAddress}</Text>
-      <View style={{flexDirection: 'row'}}>
+      <Text style={{color: theme.colors.text}}>
+        {storeInfo?.formattedAddress}
+      </Text>
+
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <RatingStars rating={storeInfo?.rating} />
-        <Text>{storeInfo?.rating} </Text>
-        <Text>({storeInfo?.userRatingCount})</Text>
+        <Text style={{color: theme.colors.text}}>{storeInfo?.rating} </Text>
+        <Text style={{color: theme.colors.text}}>
+          ({storeInfo?.userRatingCount})
+        </Text>
       </View>
     </View>
   );
 };
 const DetailPage = ({route}) => {
   const {placeId} = route.params;
+  const {theme} = useTheme();
   const [loading, setLoading] = useState(true);
   const [storeInfo, setStoreInfo] = useState([]);
   const [reviewInfo, setReciewInfo] = useState([]);
@@ -118,7 +135,9 @@ const DetailPage = ({route}) => {
                   styles.certBanner,
                   {backgroundColor: certInfo?.backgroundColor},
                 ]}>
-                <Text>{certInfo?.label}</Text>
+                <Text style={{color: theme.colors.text}}>
+                  {certInfo?.label}
+                </Text>
               </View>
             )}
 
@@ -140,12 +159,19 @@ const DetailPage = ({route}) => {
             </View>
           </View>
         </ScrollView>
-        <View style={styles.bottomBtnContainer}>
-          <TouchableOpacity style={styles.mapBtn}>
-            <Text style={styles.bottomBtnText}>구글맵</Text>
+        <View style={[styles.bottomBtnContainer]}>
+          <TouchableOpacity
+            style={[styles.mapBtn, {backgroundColor: theme.colors.primary}]}>
+            <Text style={[styles.bottomBtnText, {color: theme.colors.accent}]}>
+              구글맵
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
-            <Text style={styles.bottomBtnText}>전화 문의하기</Text>
+          <TouchableOpacity
+            style={[styles.callBtn, {backgroundColor: theme.colors.primary}]}
+            onPress={handleCallPress}>
+            <Text style={[styles.bottomBtnText, {color: theme.colors.accent}]}>
+              전화 문의하기
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -160,7 +186,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   section: {
-    backgroundColor: 'lightgrey',
     padding: 20,
   },
   certBanner: {
@@ -169,7 +194,7 @@ const styles = StyleSheet.create({
   },
   img: {
     height: 200,
-    backgroundColor: 'grey',
+    backgroundColor: 'grey', // 이건 theme 적용이 불필요하면 그대로 둬도 OK
   },
   title: {
     fontSize: 20,
@@ -205,7 +230,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1.5,
   },
   bottomBtnText: {
-    color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
   },

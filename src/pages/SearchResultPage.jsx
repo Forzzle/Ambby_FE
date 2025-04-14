@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ListCard from '../components/ListCard';
+import {useTheme} from '../context/ThemeContext';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -15,6 +16,7 @@ const SearchResultPage = ({route}) => {
   const {data, query} = route.params;
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const {theme} = useTheme();
 
   useEffect(() => {
     loadMore(); // 처음 5개 로딩
@@ -31,17 +33,29 @@ const SearchResultPage = ({route}) => {
       return null;
     }
     return (
-      <TouchableOpacity style={styles.button} onPress={loadMore}>
-        <Text style={styles.buttonText}>더보기</Text>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={loadMore}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          더보기
+        </Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <TextInput
         value={query}
-        style={styles.searchInput}
+        style={[
+          styles.searchInput,
+          {
+            backgroundColor: theme.colors.accent,
+            color: theme.colors.text,
+            borderColor: theme.colors.border,
+          },
+        ]}
         editable={false}
         multiline
         accessibilityLabel={query}
@@ -54,7 +68,9 @@ const SearchResultPage = ({route}) => {
         contentContainerStyle={{paddingBottom: 20}}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
-          <Text style={styles.empty}>북마크된 장소가 없습니다.</Text>
+          <Text style={[styles.empty, {color: theme.colors.text}]}>
+            북마크된 장소가 없습니다.
+          </Text>
         }
       />
     </View>
@@ -67,53 +83,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: '#aaa',
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
     marginBottom: 20,
-    backgroundColor: '#f2f2f2',
-    color: '#000',
   },
-  header: {
+  empty: {
+    marginTop: 40,
     fontSize: 16,
-    marginBottom: 20,
-    color: '#666',
-  },
-  card: {
-    backgroundColor: '#eee',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#222',
-  },
-  category: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#555',
-  },
-  address: {
-    marginTop: 4,
-    fontSize: 14,
-    color: '#444',
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: '#2e2e2e',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 8,
   },
   buttonText: {
-    color: 'white',
     fontWeight: 'bold',
   },
 });

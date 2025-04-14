@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Sound from 'react-native-sound';
+import {useTheme} from '../context/ThemeContext';
 
 Sound.setCategory('Playback');
 
@@ -24,6 +25,7 @@ let currentSounds = [];
 let stopAllCallbacks = [];
 
 const SoundButton = ({categories}) => {
+  const {theme} = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
 
   const stopCurrentSounds = () => {
@@ -86,8 +88,23 @@ const SoundButton = ({categories}) => {
   const label = availableCategories.join('+');
 
   return (
-    <TouchableOpacity style={styles.btn} onPress={handlePress}>
-      <Text style={styles.text}>{isPlaying ? '정지' : `재생: ${label}`}</Text>
+    <TouchableOpacity
+      style={[
+        styles.btn,
+        {
+          backgroundColor: theme.colors.primary,
+        },
+      ]}
+      onPress={handlePress}>
+      <Text
+        style={[
+          styles.text,
+          {
+            color: theme.colors.accent,
+          },
+        ]}>
+        {isPlaying ? '정지' : `재생: ${label}`}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -95,12 +112,10 @@ const SoundButton = ({categories}) => {
 const styles = StyleSheet.create({
   btn: {
     padding: 16,
-    backgroundColor: '#333',
     borderRadius: 8,
     marginBottom: 12,
   },
   text: {
-    color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
   },

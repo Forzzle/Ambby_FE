@@ -3,6 +3,7 @@ import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {getBookmarks} from '../utils/bookMarkStorage';
 import {useIsFocused} from '@react-navigation/native';
 import ListCard from '../components/ListCard';
+import {useTheme} from '../context/ThemeContext';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -11,6 +12,7 @@ const BookMarkPage = () => {
   const isFocused = useIsFocused();
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const {theme} = useTheme();
 
   const loadMore = () => {
     const nextData = places.slice(currentIndex, currentIndex + ITEMS_PER_PAGE);
@@ -44,14 +46,19 @@ const BookMarkPage = () => {
     }
 
     return (
-      <TouchableOpacity style={styles.button} onPress={loadMore}>
-        <Text style={styles.buttonText}>더보기</Text>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={loadMore}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          더보기
+        </Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <FlatList
         data={visibleData}
         keyExtractor={item => item.id}
@@ -59,7 +66,9 @@ const BookMarkPage = () => {
         contentContainerStyle={{paddingBottom: 20}}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
-          <Text style={styles.empty}>북마크된 장소가 없습니다.</Text>
+          <Text style={[styles.empty, {color: theme.colors.text}]}>
+            북마크된 장소가 없습니다.
+          </Text>
         }
       />
     </View>
@@ -72,31 +81,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
   },
-  item: {
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 12,
-    borderRadius: 10,
-  },
-
   empty: {
     marginTop: 40,
     fontSize: 16,
-    color: '#999',
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#2e2e2e',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 8,
   },
   buttonText: {
-    color: '#fff',
     fontWeight: 'bold',
   },
 });

@@ -1,6 +1,7 @@
 import {TabView, TabBar} from 'react-native-tab-view';
 import {Text, useWindowDimensions} from 'react-native';
 import {useState} from 'react';
+import {useTheme} from '../../context/ThemeContext';
 import ReviewTab from './ReviewTab';
 import InfoTab from './InfoTab';
 
@@ -11,6 +12,8 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
     {key: 'review', title: '리뷰'},
     {key: 'info', title: '정보'},
   ]);
+
+  const {theme} = useTheme();
 
   const renderScene = ({route}) => {
     switch (route.key) {
@@ -32,12 +35,15 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
       renderTabBar={props => (
         <TabBar
           {...props}
-          indicatorStyle={{backgroundColor: 'black'}}
-          style={{backgroundColor: 'lightgray'}}
-          activeColor="black"
-          inactiveColor="gray"
+          indicatorStyle={{backgroundColor: theme.colors.primary}}
+          style={{backgroundColor: theme.colors.background}}
+          activeColor={theme.colors.primary}
+          inactiveColor={theme.colors.text}
           renderLabel={({route, focused}) => (
-            <Text style={{color: focused ? 'black' : 'gray'}}>
+            <Text
+              style={{
+                color: focused ? theme.colors.primary : theme.colors.text,
+              }}>
               {route.title}
             </Text>
           )}

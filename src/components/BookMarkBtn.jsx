@@ -6,9 +6,11 @@ import {
   isBookmarked,
   removeBookmark,
 } from '../utils/bookMarkStorage';
+import {useTheme} from '../context/ThemeContext';
 
 const BookMarkBtn = ({place, size = 20}) => {
   const [bookmarked, setBookmarked] = useState(false);
+  const {theme} = useTheme();
 
   useEffect(() => {
     const checkBookmark = async () => {
@@ -29,7 +31,11 @@ const BookMarkBtn = ({place, size = 20}) => {
 
   return (
     <TouchableOpacity onPress={toggleBookmark}>
-      <Icon name={bookmarked ? 'bookmark' : 'bookmark-border'} size={size} />
+      <Icon
+        name={bookmarked ? 'bookmark' : 'bookmark-border'}
+        size={size}
+        color={theme.colors.primary}
+      />
     </TouchableOpacity>
   );
 };
