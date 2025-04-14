@@ -43,6 +43,11 @@ const SearchPage = () => {
       <TouchableOpacity style={styles.button} onPress={handleSearch}>
         <Text style={styles.buttonText}>검색하기</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('VisionSetting')}>
+        <Text style={styles.buttonText}>시각정보 설정</Text>
+      </TouchableOpacity>
       {loading && <Text style={{marginTop: 10}}>검색중입니다..</Text>}
     </View>
   );
@@ -73,6 +78,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
+    marginBottom: 10,
   },
   buttonText: {
     color: '#fff',
