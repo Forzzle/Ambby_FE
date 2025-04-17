@@ -6,9 +6,9 @@ const themes = {
   default: {
     mode: 'light',
     colors: {
-      background: '#ffffff',
-      text: '#000000',
-      primary: '#222222',
+      primary: '#01539D',
+      text: '#ffffff',
+      secondary: '#FFDD6E',
       accent: '#ffffff',
       border: '#aaaaaa',
       placeholder: '#888888',

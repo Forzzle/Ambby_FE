@@ -1,8 +1,11 @@
 import axios from './axiosInstance';
 
-export const searchPlaces = async query => {
+export const searchPlaces = async (query, pageToken = null) => {
   try {
-    const response = await axios.post('/places/search', {query});
+    const response = await axios.post('/places/search', {
+      query,
+      pageToken,
+    });
     return response.data;
   } catch (error) {
     console.error('searchPlaces API 오류:', error);
