@@ -83,6 +83,13 @@ const SearchPage = () => {
           색상 테마 설정
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={() => navigation.navigate('RoutePlan')}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          장바구니
+        </Text>
+      </TouchableOpacity>
       {loading && (
         <Text style={{marginTop: 10, color: theme.colors.text}}>
           검색중입니다..

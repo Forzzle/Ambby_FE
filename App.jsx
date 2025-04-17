@@ -3,14 +3,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {VisionProvider} from './src/contexts/visionContext';
 import Router from './src/Router';
 import {ThemeProvider} from './src/contexts/themeContext';
+import {CartProvider} from './src/contexts/CartContext';
 
 const App = () => {
   return (
     <ThemeProvider>
       <VisionProvider>
-        <NavigationContainer>
-          <Router />
-        </NavigationContainer>
+        <CartProvider>
+          <NavigationContainer>
+            <Router />
+          </NavigationContainer>
+        </CartProvider>
       </VisionProvider>
     </ThemeProvider>
   );
