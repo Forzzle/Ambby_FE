@@ -10,6 +10,7 @@ const SoundPage = () => {
     <View
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <SoundButton categories="crowd" />
+      <SoundButton categories="eat" />
       <SoundButton categories={['beach', 'wind']} />
       <SoundButton categories={['eat', 'crowd', 'footstep']} />
       <SoundButton categories={['invalid', 'ghost']} />

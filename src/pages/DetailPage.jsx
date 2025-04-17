@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpaㅅcity,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {accessibilityInfo} from '../assets/dummyData';
@@ -106,6 +106,7 @@ const DetailPage = ({route}) => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
+        console.log(res.data);
         setStoreInfo(res.data?.placeDetail);
         setReciewInfo(res.data?.reviewSummary);
       } catch (error) {
