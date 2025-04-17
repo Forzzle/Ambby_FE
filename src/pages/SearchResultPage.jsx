@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,29 +9,56 @@ import {
 } from 'react-native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
-
-const ITEMS_PER_PAGE = 5;
+import {searchPlaces} from '../apis/placeApi';
 
 const SearchResultPage = ({route}) => {
-  const {data, query} = route.params;
-  const [visibleData, setVisibleData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const {theme} = useTheme();
 
-  useEffect(() => {
-    loadMore(); // 처음 5개 로딩
-  }, []);
+  const {data, query: initialQuery, nextPageToken: initialToken} = route.params;
 
-  const loadMore = () => {
-    const nextData = data.slice(currentIndex, currentIndex + ITEMS_PER_PAGE);
-    setVisibleData(prev => [...prev, ...nextData]);
-    setCurrentIndex(prev => prev + ITEMS_PER_PAGE);
+  const [query, setQuery] = useState(initialQuery); // 수정 가능한 검색어
+  const [visibleData, setVisibleData] = useState(data || []);
+  const [nextPageToken, setNextPageToken] = useState(initialToken || null);
+  const [loading, setLoading] = useState(false);
+
+  // 초기 검색 결과 이후 pageToken 기반 더보기
+  const loadMore = async () => {
+    if (!nextPageToken) return;
+
+    setLoading(true);
+    try {
+      const res = await searchPlaces(query, nextPageToken);
+      console.log('검색 리스트 응답 보기 ! ', res);
+
+      const nextData = res.data?.previews || [];
+      setVisibleData(prev => [...prev, ...nextData]);
+      setNextPageToken(res.data?.nextPageToken || null);
+    } catch (error) {
+      console.error('추가 데이터 요청 실패:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 새로 검색하기 버튼
+  const handleNewSearch = async () => {
+    if (!query.trim()) return;
+    setLoading(true);
+    try {
+      const res = await searchPlaces(query);
+      const newData = res.data?.previews || [];
+      setVisibleData(newData);
+      setNextPageToken(res.data?.nextPageToken || null);
+    } catch (e) {
+      console.error('새 검색 실패:', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderFooter = () => {
-    if (currentIndex >= data.length) {
-      return null;
-    }
+    if (!nextPageToken) return null;
+
     return (
       <TouchableOpacity
         style={[styles.button, {backgroundColor: theme.colors.primary}]}
@@ -48,6 +75,7 @@ const SearchResultPage = ({route}) => {
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <TextInput
         value={query}
+        onChangeText={setQuery}
         style={[
           styles.searchInput,
           {
@@ -56,10 +84,17 @@ const SearchResultPage = ({route}) => {
             borderColor: theme.colors.border,
           },
         ]}
-        editable={false}
         multiline
         accessibilityLabel={query}
       />
+
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={handleNewSearch}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          다시 검색하기
+        </Text>
+      </TouchableOpacity>
 
       <FlatList
         data={visibleData}
@@ -69,7 +104,7 @@ const SearchResultPage = ({route}) => {
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
           <Text style={[styles.empty, {color: theme.colors.text}]}>
-            북마크된 장소가 없습니다.
+            장소를 찾을 수 없습니다.
           </Text>
         }
       />
@@ -89,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   empty: {
     marginTop: 40,
@@ -100,7 +135,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 8,
+    marginBottom: 10,
   },
   buttonText: {
     fontWeight: 'bold',

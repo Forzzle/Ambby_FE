@@ -20,7 +20,12 @@ const SearchPage = () => {
     setLoading(true);
     try {
       const res = await searchPlaces(prompt);
-      navigation.navigate('SearchResult', {data: res.data, query: prompt});
+      console.log('검색창에서 서버로 부터 응답 받기 ', res);
+      navigation.navigate('SearchResult', {
+        data: res.data?.previews,
+        query: prompt,
+        nextPageToken: res.data?.nextPageToken || null,
+      });
     } catch (error) {
       console.error('API 호출 에러:', error);
     } finally {
