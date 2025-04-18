@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
@@ -111,11 +112,9 @@ const SearchResultPage = ({route}) => {
           loadingMore ? (
             <ActivityIndicator size="small" color={theme.colors.primary} />
           ) : data.nextPageToken ? (
-            <View style={{flex: 1}}>
-              <Pressable style={styles.button} onPress={loadMore}>
-                <Text style={styles.buttonText}>더보기</Text>
-              </Pressable>
-            </View>
+            <TouchableOpacity style={styles.button} onPress={loadMore}>
+              <Text style={styles.buttonText}>더보기</Text>
+            </TouchableOpacity>
           ) : null
         }
       />
@@ -162,6 +161,8 @@ const getStyles = theme =>
       textAlign: 'center',
     },
     button: {
+      borderWidth: 1, //TODO: 오류해결 제대로 변경
+      borderColor: 'transparent',
       paddingVertical: 20,
       alignItems: 'center',
       marginTop: 8,

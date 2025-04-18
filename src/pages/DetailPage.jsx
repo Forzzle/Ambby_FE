@@ -170,12 +170,13 @@ const DetailPage = ({route}) => {
         </ScrollView>
 
         <View style={styles.bottomBtnContainer}>
-          <Pressable style={styles.mapBtn} onPress={handleMapPress}>
+          <TouchableOpacity style={styles.mapBtn} onPress={handleMapPress}>
             <Text style={styles.mapBtnText}>구글맵</Text>
-          </Pressable>
-          <Pressable style={styles.callBtn} onPress={handleCallPress}>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
             <Text style={styles.callBtnText}>전화 문의하기</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     );
