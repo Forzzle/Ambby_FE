@@ -9,6 +9,7 @@ import {
   Image,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {searchPlaces} from '../apis/placeApi';
@@ -37,7 +38,7 @@ const SearchPage = () => {
       });
       console.log('검색 결과:', res);
     } catch (error) {
-      console.error('API 호출 에러:', error);
+      console.log('API 호출 에러:', error);
     } finally {
       setLoading(false);
     }
@@ -49,11 +50,13 @@ const SearchPage = () => {
           <Text style={styles.title}>
             {'가고싶은 여행지를 \n 자유롭게 표현해보세요!'}
           </Text>
-          <Text style={styles.subTitle}>상세할 수록 좋습니다.</Text>
+          <Text style={styles.subTitle}>상세할수록 좋습니다.</Text>
+
           <Pressable style={styles.inputContainer}>
-            <View style={styles.searchIcon}>
+            <TouchableOpacity style={styles.searchIcon} onPress={handleSearch}>
               <Image source={icons.search} />
-            </View>
+            </TouchableOpacity>
+
             <TextInput
               style={styles.input}
               value={prompt}
@@ -67,6 +70,7 @@ const SearchPage = () => {
               multiline
               accessibilityLabel="가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요. 상세할수록 좋습니다"
               placeholderTextColor={theme.colors.placeholder}
+              textAlign="center"
             />
           </Pressable>
 
@@ -109,7 +113,7 @@ const getStyles = theme =>
       height: circleSize,
       borderRadius: circleSize / 2,
       backgroundColor: theme.colors.secondary,
-      justifyContent: 'center',
+      paddingTop: 40,
       alignItems: 'center',
       marginBottom: 40,
     },
@@ -130,6 +134,7 @@ const getStyles = theme =>
       color: theme.colors.primary,
       fontWeight: 800,
       lineHeight: 28,
+      maxHeight: circleSize - 120,
     },
     button: {
       paddingVertical: 14,

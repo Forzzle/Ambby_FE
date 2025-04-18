@@ -16,10 +16,10 @@ import icons from '../constants/icons';
 
 const SearchResultPage = ({route}) => {
   const {data: initialData, query: initialQuery} = route.params;
-  const [query, setQuery] = useState(initialQuery); // 현재 입력 중인 쿼리
-  const [data, setData] = useState(initialData); // 현재까지의 검색 결과
-  const [loadingSearch, setLoadingSearch] = useState(false); // 검색 로딩 상태
-  const [loadingMore, setLoadingMore] = useState(false); // 더보기 로딩 상태
+  const [query, setQuery] = useState(initialQuery);
+  const [data, setData] = useState(initialData);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
@@ -30,25 +30,39 @@ const SearchResultPage = ({route}) => {
     setData(initialData);
   }, [initialData, initialQuery]);
 
-  // 더보기 기능
   const loadMore = async () => {
     if (!data.nextPageToken || loadingMore) {
       return;
     }
+    console.log('클릭됨');
+
     setLoadingMore(true);
+
     try {
       const res = await searchPlaces(query, data.nextPageToken);
-      setData(prev => ({
-        ...prev,
-        previews: [...prev?.previews, ...res?.data?.previews],
-        nextPageToken: res?.data?.nextPageToken,
-      }));
+      setData(prev => {
+        const newPreviews = res?.data?.previews || [];
+        const nextToken = res?.data?.nextPageToken || null;
+
+        const uniquePreviews = [
+          ...prev.previews,
+          ...newPreviews.filter(
+            newItem => !prev.previews.some(item => item.id === newItem.id),
+          ),
+        ];
+
+        return {
+          previews: uniquePreviews,
+          nextPageToken: nextToken,
+        };
+      });
     } catch (error) {
       console.error('더보기 요청 실패:', error);
     } finally {
       setLoadingMore(false);
     }
   };
+
   // 검색 기능
   const handleSearch = async () => {
     setLoadingSearch(true);
@@ -65,9 +79,9 @@ const SearchResultPage = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <View style={styles.searchIcon}>
+        <TouchableOpacity style={styles.searchIcon} onPress={handleSearch}>
           <Image source={icons.search} />
-        </View>
+        </TouchableOpacity>
         <TextInput
           value={query}
           onChangeText={setQuery}
