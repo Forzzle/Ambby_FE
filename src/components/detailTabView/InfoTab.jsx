@@ -9,33 +9,9 @@ const InfoTab = ({accessibilityInfo}) => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <Text style={[styles.description, {color: theme.colors.text}]}>
-        {baseInfo.description}
+      <Text style={[styles.description, {color: theme.colors.primary}]}>
+        정보 미정
       </Text>
-      <View>
-        <Text style={[styles.title, {color: theme.colors.text}]}>
-          휠체어 입구
-        </Text>
-        <Text style={[styles.content, {color: theme.colors.text}]}>
-          {options.wheelchairAccessibleEntrance ? '있음' : '없음'}
-        </Text>
-      </View>
-      <View>
-        <Text style={[styles.title, {color: theme.colors.text}]}>
-          장애인 주차장
-        </Text>
-        <Text style={[styles.content, {color: theme.colors.text}]}>
-          {options.wheelchairAccessibleParking ? '있음' : '없음'}
-        </Text>
-      </View>
-      <View>
-        <Text style={[styles.title, {color: theme.colors.text}]}>
-          휠체어 가능 자리
-        </Text>
-        <Text style={[styles.content, {color: theme.colors.text}]}>
-          {options.wheelchairAccessibleSeating ? '있음' : '없음'}
-        </Text>
-      </View>
     </View>
   );
 };
@@ -44,6 +20,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     gap: 16,
+    flex: 1,
   },
   description: {
     marginBottom: 12,

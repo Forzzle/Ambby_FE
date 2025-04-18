@@ -1,5 +1,5 @@
 import {TabView, TabBar} from 'react-native-tab-view';
-import {Text, useWindowDimensions} from 'react-native';
+import {StyleSheet, Text, useWindowDimensions} from 'react-native';
 import {useState} from 'react';
 import {useTheme} from '../../contexts/themeContext';
 import ReviewTab from './ReviewTab';
@@ -14,6 +14,7 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
   ]);
 
   const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   const renderScene = ({route}) => {
     switch (route.key) {
@@ -28,6 +29,7 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
 
   return (
     <TabView
+      style={styles.container}
       navigationState={{index, routes}}
       renderScene={renderScene}
       onIndexChange={setIndex}
@@ -35,14 +37,14 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
       renderTabBar={props => (
         <TabBar
           {...props}
-          indicatorStyle={{backgroundColor: theme.colors.primary}}
-          style={{backgroundColor: theme.colors.background}}
-          activeColor={theme.colors.primary}
+          indicatorStyle={{backgroundColor: theme.colors.secondary}}
+          style={{backgroundColor: theme.colors.primary}}
+          activeColor={theme.colors.secondary}
           inactiveColor={theme.colors.text}
           renderLabel={({route, focused}) => (
             <Text
               style={{
-                color: focused ? theme.colors.primary : theme.colors.text,
+                color: focused ? theme.colors.primary : theme.colors.secondary,
               }}>
               {route.title}
             </Text>
@@ -54,3 +56,11 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
 };
 
 export default DetailTabView;
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      borderWidth: 1,
+      borderTopColor: theme.colors.secondary,
+      borderBottomColor: theme.colors.secondary,
+    },
+  });

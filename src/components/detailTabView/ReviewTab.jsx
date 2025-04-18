@@ -17,10 +17,10 @@ const ReviewInfoView = ({reviewInfo}) => {
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <Markdown
         style={{
-          body: {color: theme.colors.text},
-          paragraph: {color: theme.colors.text},
-          heading2: {color: theme.colors.text},
-          heading3: {color: theme.colors.text},
+          body: {color: theme.colors.primary},
+          paragraph: {color: theme.colors.primary},
+          heading2: {color: theme.colors.primary},
+          heading3: {color: theme.colors.primary},
         }}>
         {cleanedMarkdown}
       </Markdown>
@@ -32,10 +32,10 @@ export default ReviewInfoView;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: 10,
     gap: 16,
-    //backgroundColor: 'lightgrey',
   },
 });

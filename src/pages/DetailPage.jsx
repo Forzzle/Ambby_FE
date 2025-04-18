@@ -26,88 +26,77 @@ const certConfig = {
     backgroundColor: '#ccbfff',
   },
 };
+
 const StoreOverview = ({storeInfo}) => {
   const {theme} = useTheme();
+  const styles = getStyles(theme);
+
   const [openHoursMore, setOpenHoursMore] = useState(false);
-  const handleToggle = () => {
-    setOpenHoursMore(prev => !prev);
-  };
+  const handleToggle = () => setOpenHoursMore(prev => !prev);
+
   const bookMarkPlace = {
     id: storeInfo.id,
     name: storeInfo?.displayName?.text,
     simpleAddress: storeInfo?.formattedAddress,
     category: storeInfo?.primaryTypeDisplayName?.text,
   };
+
   return (
-    <View
-      style={[
-        styles.section,
-        {gap: 4, backgroundColor: theme.colors.background},
-      ]}>
-      <View style={{flexDirection: 'row', gap: 6}}>
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontWeight: 'bold',
-            fontSize: 18,
-            maxWidth: '80%',
-          }}>
-          {storeInfo?.displayName?.text}
-        </Text>
-        <Text
-          style={{
-            color: theme.colors.primary,
-            marginRight: 'auto',
-            alignSelf: 'flex-end',
-          }}>
+    <View style={[styles.section]}>
+      <View style={styles.headerRow}>
+        <Text style={styles.storeName}>{storeInfo?.displayName?.text}</Text>
+        <Text style={styles.categoryText}>
           {storeInfo?.primaryTypeDisplayName?.text}
         </Text>
         <BookMarkBtn place={bookMarkPlace} />
       </View>
-      <TouchableOpacity onPress={handleToggle} style={{flexDirection: 'row'}}>
-        <Text style={{color: theme.colors.text}}>
+
+      <TouchableOpacity onPress={handleToggle} style={styles.openStatusRow}>
+        <Text style={styles.text}>
           {storeInfo?.regularOpeningHours?.openNow ? '영업중' : '영업종료'}
         </Text>
-        <Text style={{color: theme.colors.text}}>{storeInfo?.hours}</Text>
+        <Text style={styles.text}>{storeInfo?.hours}</Text>
       </TouchableOpacity>
+
       {openHoursMore && (
         <View>
           {storeInfo?.regularOpeningHours?.weekdayDescriptions.map(
             (desc, i) => (
-              <Text key={i} style={{color: theme.colors.text}}>
+              <Text key={i} style={styles.text}>
                 {desc}
               </Text>
             ),
           )}
         </View>
       )}
-      <Text style={{color: theme.colors.text}}>
-        {storeInfo?.formattedAddress}
-      </Text>
 
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <Text style={styles.text}>{storeInfo?.formattedAddress}</Text>
+
+      <View style={styles.ratingRow}>
         <RatingStars rating={storeInfo?.rating} />
-        <Text style={{color: theme.colors.text}}>{storeInfo?.rating} </Text>
-        <Text style={{color: theme.colors.text}}>
-          ({storeInfo?.userRatingCount})
-        </Text>
+        <Text style={styles.text}>{storeInfo?.rating}</Text>
+        <Text style={styles.text}>({storeInfo?.userRatingCount})</Text>
       </View>
     </View>
   );
 };
+
 const DetailPage = ({route}) => {
   const {placeId} = route.params;
-  const {theme} = useTheme();
   const [loading, setLoading] = useState(true);
   const [storeInfo, setStoreInfo] = useState([]);
   const [reviewInfo, setReciewInfo] = useState([]);
   const certInfo = certConfig[storeInfo?.certification] || null;
+
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
+
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
         console.log(res.data);
-        setStoreInfo(res.data?.placeDetail);
+        setStoreInfo(res.data?.googleMapPlaceDetail);
         setReciewInfo(res.data?.reviewSummary);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
@@ -137,15 +126,11 @@ const DetailPage = ({route}) => {
     );
   } else {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <ScrollView contentContainerStyle={{paddingBottom: 200}}>
           <View style={styles.container}>
             {storeInfo?.certification && (
-              <View
-                style={[
-                  styles.certBanner,
-                  {backgroundColor: certInfo?.backgroundColor},
-                ]}>
+              <View style={styles.certBanner}>
                 <Text style={{color: theme.colors.text}}>
                   {certInfo?.label}
                 </Text>
@@ -170,19 +155,13 @@ const DetailPage = ({route}) => {
             </View>
           </View>
         </ScrollView>
-        <View style={[styles.bottomBtnContainer]}>
-          <TouchableOpacity
-            style={[styles.mapBtn, {backgroundColor: theme.colors.primary}]}>
-            <Text style={[styles.bottomBtnText, {color: theme.colors.accent}]}>
-              구글맵
-            </Text>
+
+        <View style={styles.bottomBtnContainer}>
+          <TouchableOpacity style={styles.mapBtn}>
+            <Text style={styles.mapBtnText}>구글맵</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.callBtn, {backgroundColor: theme.colors.primary}]}
-            onPress={handleCallPress}>
-            <Text style={[styles.bottomBtnText, {color: theme.colors.accent}]}>
-              전화 문의하기
-            </Text>
+          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
+            <Text style={styles.callBtnText}>전화 문의하기</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -192,56 +171,79 @@ const DetailPage = ({route}) => {
 
 export default DetailPage;
 
-const styles = StyleSheet.create({
-  container: {
-    gap: 10,
-  },
-  section: {
-    padding: 20,
-  },
-  certBanner: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  img: {
-    height: 200,
-    backgroundColor: 'grey', // 이건 theme 적용이 불필요하면 그대로 둬도 OK
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '800',
-    width: 'auto',
-    maxWidth: '80%',
-  },
-  category: {
-    marginRight: 'auto',
-    alignSelf: 'flex-end',
-  },
-  bottomBtnContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 16,
-    flexDirection: 'row',
-    gap: 10,
-  },
-  callBtn: {
-    backgroundColor: 'black',
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    flex: 1,
-  },
-  mapBtn: {
-    backgroundColor: 'black',
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    aspectRatio: 1.5,
-  },
-  bottomBtnText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      gap: 10,
+      flex: 1,
+      height: '100%',
+      backgroundColor: theme.colors.primary,
+    },
+    section: {
+      padding: 20,
+      gap: 4,
+      borderWidth: 1,
+      borderTopColor: theme.colors.secondary,
+      borderBottomColor: theme.colors.secondary,
+    },
+    certBanner: {
+      padding: 20,
+      alignItems: 'center',
+    },
+    img: {
+      height: 200,
+      backgroundColor: 'grey',
+    },
+    headerRow: {
+      flexDirection: 'row',
+      gap: 6,
+      alignItems: 'flex-start',
+    },
+    storeName: {
+      color: theme.colors.secondary,
+      fontWeight: 800,
+      fontSize: 18,
+      maxWidth: '80%',
+    },
+    categoryText: {
+      color: theme.colors.primary,
+      marginRight: 'auto',
+      alignSelf: 'flex-end',
+    },
+    openStatusRow: {
+      flexDirection: 'row',
+    },
+    text: {
+      color: theme.colors.text,
+    },
+    ratingRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    bottomBtnContainer: {
+      flexDirection: 'row',
+      marginVertical: 1, //수정해야됨
+    },
+    callBtn: {
+      backgroundColor: theme.colors.secondary,
+      paddingVertical: 20,
+      alignItems: 'center',
+      flex: 6,
+    },
+    mapBtn: {
+      backgroundColor: theme.colors.primary,
+      paddingVertical: 20,
+      alignItems: 'center',
+      flex: 1,
+    },
+    callBtnText: {
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: theme.colors.primary,
+    },
+    mapBtnText: {
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: theme.colors.accent,
+    },
+  });

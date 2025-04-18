@@ -10,7 +10,7 @@ const RatingStars = ({rating = 0}) => {
   const hasHalfStar = rating - fullStars >= 0.5;
   const emptyStars = maxStars - fullStars - (hasHalfStar ? 1 : 0);
 
-  const starColor = theme.colors.primary || '#FFD700';
+  const starColor = theme.colors.secondary || '#FFD700';
 
   return (
     <View style={styles.row}>
