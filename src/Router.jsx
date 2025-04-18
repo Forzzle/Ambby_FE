@@ -8,6 +8,7 @@ import SoundPage from './pages/SoundPage';
 import VisionSettingScreen from './pages/VisionSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
 import SettingPage from './pages/SettingPage';
+import RoutePlanPage from './pages/RoutePlanPage';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,11 @@ const Router = () => {
         name="VisionSetting"
         component={VisionSettingScreen}
         options={{title: '시각정보 설정'}}
+      />
+      <Stack.Screen
+        name="RoutePlan"
+        component={RoutePlanPage}
+        options={{title: '장바구니'}}
       />
     </Stack.Navigator>
   );

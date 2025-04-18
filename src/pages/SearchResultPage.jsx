@@ -98,6 +98,14 @@ const SearchResultPage = ({route}) => {
         />
       </View>
 
+      <TouchableOpacity
+        style={[styles.button, {backgroundColor: theme.colors.primary}]}
+        onPress={handleNewSearch}>
+        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
+          다시 검색하기
+        </Text>
+      </TouchableOpacity>
+
       <FlatList
         data={data.previews}
         keyExtractor={item => item.id}
