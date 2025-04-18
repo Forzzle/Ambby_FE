@@ -5,9 +5,9 @@ import {
   StyleSheet,
   FlatList,
   TextInput,
-  TouchableOpacity,
   ActivityIndicator,
   Image,
+  Pressable,
 } from 'react-native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
@@ -79,9 +79,9 @@ const SearchResultPage = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <TouchableOpacity style={styles.searchIcon} onPress={handleSearch}>
+        <Pressable style={styles.searchIcon} onPress={handleSearch}>
           <Image source={icons.search} />
-        </TouchableOpacity>
+        </Pressable>
         <TextInput
           value={query}
           onChangeText={setQuery}
@@ -98,14 +98,6 @@ const SearchResultPage = ({route}) => {
         />
       </View>
 
-      <TouchableOpacity
-        style={[styles.button, {backgroundColor: theme.colors.primary}]}
-        onPress={handleNewSearch}>
-        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
-          다시 검색하기
-        </Text>
-      </TouchableOpacity>
-
       <FlatList
         data={data.previews}
         keyExtractor={item => item.id}
@@ -119,9 +111,11 @@ const SearchResultPage = ({route}) => {
           loadingMore ? (
             <ActivityIndicator size="small" color={theme.colors.primary} />
           ) : data.nextPageToken ? (
-            <TouchableOpacity style={styles.button} onPress={loadMore}>
-              <Text style={styles.buttonText}>더보기</Text>
-            </TouchableOpacity>
+            <View style={{flex: 1}}>
+              <Pressable style={styles.button} onPress={loadMore}>
+                <Text style={styles.buttonText}>더보기</Text>
+              </Pressable>
+            </View>
           ) : null
         }
       />

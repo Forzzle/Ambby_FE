@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useTheme} from '../contexts/themeContext';
 import {
+  Alert,
   Image,
   Linking,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -108,13 +110,24 @@ const DetailPage = ({route}) => {
     fetchDetail();
   }, [placeId]);
 
+  const handleMapPress = () => {
+    Alert.alert('어잇쿠', '아직 개발중입니다.');
+  };
+
   const handleCallPress = () => {
-    if (storeInfo.tel !== '' && storeInfo.nationalPhoneNumber.length > 0) {
-      if (Platform.OS === 'android') {
-        Linking.openURL(`tel:${storeInfo.nationalPhoneNumber}`);
-      } else {
-        Linking.openURL(`tel://${storeInfo.nationalPhoneNumber}`);
-      }
+    if (
+      !storeInfo.nationalPhoneNumber ||
+      storeInfo.nationalPhoneNumber.length === 0
+    ) {
+      Alert.alert('전화번호 없음', '전화번호 정보가 없습니다.');
+      return;
+    }
+
+    if (Platform.OS === 'android') {
+      Linking.openURL(`tel:${storeInfo.nationalPhoneNumber}`);
+    } else {
+      Alert.alert('아이폰은 지원하지 않습니다.');
+      Linking.openURL(`tel://${storeInfo.nationalPhoneNumber}`);
     }
   };
 
@@ -127,7 +140,7 @@ const DetailPage = ({route}) => {
   } else {
     return (
       <View style={{flex: 1}}>
-        <ScrollView contentContainerStyle={{paddingBottom: 200}}>
+        <ScrollView contentContainerStyle={{paddingBottom: 120}}>
           <View style={styles.container}>
             {storeInfo?.certification && (
               <View style={styles.certBanner}>
@@ -157,12 +170,12 @@ const DetailPage = ({route}) => {
         </ScrollView>
 
         <View style={styles.bottomBtnContainer}>
-          <TouchableOpacity style={styles.mapBtn}>
+          <Pressable style={styles.mapBtn} onPress={handleMapPress}>
             <Text style={styles.mapBtnText}>구글맵</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
+          </Pressable>
+          <Pressable style={styles.callBtn} onPress={handleCallPress}>
             <Text style={styles.callBtnText}>전화 문의하기</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     );
@@ -176,7 +189,6 @@ const getStyles = theme =>
     container: {
       gap: 10,
       flex: 1,
-      height: '100%',
       backgroundColor: theme.colors.primary,
     },
     section: {
@@ -222,19 +234,20 @@ const getStyles = theme =>
     },
     bottomBtnContainer: {
       flexDirection: 'row',
-      marginVertical: 1, //수정해야됨
+      borderWidth: 1, //TODO: 오류해결 제대로 변경
+      borderColor: 'transparent',
     },
     callBtn: {
       backgroundColor: theme.colors.secondary,
       paddingVertical: 20,
       alignItems: 'center',
-      flex: 6,
+      flex: 1,
     },
     mapBtn: {
       backgroundColor: theme.colors.primary,
       paddingVertical: 20,
       alignItems: 'center',
-      flex: 1,
+      aspectRatio: 1.6,
     },
     callBtnText: {
       fontWeight: 'bold',
