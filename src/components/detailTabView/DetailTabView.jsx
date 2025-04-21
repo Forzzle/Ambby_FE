@@ -5,7 +5,7 @@ import {useTheme} from '../../contexts/themeContext';
 import ReviewTab from './ReviewTab';
 import InfoTab from './InfoTab';
 
-const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
+const DetailTabView = ({review, accessibility}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -19,9 +19,9 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'review':
-        return <ReviewTab reviewInfo={reviewInfo} />;
+        return <ReviewTab data={review} />;
       case 'info':
-        return <InfoTab accessibilityInfo={accessibilityInfo} />;
+        return <InfoTab data={accessibility} />;
       default:
         return null;
     }
@@ -56,10 +56,13 @@ const DetailTabView = ({reviewInfo, accessibilityInfo}) => {
 };
 
 export default DetailTabView;
+
 const getStyles = theme =>
   StyleSheet.create({
     container: {
-      borderWidth: 1,
+      paddingBottom: 250,
+      backgroundColor: theme.colors.background,
+      borderTopWidth: 1,
       borderTopColor: theme.colors.secondary,
       borderBottomColor: theme.colors.secondary,
     },

@@ -3,14 +3,13 @@ import {View, StyleSheet} from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import {useTheme} from '../../contexts/themeContext';
 
-const ReviewInfoView = ({reviewInfo}) => {
+const ReviewInfoView = ({data}) => {
   const {theme} = useTheme();
 
-  if (typeof reviewInfo !== 'string') {
+  if (typeof data !== 'string') {
     return null;
   }
-
-  const cleanedMarkdown = reviewInfo.replace(/^## 리뷰 요약\s*/i, '');
+  const cleanedMarkdown = data.replace(/^## 리뷰 요약\s*/i, '');
 
   return (
     <View
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingBottom: 20,
     paddingTop: 10,
     gap: 16,
   },

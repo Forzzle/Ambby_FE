@@ -5,11 +5,11 @@ import {ThemeProvider} from './src/contexts/themeContext';
 import {CartProvider} from './src/contexts/CartContext';
 import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 
 const App = () => {
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <GestureHandlerRootView>
         <ThemeProvider>
           <CartProvider>
@@ -21,7 +21,7 @@ const App = () => {
           </CartProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
-    </View>
+    </SafeAreaView>
   );
 };
 

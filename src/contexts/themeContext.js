@@ -10,7 +10,7 @@ const themes = {
       primary: '#01539D',
       text: '#ffffff',
       secondary: '#FFDD6E',
-      accent: '#ffffff',
+      accent: '#4077a7',
       border: '#aaaaaa',
       placeholder: '#888888',
     },

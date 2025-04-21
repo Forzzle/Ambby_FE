@@ -88,7 +88,8 @@ const DetailPage = ({route}) => {
   const [loading, setLoading] = useState(true);
   const [storeInfo, setStoreInfo] = useState([]);
   const [reviewInfo, setReciewInfo] = useState([]);
-  const certInfo = certConfig[storeInfo?.certification] || null;
+  const [accessibilityInfo, setAccessibilityInfo] = useState([]);
+  const certInfo = null;
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
@@ -97,9 +98,9 @@ const DetailPage = ({route}) => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
-        console.log(res.data);
-        setStoreInfo(res.data?.googleMapPlaceDetail);
+        setStoreInfo(res.data?.info);
         setReciewInfo(res.data?.reviewSummary);
+        setAccessibilityInfo(res.data?.toggle);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
       } finally {
@@ -110,8 +111,8 @@ const DetailPage = ({route}) => {
     fetchDetail();
   }, [placeId]);
 
-  const handleMapPress = () => {
-    Alert.alert('어잇쿠', '아직 개발중입니다.');
+  const handleAddPress = () => {
+    Alert.alert('여행 루트 보기', '아직 개발중입니다.');
   };
 
   const handleCallPress = () => {
@@ -157,21 +158,18 @@ const DetailPage = ({route}) => {
             />
             <StoreOverview storeInfo={storeInfo} />
 
-            <View style={{height: '100%', paddingBottom: 180}}>
+            <View style={{height: '100%'}}>
               <DetailTabView
-                reviewInfo={reviewInfo}
-                accessibilityInfo={{
-                  baseInfo: accessibilityInfo,
-                  options: storeInfo.accessibilityOptions,
-                }}
+                review={reviewInfo}
+                accessibility={accessibilityInfo}
               />
             </View>
           </View>
         </ScrollView>
 
         <View style={styles.bottomBtnContainer}>
-          <TouchableOpacity style={styles.mapBtn} onPress={handleMapPress}>
-            <Text style={styles.mapBtnText}>구글맵</Text>
+          <TouchableOpacity style={styles.addBtn} onPress={handleAddPress}>
+            <Text style={styles.addBtnText}>여행 추가</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
@@ -235,8 +233,6 @@ const getStyles = theme =>
     },
     bottomBtnContainer: {
       flexDirection: 'row',
-      borderWidth: 1, //TODO: 오류해결 제대로 변경
-      borderColor: 'transparent',
     },
     callBtn: {
       backgroundColor: theme.colors.secondary,
@@ -244,7 +240,7 @@ const getStyles = theme =>
       alignItems: 'center',
       flex: 1,
     },
-    mapBtn: {
+    addBtn: {
       backgroundColor: theme.colors.primary,
       paddingVertical: 20,
       alignItems: 'center',
@@ -255,9 +251,9 @@ const getStyles = theme =>
       fontSize: 16,
       color: theme.colors.primary,
     },
-    mapBtnText: {
+    addBtnText: {
       fontWeight: 'bold',
       fontSize: 16,
-      color: theme.colors.accent,
+      color: 'white',
     },
   });
