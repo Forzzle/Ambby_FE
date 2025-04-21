@@ -11,7 +11,7 @@ const ListCard = ({item}) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('DetailPage', {placeId: item.id})}
+      onPress={() => navigation.push('Detail', {placeId: item.id})}
       style={styles.card}>
       <View style={styles.row}>
         <Text style={styles.title}>{item.name}</Text>

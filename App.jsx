@@ -1,28 +1,28 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {VisionProvider} from './src/contexts/visionContext';
-import Router from './src/Router';
+import Router from './src/router';
 import {ThemeProvider} from './src/contexts/themeContext';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {CartProvider} from './src/contexts/CartContext';
+import {NavigationContainer} from '@react-navigation/native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {View} from 'react-native';
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ThemeProvider>
-        <VisionProvider>
-          <NavigationContainer>
-            <Router />
-          </NavigationContainer>
-        </VisionProvider>
-      </ThemeProvider>
-    </SafeAreaView>
+    <View style={{flex: 1}}>
+      <GestureHandlerRootView>
+        <ThemeProvider>
+          <CartProvider>
+            <VisionProvider>
+              <NavigationContainer>
+                <Router />
+              </NavigationContainer>
+            </VisionProvider>
+          </CartProvider>
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-});
 
 export default App;

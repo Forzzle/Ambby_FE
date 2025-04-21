@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const VisionContext = createContext();
 
 export const VisionProvider = ({children}) => {
-  const [visionMode, setVisionMode] = useState(null);
+  const [visionMode, setVisionMode] = useState('normal');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

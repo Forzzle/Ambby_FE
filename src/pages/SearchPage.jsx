@@ -32,7 +32,7 @@ const SearchPage = () => {
     setLoading(true);
     try {
       const res = await searchPlaces(prompt);
-      navigation.navigate('SearchResult', {
+      navigation.push('SearchResult', {
         data: res.data,
         query: prompt,
       });

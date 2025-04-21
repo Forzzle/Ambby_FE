@@ -70,12 +70,6 @@ const SettingPage = () => {
           </Text>
         </TouchableOpacity>
       ))}
-
-      <TouchableOpacity
-        style={[styles.backBtn, {backgroundColor: theme.colors.primary}]}
-        onPress={() => navigation.navigate('Search')}>
-        <Text style={{color: theme.colors.accent}}>← 뒤로가기</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -114,11 +108,5 @@ const styles = StyleSheet.create({
   previewLabel: {
     fontSize: 14,
     fontWeight: 'bold',
-  },
-  backBtn: {
-    marginTop: 40,
-    padding: 12,
-    alignItems: 'center',
-    borderRadius: 8,
   },
 });
