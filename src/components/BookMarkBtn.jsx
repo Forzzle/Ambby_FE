@@ -8,7 +8,7 @@ import {
 } from '../utils/bookMarkStorage';
 import {useTheme} from '../contexts/themeContext';
 
-const BookMarkBtn = ({place, size = 20}) => {
+const BookMarkBtn = ({place, size = 24}) => {
   const [bookmarked, setBookmarked] = useState(false);
   const {theme} = useTheme();
 
@@ -34,7 +34,7 @@ const BookMarkBtn = ({place, size = 20}) => {
       <Icon
         name={bookmarked ? 'bookmark' : 'bookmark-border'}
         size={size}
-        color={theme.colors.primary}
+        color={theme.colors.secondary}
       />
     </TouchableOpacity>
   );

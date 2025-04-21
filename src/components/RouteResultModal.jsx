@@ -4,8 +4,10 @@ import {useTheme} from '../contexts/themeContext';
 
 const RouteResultModal = ({visible, onClose, routeData}) => {
   const {theme} = useTheme();
-
-  if (!routeData) return null;
+  console.log('경로', routeData);
+  if (!routeData) {
+    return null;
+  }
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -18,11 +20,12 @@ const RouteResultModal = ({visible, onClose, routeData}) => {
           <Text style={[styles.title, {color: theme.colors.text}]}>
             🚗 최적 경로 결과
           </Text>
-          {routeData.map((place, index) => (
-            <Text key={place.id} style={{color: theme.colors.text}}>
-              {index + 1}. {place.name}
+          {routeData.humanTraffic?.map((place, index) => (
+            <Text key={index} style={{color: theme.colors.text}}>
+              {index + 1}. {place}
             </Text>
           ))}
+          <Text>{routeData.summary}</Text>
 
           <TouchableOpacity
             onPress={onClose}

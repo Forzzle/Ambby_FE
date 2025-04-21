@@ -1,13 +1,15 @@
 import React, {createContext, useContext, useState} from 'react';
 
-const CartContext = createContext(); // ❗️null 아니고 기본값 없이 생성
+const CartContext = createContext();
 
 export const CartProvider = ({children}) => {
   const [places, setPlaces] = useState([]);
 
   const addPlace = place => {
     setPlaces(prev => {
-      if (prev.some(p => p.id === place.id)) return prev;
+      if (prev.some(p => p.id === place.id)) {
+        return prev;
+      }
       return [...prev, place];
     });
   };

@@ -1,68 +1,49 @@
 import React, {useEffect, useState} from 'react';
 import {useTheme} from '../contexts/themeContext';
+import {useCart} from '../contexts/CartContext';
 import {
   Alert,
   Image,
   Linking,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {accessibilityInfo} from '../assets/dummyData';
 import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
 import {getDetail} from '../apis/placeApi';
 import BookMarkBtn from '../components/BookMarkBtn';
 
-const certConfig = {
-  kto: {
-    label: '관광공사 인증 무장애 관광지입니다.',
-    backgroundColor: '#ffe0e0',
-  },
-  hodeum: {
-    label: 'hodeum 인증 관광지입니다.',
-    backgroundColor: '#ccbfff',
-  },
-};
-
-const StoreOverview = ({storeInfo}) => {
+const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
   const [openHoursMore, setOpenHoursMore] = useState(false);
   const handleToggle = () => setOpenHoursMore(prev => !prev);
 
-  const bookMarkPlace = {
-    id: storeInfo.id,
-    name: storeInfo?.displayName?.text,
-    simpleAddress: storeInfo?.formattedAddress,
-    category: storeInfo?.primaryTypeDisplayName?.text,
-  };
-
   return (
     <View style={[styles.section]}>
       <View style={styles.headerRow}>
-        <Text style={styles.storeName}>{storeInfo?.displayName?.text}</Text>
+        <Text style={styles.storeName}>{placeInfo?.displayName?.text}</Text>
         <Text style={styles.categoryText}>
-          {storeInfo?.primaryTypeDisplayName?.text}
+          {placeInfo?.primaryTypeDisplayName?.text}
         </Text>
-        <BookMarkBtn place={bookMarkPlace} />
+        <BookMarkBtn place={placeSummary} />
       </View>
 
       <TouchableOpacity onPress={handleToggle} style={styles.openStatusRow}>
         <Text style={styles.text}>
-          {storeInfo?.regularOpeningHours?.openNow ? '영업중' : '영업종료'}
+          {placeInfo?.regularOpeningHours?.openNow ? '영업중' : '영업종료'}
         </Text>
-        <Text style={styles.text}>{storeInfo?.hours}</Text>
+        <Text style={styles.text}>{placeInfo?.hours}</Text>
       </TouchableOpacity>
 
       {openHoursMore && (
         <View>
-          {storeInfo?.regularOpeningHours?.weekdayDescriptions.map(
+          {placeInfo?.regularOpeningHours?.weekdayDescriptions.map(
             (desc, i) => (
               <Text key={i} style={styles.text}>
                 {desc}
@@ -72,12 +53,12 @@ const StoreOverview = ({storeInfo}) => {
         </View>
       )}
 
-      <Text style={styles.text}>{storeInfo?.formattedAddress}</Text>
+      <Text style={styles.text}>{placeInfo?.formattedAddress}</Text>
 
       <View style={styles.ratingRow}>
-        <RatingStars rating={storeInfo?.rating} />
-        <Text style={styles.text}>{storeInfo?.rating}</Text>
-        <Text style={styles.text}>({storeInfo?.userRatingCount})</Text>
+        <RatingStars rating={placeInfo?.rating} />
+        <Text style={styles.text}>{placeInfo?.rating}</Text>
+        <Text style={styles.text}>({placeInfo?.userRatingCount})</Text>
       </View>
     </View>
   );
@@ -86,20 +67,21 @@ const StoreOverview = ({storeInfo}) => {
 const DetailPage = ({route}) => {
   const {placeId} = route.params;
   const [loading, setLoading] = useState(true);
-  const [storeInfo, setStoreInfo] = useState([]);
-  const [reviewInfo, setReciewInfo] = useState([]);
+  const [placeInfo, setPlaceInfo] = useState([]);
+  const [reviewInfo, setReviewInfo] = useState([]);
   const [accessibilityInfo, setAccessibilityInfo] = useState([]);
   const certInfo = null;
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
+  const {addPlace} = useCart();
 
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
-        setStoreInfo(res.data?.info);
-        setReciewInfo(res.data?.reviewSummary);
+        setPlaceInfo(res.data?.info);
+        setReviewInfo(res.data?.reviewSummary);
         setAccessibilityInfo(res.data?.toggle);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
@@ -111,24 +93,35 @@ const DetailPage = ({route}) => {
     fetchDetail();
   }, [placeId]);
 
+  const placeSummary = {
+    id: placeInfo?.id,
+    name: placeInfo?.displayName?.text,
+    simpleAddress: placeInfo?.formattedAddress,
+    category: placeInfo?.primaryTypeDisplayName?.text,
+  };
+
   const handleAddPress = () => {
-    Alert.alert('여행 루트 보기', '아직 개발중입니다.');
+    addPlace(placeSummary);
+    Alert.alert(
+      '장소 추가됨',
+      `${placeSummary.name}이(가) 루트에 추가되었습니다.`,
+    );
   };
 
   const handleCallPress = () => {
     if (
-      !storeInfo.nationalPhoneNumber ||
-      storeInfo.nationalPhoneNumber.length === 0
+      !placeInfo.nationalPhoneNumber ||
+      placeInfo.nationalPhoneNumber.length === 0
     ) {
       Alert.alert('전화번호 없음', '전화번호 정보가 없습니다.');
       return;
     }
 
     if (Platform.OS === 'android') {
-      Linking.openURL(`tel:${storeInfo.nationalPhoneNumber}`);
+      Linking.openURL(`tel:${placeInfo.nationalPhoneNumber}`);
     } else {
       Alert.alert('아이폰은 지원하지 않습니다.');
-      Linking.openURL(`tel://${storeInfo.nationalPhoneNumber}`);
+      Linking.openURL(`tel://${placeInfo.nationalPhoneNumber}`);
     }
   };
 
@@ -143,7 +136,7 @@ const DetailPage = ({route}) => {
       <View style={{flex: 1}}>
         <ScrollView contentContainerStyle={{paddingBottom: 120}}>
           <View style={styles.container}>
-            {storeInfo?.certification && (
+            {placeInfo?.certification && (
               <View style={styles.certBanner}>
                 <Text style={{color: theme.colors.text}}>
                   {certInfo?.label}
@@ -153,10 +146,12 @@ const DetailPage = ({route}) => {
 
             <Image
               style={styles.img}
-              source={{uri: storeInfo?.image}}
+              source={{uri: placeInfo?.image}}
               resizeMode="cover"
             />
-            <StoreOverview storeInfo={storeInfo} />
+
+            {/* placeSummary prop 추가 */}
+            <StoreOverview placeInfo={placeInfo} placeSummary={placeSummary} />
 
             <View style={{height: '100%'}}>
               <DetailTabView
@@ -212,7 +207,7 @@ const getStyles = theme =>
     },
     storeName: {
       color: theme.colors.secondary,
-      fontWeight: 800,
+      fontWeight: '800',
       fontSize: 18,
       maxWidth: '80%',
     },

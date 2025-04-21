@@ -1,4 +1,3 @@
-// src/pages/RoutePlanPage.jsx
 import React, {useState} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {useTheme} from '../contexts/themeContext';
@@ -29,8 +28,7 @@ const RoutePlanPage = () => {
   );
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.primary}]}>
       <Text style={[styles.title, {color: theme.colors.text}]}>
         선택한 장소 목록
       </Text>
@@ -64,7 +62,7 @@ const RoutePlanPage = () => {
       <RouteResultModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        result={routeResult}
+        routeData={routeResult}
       />
     </View>
   );
