@@ -48,7 +48,7 @@ const InfoTab = ({data}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
-  const currentData = Object.entries(data[selectedTab] || {}).filter(
+  const currentData = Object.entries(data?.[selectedTab] || {}).filter(
     ([_, value]) => value !== '' && value !== null,
   );
 
@@ -84,8 +84,8 @@ const InfoTab = ({data}) => {
       </View>
 
       <View style={styles.infoBox}>
-        {currentData.length > 0 ? (
-          currentData.map(renderItem)
+        {currentData?.length > 0 ? (
+          currentData?.map(renderItem)
         ) : (
           <Text style={styles.noInfo}>정보가 없습니다.</Text>
         )}

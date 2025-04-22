@@ -20,12 +20,14 @@ const themes = {
   yellowBlack: {
     mode: 'highContrast',
     colors: {
-      background: '#000000',
-      text: '#FFD700',
-      primary: '#FFD700',
-      accent: '#000000',
-      border: '#FFD700',
-      placeholder: '#FFD700',
+      background: '#FFF7E7',
+      primary: '#0F4F31',
+      textPrimary: '#222222',
+      textOnPrimary: '#ffffff',
+      secondary: '#E54A29',
+      accent: '#FFD5A2',
+      disabled: '#B0B0B0',
+      placeholder: '#F7D4CC',
     },
   },
   redCyan: {
