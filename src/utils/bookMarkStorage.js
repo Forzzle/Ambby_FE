@@ -27,8 +27,8 @@ export const addBookmark = async place => {
   }
 };
 
-export const removeBookmark = async place => {
+export const removeBookmark = async id => {
   const bookmarks = await getBookmarks();
-  const updated = bookmarks.filter(item => item.id !== place.id);
+  const updated = bookmarks.filter(item => item.id !== id);
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
 };

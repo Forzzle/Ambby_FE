@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {useTheme} from '../contexts/themeContext';
 import {useCart} from '../contexts/CartContext';
 import ListCard from '../components/ListCard';
 import RouteRequestButton from '../components/RoutePlan/RouteRequestButton';
-import RouteResultModal from '../components/RouteResultModal';
+import RouteResultModal from '../components/RoutePlan/RouteResultModal';
 
 const RoutePlanPage = () => {
   const {theme} = useTheme();

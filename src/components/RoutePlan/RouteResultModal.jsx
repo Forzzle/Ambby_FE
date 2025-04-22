@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {useTheme} from '../contexts/themeContext';
+import {useTheme} from '../../contexts/themeContext';
 
 const RouteResultModal = ({visible, onClose, routeData}) => {
   const {theme} = useTheme();

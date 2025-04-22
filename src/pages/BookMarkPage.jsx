@@ -4,7 +4,7 @@ import {getBookmarks} from '../utils/bookMarkStorage';
 import {useIsFocused} from '@react-navigation/native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
-
+import {removeBookmark} from '../utils/bookMarkStorage';
 const ITEMS_PER_PAGE = 5;
 
 const BookMarkPage = () => {
@@ -52,13 +52,22 @@ const BookMarkPage = () => {
       </TouchableOpacity>
     );
   };
-
+  const handleDelete = async id => {
+    await removeBookmark(id);
+    setVisibleData(prev => prev.filter(item => item.id !== id));
+  };
   return (
     <View style={styles.container}>
       <FlatList
         data={visibleData}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <ListCard item={item} />}
+        renderItem={({item}) => (
+          <ListCard
+            item={item}
+            showDelete
+            onDelete={() => handleDelete(item.id)}
+          />
+        )}
         contentContainerStyle={{paddingBottom: 20}}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
