@@ -1,4 +1,3 @@
-// src/components/SoundButton.jsx
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Sound from 'react-native-sound';
@@ -26,6 +25,7 @@ let stopAllCallbacks = [];
 
 const SoundButton = ({categories}) => {
   const {theme} = useTheme();
+  const styles = getStyles(theme);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const stopCurrentSounds = () => {
@@ -41,14 +41,16 @@ const SoundButton = ({categories}) => {
     if (isPlaying) {
       stopCurrentSounds();
     } else {
-      stopCurrentSounds(); // 기존 재생 중단
+      stopCurrentSounds();
       const selectedCategories = Array.isArray(categories)
         ? categories
         : [categories];
 
       selectedCategories.forEach(category => {
         const list = soundMap[category];
-        if (!list) return;
+        if (!list) {
+          return;
+        }
 
         const file = list[Math.floor(Math.random() * list.length)];
 
@@ -59,10 +61,14 @@ const SoundButton = ({categories}) => {
           }
           currentSounds.push(sound);
           sound.play(success => {
-            if (!success) console.log('재생 실패');
+            if (!success) {
+              console.log('재생 실패');
+            }
             sound.release();
             currentSounds = currentSounds.filter(s => s !== sound);
-            if (currentSounds.length === 0) setIsPlaying(false);
+            if (currentSounds.length === 0) {
+              setIsPlaying(false);
+            }
           });
         });
       });
@@ -72,6 +78,16 @@ const SoundButton = ({categories}) => {
   };
 
   useEffect(() => {
+    const selectedCategories = Array.isArray(categories)
+      ? categories
+      : [categories];
+
+    const hasValidCategory = selectedCategories.some(cat => soundMap[cat]);
+
+    if (hasValidCategory) {
+      handlePress(); // 🔊 자동 재생!
+    }
+
     return () => {
       stopCurrentSounds();
     };
@@ -83,42 +99,30 @@ const SoundButton = ({categories}) => {
 
   const availableCategories = selectedCategories.filter(cat => soundMap[cat]);
 
-  if (availableCategories.length === 0) return null;
-
-  const label = availableCategories.join('+');
+  if (availableCategories.length === 0) {
+    return null;
+  }
 
   return (
-    <TouchableOpacity
-      style={[
-        styles.btn,
-        {
-          backgroundColor: theme.colors.primary,
-        },
-      ]}
-      onPress={handlePress}>
-      <Text
-        style={[
-          styles.text,
-          {
-            color: theme.colors.accent,
-          },
-        ]}>
-        {isPlaying ? '정지' : `재생: ${label}`}
+    <TouchableOpacity style={styles.btn} onPress={handlePress}>
+      <Text style={styles.text}>
+        {isPlaying ? '소리 정지' : '소리로 장소 알기'}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  btn: {
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  text: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});
-
 export default SoundButton;
+
+const getStyles = theme =>
+  StyleSheet.create({
+    btn: {
+      padding: 16,
+      backgroundColor: theme.colors.secondary,
+    },
+    text: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      color: theme.colors.textPrimary,
+    },
+  });
