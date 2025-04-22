@@ -8,46 +8,27 @@ import RouteResultModal from '../components/RouteResultModal';
 
 const RoutePlanPage = () => {
   const {theme} = useTheme();
+  const styles = getStyles(theme);
   const {places, removePlace} = useCart();
   const [modalVisible, setModalVisible] = useState(false);
   const [routeResult, setRouteResult] = useState(null);
 
-  const handleDelete = place => {
-    removePlace(place.id);
-  };
-
-  const renderItem = ({item}) => (
-    <View style={styles.cardContainer}>
-      <ListCard item={item} />
-      <TouchableOpacity
-        onPress={() => handleDelete(item)}
-        style={[styles.removeBtn, {backgroundColor: theme.colors.primary}]}>
-        <Text style={{color: theme.colors.accent}}>삭제</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
-    <View style={[styles.container, {backgroundColor: theme.colors.primary}]}>
-      <Text style={[styles.title, {color: theme.colors.text}]}>
-        선택한 장소 목록
-      </Text>
-
+    <View style={styles.container}>
       {places.length === 0 ? (
-        <Text
-          style={{
-            color: theme.colors.text,
-            textAlign: 'center',
-            marginTop: 20,
-          }}>
-          아직 선택한 장소가 없습니다.
-        </Text>
+        <Text style={styles.emptyText}>아직 선택한 장소가 없습니다.</Text>
       ) : (
         <FlatList
           data={places}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={{paddingBottom: 40}}
+          renderItem={({item}) => (
+            <ListCard
+              item={item}
+              showDelete
+              onDelete={() => removePlace(item.id)}
+            />
+          )}
+          contentContainerStyle={styles.listContainer}
         />
       )}
 
@@ -70,25 +51,26 @@ const RoutePlanPage = () => {
 
 export default RoutePlanPage;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  cardContainer: {
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
-  removeBtn: {
-    padding: 10,
-    alignItems: 'center',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+
+    emptyText: {
+      color: theme.colors.text,
+      textAlign: 'center',
+      marginTop: 20,
+    },
+    listContainer: {
+      paddingBottom: 40,
+    },
+    cardContainer: {
+      marginBottom: 16,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 8,
+      overflow: 'hidden',
+    },
+  });

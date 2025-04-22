@@ -89,12 +89,8 @@ const SearchResultPage = ({route}) => {
           onSubmitEditing={handleSearch}
           returnKeyType="search"
           style={styles.input}
-          multiline
-          placeholder={
-            '가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!\n상세할수록 좋습니다'
-          }
-          textAlign="center"
-          blurOnSubmit={true}
+          multiline={true}
+          placeholder={'가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!'}
           placeholderTextColor={theme.colors.placeholder}
         />
       </View>
@@ -110,10 +106,14 @@ const SearchResultPage = ({route}) => {
         }
         ListFooterComponent={
           loadingMore ? (
-            <ActivityIndicator size="small" color={theme.colors.primary} />
+            <ActivityIndicator
+              size="small"
+              color={theme.colors.primary}
+              style={{margin: 20}}
+            />
           ) : data.nextPageToken ? (
             <TouchableOpacity style={styles.button} onPress={loadMore}>
-              <Text style={styles.buttonText}>더보기</Text>
+              <Text style={styles.buttonText}>+ 더보기</Text>
             </TouchableOpacity>
           ) : null
         }
@@ -128,10 +128,10 @@ const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.background,
     },
     inputContainer: {
-      backgroundColor: theme.colors.secondary,
+      backgroundColor: theme.colors.primary,
       justifyContent: 'center',
       alignItems: 'center',
       padding: 30,
@@ -139,7 +139,7 @@ const getStyles = theme =>
       zIndex: 10,
     },
     searchIcon: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.secondary,
       width: 50,
       height: 50,
       borderRadius: 25,
@@ -147,13 +147,14 @@ const getStyles = theme =>
       justifyContent: 'center',
     },
     input: {
-      padding: 20,
+      margin: 20,
       fontSize: 16,
       textAlign: 'center',
-      color: theme.colors.primary,
+      color: theme.colors.textOnPrimary,
       fontWeight: 800,
       lineHeight: 28,
-      zIndex: 10,
+      minHeight: 64,
+      textAlignVertical: 'center',
     },
     empty: {
       marginTop: 40,
@@ -161,14 +162,13 @@ const getStyles = theme =>
       textAlign: 'center',
     },
     button: {
-      borderWidth: 1, //TODO: 오류해결 제대로 변경
       borderColor: 'transparent',
       paddingVertical: 20,
       alignItems: 'center',
-      marginTop: 8,
-      backgroundColor: theme.colors.secondary,
+      backgroundColor: theme.colors.accent,
     },
     buttonText: {
+      fontSize: 18,
       fontWeight: 'bold',
       color: theme.colors.primary,
     },

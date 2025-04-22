@@ -28,21 +28,13 @@ const getStyles = theme =>
       flex: 1,
       paddingHorizontal: 20,
       paddingTop: 10,
-      gap: 16,
       backgroundColor: theme.colors.background,
     },
     markdown: {
       body: {
-        color: theme.colors.primary,
-      },
-      paragraph: {
-        color: theme.colors.primary,
-      },
-      heading2: {
-        color: theme.colors.primary,
-      },
-      heading3: {
-        color: theme.colors.primary,
+        color: theme.colors.textPrimary,
+        fontSize: 16,
+        lineHeight: 22,
       },
     },
   });

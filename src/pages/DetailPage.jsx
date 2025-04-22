@@ -16,6 +16,7 @@ import RatingStars from '../components/RatingStars';
 import DetailTabView from '../components/detailTabView/DetailTabView';
 import {getDetail} from '../apis/placeApi';
 import BookMarkBtn from '../components/BookMarkBtn';
+import SoundButton from '../components/SoundButton';
 
 const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
@@ -70,6 +71,7 @@ const DetailPage = ({route}) => {
   const [placeInfo, setPlaceInfo] = useState([]);
   const [reviewInfo, setReviewInfo] = useState([]);
   const [accessibilityInfo, setAccessibilityInfo] = useState([]);
+  const [soundList, setSoundList] = useState([]);
   const certInfo = null;
 
   const {theme} = useTheme();
@@ -83,6 +85,7 @@ const DetailPage = ({route}) => {
         setPlaceInfo(res.data?.info);
         setReviewInfo(res.data?.reviewSummary);
         setAccessibilityInfo(res.data?.toggle);
+        setSoundList(res.data?.soundList);
       } catch (error) {
         console.error('상세 정보 가져오기 오류:', error);
       } finally {
@@ -138,22 +141,25 @@ const DetailPage = ({route}) => {
           <View style={styles.container}>
             {placeInfo?.certification && (
               <View style={styles.certBanner}>
-                <Text style={{color: theme.colors.text}}>
+                <Text style={{color: theme.colors.textOnPrimary}}>
                   {certInfo?.label}
                 </Text>
               </View>
             )}
-
+            <SoundButton categories={soundList} />
             <Image
               style={styles.img}
               source={{uri: placeInfo?.image}}
               resizeMode="cover"
             />
 
-            {/* placeSummary prop 추가 */}
             <StoreOverview placeInfo={placeInfo} placeSummary={placeSummary} />
 
-            <View style={{height: '100%'}}>
+            <View
+              style={{
+                height: '100%',
+                backgroundColor: theme.colors.background,
+              }}>
               <DetailTabView
                 review={reviewInfo}
                 accessibility={accessibilityInfo}
@@ -181,18 +187,16 @@ export default DetailPage;
 const getStyles = theme =>
   StyleSheet.create({
     container: {
-      gap: 10,
       flex: 1,
       backgroundColor: theme.colors.primary,
+      paddingBottom: 100,
     },
     section: {
       padding: 20,
       gap: 4,
-      borderWidth: 1,
-      borderTopColor: theme.colors.secondary,
-      borderBottomColor: theme.colors.secondary,
     },
     certBanner: {
+      marginBottom: 10,
       padding: 20,
       alignItems: 'center',
     },
@@ -202,8 +206,8 @@ const getStyles = theme =>
     },
     headerRow: {
       flexDirection: 'row',
-      gap: 6,
-      alignItems: 'flex-start',
+      gap: 10,
+      alignItems: 'flex-end',
     },
     storeName: {
       color: theme.colors.secondary,
@@ -212,31 +216,31 @@ const getStyles = theme =>
       maxWidth: '80%',
     },
     categoryText: {
-      color: theme.colors.primary,
+      color: theme.colors.textOnPrimary,
       marginRight: 'auto',
-      alignSelf: 'flex-end',
     },
     openStatusRow: {
       flexDirection: 'row',
     },
     text: {
-      color: theme.colors.text,
+      color: theme.colors.textOnPrimary,
     },
     ratingRow: {
       flexDirection: 'row',
       alignItems: 'center',
+      gap: 8,
     },
     bottomBtnContainer: {
       flexDirection: 'row',
     },
     callBtn: {
-      backgroundColor: theme.colors.secondary,
+      backgroundColor: theme.colors.primary,
       paddingVertical: 20,
       alignItems: 'center',
       flex: 1,
     },
     addBtn: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.secondary,
       paddingVertical: 20,
       alignItems: 'center',
       aspectRatio: 1.6,
@@ -244,11 +248,11 @@ const getStyles = theme =>
     callBtnText: {
       fontWeight: 'bold',
       fontSize: 16,
-      color: theme.colors.primary,
+      color: theme.colors.textOnPrimary,
     },
     addBtnText: {
       fontWeight: 'bold',
       fontSize: 16,
-      color: 'white',
+      color: theme.colors.primary,
     },
   });

@@ -60,10 +60,10 @@ export default DetailTabView;
 const getStyles = theme =>
   StyleSheet.create({
     container: {
-      paddingBottom: 250,
+      flex: 1,
+      marginBottom: 150,
       backgroundColor: theme.colors.background,
       borderTopWidth: 1,
       borderTopColor: theme.colors.secondary,
-      borderBottomColor: theme.colors.secondary,
     },
   });

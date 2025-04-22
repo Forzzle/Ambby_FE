@@ -11,7 +11,8 @@ import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SoundPage from './pages/SoundPage';
-import VisionSettingScreen from './pages/VisionSettingPage';
+import VisionSettingPage from './pages/VisionSettingPage';
+import ThemeSettingPage from './pages/ThemeSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
 import SettingPage from './pages/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
@@ -23,7 +24,7 @@ const MainTab = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: '#fff',
-          height: 60, // 원하는 높이 설정
+          height: 60,
         },
         tabBarLabelStyle: {
           fontSize: 14,
@@ -38,10 +39,6 @@ const MainTab = () => {
         component={SearchStack}
         options={{
           tabBarLabel: '검색',
-          tabBarOnPress: () => {
-            console.log('Search Tab clicked');
-            // 탭 클릭 시 발생하는 이벤트 로깅
-          },
         }}
       />
       <Tab.Screen
@@ -49,10 +46,6 @@ const MainTab = () => {
         component={BookMarkStack}
         options={{
           tabBarLabel: '북마크',
-          tabBarOnPress: () => {
-            console.log('Search Tab clicked');
-            // 탭 클릭 시 발생하는 이벤트 로깅
-          },
         }}
       />
       <Tab.Screen
@@ -69,12 +62,7 @@ const MainTab = () => {
   );
 };
 // 검색 탭
-
 const SearchStack = () => {
-  useEffect(() => {
-    console.log('SearchStack mounted or changed');
-  }, []);
-
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Search" component={SearchPage} />
@@ -93,8 +81,9 @@ const BookMarkStack = () => (
 // 설정 탭
 const SettingStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
-    <Stack.Screen name="VisionSetting" component={VisionSettingScreen} />
     <Stack.Screen name="Setting" component={SettingPage} />
+    <Stack.Screen name="VisionSetting" component={VisionSettingPage} />
+    <Stack.Screen name="ThemeSetting" component={ThemeSettingPage} />
     <Stack.Screen name="Sound" component={SoundPage} />
   </Stack.Navigator>
 );
@@ -108,18 +97,15 @@ const RoutePlanStack = () => (
 );
 
 const Router = () => {
-  // const {visionMode} = useVision();
+  const {visionMode} = useVision();
 
-  // if (visionMode === 'normal') {
-  //   return (
-  //     <RootStack.Navigator screenOptions={{headerShown: false}}>
-  //       <RootStack.Screen
-  //         name="VisionSetting"
-  //         component={VisionSettingScreen}
-  //       />
-  //     </RootStack.Navigator>
-  //   );
-  // }
+  if (visionMode === 'normal') {
+    return (
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="VisionSetting" component={VisionSettingPage} />
+      </Stack.Navigator>
+    );
+  }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>

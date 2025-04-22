@@ -18,7 +18,7 @@ import icons from '../constants/icons';
 import Loading from '../components/Loading';
 
 const screenWidth = Dimensions.get('window').width;
-const circleSize = screenWidth * 0.7;
+const circleSize = screenWidth * 0.75;
 
 const SearchPage = () => {
   const navigation = useNavigation();
@@ -88,14 +88,14 @@ const getStyles = theme =>
       alignItems: 'center',
       justifyContent: 'center',
       padding: 24,
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.background,
     },
     scrollContainer: {
       flexGrow: 1,
       justifyContent: 'center',
     },
     title: {
-      color: theme.colors.text,
+      color: theme.colors.primary,
       fontSize: 20,
       fontWeight: 800,
       alignSelf: 'flex-start',
@@ -103,7 +103,7 @@ const getStyles = theme =>
       marginBottom: 10,
     },
     subTitle: {
-      color: theme.colors.text,
+      color: theme.colors.primary,
       fontSize: 16,
       alignSelf: 'flex-start',
       marginBottom: 50,
@@ -112,13 +112,13 @@ const getStyles = theme =>
       width: circleSize,
       height: circleSize,
       borderRadius: circleSize / 2,
-      backgroundColor: theme.colors.secondary,
-      paddingTop: 40,
+      backgroundColor: theme.colors.primary,
+      paddingTop: 50,
       alignItems: 'center',
       marginBottom: 40,
     },
     searchIcon: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.secondary,
       width: 50,
       height: 50,
       borderRadius: 25,
@@ -131,7 +131,7 @@ const getStyles = theme =>
       paddingTop: 20,
       fontSize: 16,
       textAlign: 'center',
-      color: theme.colors.primary,
+      color: theme.colors.textOnPrimary,
       fontWeight: 800,
       lineHeight: 28,
       maxHeight: circleSize - 120,
@@ -145,7 +145,7 @@ const getStyles = theme =>
     },
     buttonText: {
       fontSize: 16,
-      color: theme.colors.accent,
+      color: theme.colors.text,
     },
     loadingText: {
       marginTop: 10,

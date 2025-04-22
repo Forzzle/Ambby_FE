@@ -67,7 +67,6 @@ const InfoTab = ({data}) => {
 
   return (
     <View style={styles.container}>
-      {/* 탭 버튼 */}
       <View style={styles.tabs}>
         {tabs.map(tab => {
           const isActive = selectedTab === tab.key;
@@ -84,7 +83,6 @@ const InfoTab = ({data}) => {
         })}
       </View>
 
-      {/* 정보 박스 */}
       <View style={styles.infoBox}>
         {currentData.length > 0 ? (
           currentData.map(renderItem)
@@ -101,8 +99,8 @@ export default InfoTab;
 const getStyles = theme =>
   StyleSheet.create({
     container: {
-      padding: 20,
       flex: 1,
+      padding: 20,
     },
     tabs: {
       flexDirection: 'row',
@@ -126,7 +124,7 @@ const getStyles = theme =>
       color: theme.colors.primary,
     },
     activeText: {
-      color: 'white',
+      color: theme.colors.textOnPrimary,
       fontWeight: 'bold',
     },
     infoBox: {
@@ -140,12 +138,12 @@ const getStyles = theme =>
     label: {
       fontWeight: 'bold',
       fontSize: 16,
-      color: theme.colors.primary,
+      color: theme.colors.textPrimary,
     },
     value: {
       marginTop: 4,
       fontSize: 15,
-      color: theme.colors.primary,
+      color: theme.colors.textPrimary,
     },
     noInfo: {
       marginTop: 20,

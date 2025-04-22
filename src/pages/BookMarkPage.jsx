@@ -9,10 +9,11 @@ const ITEMS_PER_PAGE = 5;
 
 const BookMarkPage = () => {
   const [places, setPlaces] = useState([]);
-  const isFocused = useIsFocused();
   const [visibleData, setVisibleData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isFocused = useIsFocused();
   const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   const loadMore = () => {
     const nextData = places.slice(currentIndex, currentIndex + ITEMS_PER_PAGE);
@@ -25,7 +26,7 @@ const BookMarkPage = () => {
       const loadBookmarkedPlaces = async () => {
         const place = await getBookmarks();
         setPlaces(place);
-        setVisibleData([]); // 기존 데이터 초기화
+        setVisibleData([]);
         setCurrentIndex(0);
       };
       loadBookmarkedPlaces();
@@ -46,19 +47,14 @@ const BookMarkPage = () => {
     }
 
     return (
-      <TouchableOpacity
-        style={[styles.button, {backgroundColor: theme.colors.primary}]}
-        onPress={loadMore}>
-        <Text style={[styles.buttonText, {color: theme.colors.accent}]}>
-          더보기
-        </Text>
+      <TouchableOpacity style={styles.button} onPress={loadMore}>
+        <Text style={styles.buttonText}>+ 더보기</Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
+    <View style={styles.container}>
       <FlatList
         data={visibleData}
         keyExtractor={item => item.id}
@@ -66,9 +62,7 @@ const BookMarkPage = () => {
         contentContainerStyle={{paddingBottom: 20}}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
-          <Text style={[styles.empty, {color: theme.colors.text}]}>
-            북마크된 장소가 없습니다.
-          </Text>
+          <Text style={styles.empty}>북마크된 장소가 없습니다.</Text>
         }
       />
     </View>
@@ -77,23 +71,26 @@ const BookMarkPage = () => {
 
 export default BookMarkPage;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  empty: {
-    marginTop: 40,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  button: {
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    fontWeight: 'bold',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    empty: {
+      marginTop: 40,
+      fontSize: 16,
+      textAlign: 'center',
+      color: theme.colors.text,
+    },
+    button: {
+      paddingVertical: 20,
+      alignItems: 'center',
+      backgroundColor: theme.colors.accent,
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: theme.colors.primary,
+    },
+  });

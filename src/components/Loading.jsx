@@ -7,9 +7,11 @@ const Loading = () => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
   return (
-    <View style={styles.loadingContainer}>
+    <View style={styles.wrapper}>
       <Image source={icons.loading} />
-      <Text style={styles.loadingText}>AI 분석중</Text>
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>AI 분석중</Text>
+      </View>
     </View>
   );
 };
@@ -18,12 +20,17 @@ export default Loading;
 
 const getStyles = theme =>
   StyleSheet.create({
-    loadingContainer: {
+    wrapper: {
       alignItems: 'center',
-      gap: 10,
+      gap: 20,
     },
     loadingText: {
-      color: theme.colors.text,
+      color: theme.colors.primary,
       fontWeight: 600,
+    },
+    loadingContainer: {
+      padding: 12,
+      backgroundColor: theme.colors.accent,
+      borderRadius: 100,
     },
   });

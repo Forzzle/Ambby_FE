@@ -85,7 +85,7 @@ const SoundButton = ({categories}) => {
     const hasValidCategory = selectedCategories.some(cat => soundMap[cat]);
 
     if (hasValidCategory) {
-      handlePress(); // 🔊 자동 재생!
+      handlePress(); // 자동 재생
     }
 
     return () => {
@@ -117,7 +117,7 @@ export default SoundButton;
 const getStyles = theme =>
   StyleSheet.create({
     btn: {
-      padding: 16,
+      padding: 10,
       backgroundColor: theme.colors.secondary,
     },
     text: {
