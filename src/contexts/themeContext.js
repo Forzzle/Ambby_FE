@@ -1,4 +1,5 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ThemeContext = createContext();
 
@@ -6,13 +7,14 @@ const themes = {
   default: {
     mode: 'light',
     colors: {
-      background: '#F2EEE0',
-      primary: '#01539D',
-      text: '#ffffff',
-      secondary: '#FFDD6E',
-      accent: '#4077a7',
-      border: '#aaaaaa',
-      placeholder: '#888888',
+      background: '#F5F9FF',
+      primary: '#306DEE',
+      textPrimary: '#222222',
+      textOnPrimary: '#ffffff',
+      secondary: '#FFFA6E',
+      accent: '#C9DBFF',
+      disabled: '#B0B0B0',
+      placeholder: '#D7E1F5',
     },
   },
   yellowBlack: {
@@ -41,13 +43,26 @@ const themes = {
 
 export const ThemeProvider = ({children}) => {
   const [themeKey, setThemeKey] = useState('default');
-  const theme = themes[themeKey];
 
-  const setThemeByKey = key => {
+  useEffect(() => {
+    const loadTheme = async () => {
+      const storedTheme = await AsyncStorage.getItem('themeKey');
+      if (storedTheme) {
+        setThemeKey(storedTheme);
+      }
+    };
+
+    loadTheme();
+  }, []);
+
+  const setThemeByKey = async key => {
     if (themes[key]) {
       setThemeKey(key);
+      await AsyncStorage.setItem('themeKey', key); // Save the selected theme to AsyncStorage
     }
   };
+
+  const theme = themes[themeKey];
 
   return (
     <ThemeContext.Provider value={{theme, setThemeByKey, themeKey}}>

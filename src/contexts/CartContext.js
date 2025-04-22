@@ -1,25 +1,43 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CartContext = createContext();
 
 export const CartProvider = ({children}) => {
   const [places, setPlaces] = useState([]);
 
-  const addPlace = place => {
-    setPlaces(prev => {
-      if (prev.some(p => p.id === place.id)) {
-        return prev;
+  useEffect(() => {
+    const loadCart = async () => {
+      const storedPlaces = await AsyncStorage.getItem('places');
+      if (storedPlaces) {
+        setPlaces(JSON.parse(storedPlaces));
       }
-      return [...prev, place];
+    };
+
+    loadCart();
+  }, []);
+
+  const addPlace = async place => {
+    setPlaces(prev => {
+      const updatedPlaces = prev.some(p => p.id === place.id)
+        ? prev
+        : [...prev, place];
+      AsyncStorage.setItem('places', JSON.stringify(updatedPlaces)); // Save updated places
+      return updatedPlaces;
     });
   };
 
-  const removePlace = id => {
-    setPlaces(prev => prev.filter(p => p.id !== id));
+  const removePlace = async id => {
+    setPlaces(prev => {
+      const updatedPlaces = prev.filter(p => p.id !== id);
+      AsyncStorage.setItem('places', JSON.stringify(updatedPlaces)); // Save updated places
+      return updatedPlaces;
+    });
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
     setPlaces([]);
+    await AsyncStorage.removeItem('places'); // Clear cart in AsyncStorage
   };
 
   return (
