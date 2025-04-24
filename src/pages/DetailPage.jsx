@@ -19,11 +19,11 @@ import BookMarkBtn from '../components/BookMarkBtn';
 import SoundButton from '../components/SoundButton';
 import Header from '../components/Header';
 import FullScreenLoader from '../components/Loading/FullScreenLoader';
+import {useNavigation} from '@react-navigation/native';
 
 const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
-
   const [openHoursMore, setOpenHoursMore] = useState(false);
   const handleToggle = () => setOpenHoursMore(prev => !prev);
 
@@ -68,13 +68,13 @@ const StoreOverview = ({placeInfo, placeSummary}) => {
 };
 
 const DetailPage = ({route}) => {
+  const navigation = useNavigation();
   const {placeId} = route.params;
   const [loading, setLoading] = useState(true);
   const [placeInfo, setPlaceInfo] = useState([]);
   const [reviewInfo, setReviewInfo] = useState([]);
   const [accessibilityInfo, setAccessibilityInfo] = useState([]);
   const [soundList, setSoundList] = useState([]);
-  const certInfo = null;
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
@@ -84,12 +84,13 @@ const DetailPage = ({route}) => {
     const fetchDetail = async () => {
       try {
         const res = await getDetail(placeId);
-        setPlaceInfo(res.data?.info);
-        setReviewInfo(res.data?.reviewSummary);
-        setAccessibilityInfo(res.data?.toggle);
-        setSoundList(res.data?.soundList);
+        setPlaceInfo(res.data?.info || []);
+        setReviewInfo(res.data?.reviewSummary || []);
+        setAccessibilityInfo(res.data?.toggle || []);
+        setSoundList(res.data?.soundList || []);
       } catch (error) {
-        console.error('상세 정보 가져오기 오류:', error);
+        Alert.alert('오류가 발생했어요.');
+        navigation.goBack();
       } finally {
         setLoading(false);
       }
