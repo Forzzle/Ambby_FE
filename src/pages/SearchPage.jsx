@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {searchPlaces} from '../apis/placeApi';
 import {useTheme} from '../contexts/themeContext';
 import icons from '../constants/icons';
-import Loading from '../components/Loading';
+import MiniLoader from '../components/Loading/MiniLoader';
 
 const screenWidth = Dimensions.get('window').width;
 const circleSize = screenWidth * 0.75;
@@ -74,7 +74,7 @@ const SearchPage = () => {
             />
           </Pressable>
 
-          {loading && <Loading />}
+          {loading && <MiniLoader />}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

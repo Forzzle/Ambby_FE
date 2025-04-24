@@ -18,6 +18,7 @@ import {getDetail} from '../apis/placeApi';
 import BookMarkBtn from '../components/BookMarkBtn';
 import SoundButton from '../components/SoundButton';
 import Header from '../components/Header';
+import FullScreenLoader from '../components/Loading/FullScreenLoader';
 
 const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
@@ -130,11 +131,7 @@ const DetailPage = ({route}) => {
   };
 
   if (loading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>로딩..(디자인 추후 구현)</Text>
-      </View>
-    );
+    return <FullScreenLoader />;
   } else {
     return (
       <View style={{flex: 1}}>

@@ -136,7 +136,7 @@ const getStyles = theme =>
       backgroundColor: theme.colors.primary,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
+      paddingHorizontal: 20,
       marginBottom: 10,
       zIndex: 10,
     },
