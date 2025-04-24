@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
-
+import React from 'react';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 import {useVision} from './contexts/visionContext';
+import {useTheme} from './contexts/themeContext';
 
 import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
@@ -17,68 +16,81 @@ import BookMarkPage from './pages/BookMarkPage';
 import SettingPage from './pages/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
 
-const MainTab = () => {
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const TabBtn = ({onPress, accessibilityState, routeName}) => {
+  const selected = accessibilityState.selected;
+  const {theme} = useTheme();
+
+  const getLabel = () => {
+    switch (routeName) {
+      case 'SearchTab':
+        return '검색';
+      case 'BookMarkTab':
+        return '북마크';
+      case 'RoutePlanTab':
+        return '여행추가';
+      case 'SettingTab':
+        return '설정';
+      default:
+        return '';
+    }
+  };
+
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#fff',
-          height: 60,
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.tabButton,
+        {
+          backgroundColor: selected
+            ? theme.colors.secondary
+            : theme.colors.primary,
         },
-        tabBarLabelStyle: {
-          fontSize: 14,
-        },
-        tabBarIconStyle: {
-          height: 24,
-          width: 24,
-        },
-      }}>
-      <Tab.Screen
-        name="SearchTab"
-        component={SearchStack}
-        options={{
-          tabBarLabel: '검색',
-        }}
-      />
-      <Tab.Screen
-        name="BookMarkTab"
-        component={BookMarkStack}
-        options={{
-          tabBarLabel: '북마크',
-        }}
-      />
-      <Tab.Screen
-        name="RoutePlanTab"
-        component={RoutePlanStack}
-        options={{tabBarLabel: '장바구니'}}
-      />
-      <Tab.Screen
-        name="SettingTab"
-        component={SettingStack}
-        options={{tabBarLabel: '설정'}}
-      />
-    </Tab.Navigator>
-  );
-};
-// 검색 탭
-const SearchStack = () => {
-  return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Search" component={SearchPage} />
-      <Stack.Screen name="SearchResult" component={SearchResultPage} />
-    </Stack.Navigator>
+      ]}>
+      <Text
+        style={[
+          styles.tabText,
+          {
+            color: selected ? theme.colors.primary : theme.colors.textOnPrimary,
+          },
+        ]}>
+        {getLabel()}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
-// 북마크 탭
+const MainTab = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarButton: props => <TabBtn {...props} routeName={route.name} />,
+        tabBarStyle: styles.tabBar,
+        headerShown: false,
+      })}>
+      <Tab.Screen name="SearchTab" component={SearchStack} />
+      <Tab.Screen name="BookMarkTab" component={BookMarkStack} />
+      <Tab.Screen name="RoutePlanTab" component={RoutePlanStack} />
+      <Tab.Screen name="SettingTab" component={SettingStack} />
+    </Tab.Navigator>
+  );
+};
+
+const SearchStack = () => (
+  <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Screen name="Search" component={SearchPage} />
+    <Stack.Screen name="SearchResult" component={SearchResultPage} />
+  </Stack.Navigator>
+);
+
 const BookMarkStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="BookMark" component={BookMarkPage} />
   </Stack.Navigator>
 );
 
-// 설정 탭
 const SettingStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="Setting" component={SettingPage} />
@@ -88,7 +100,6 @@ const SettingStack = () => (
   </Stack.Navigator>
 );
 
-// 경로계획 탭
 const RoutePlanStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="RoutePlan" component={RoutePlanPage} />
@@ -115,3 +126,20 @@ const Router = () => {
 };
 
 export default Router;
+
+const styles = StyleSheet.create({
+  tabButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  tabBar: {
+    flexDirection: 'row',
+    height: 60,
+  },
+});
