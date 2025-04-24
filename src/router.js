@@ -92,7 +92,6 @@ const SettingStack = () => (
 const RoutePlanStack = () => (
   <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="RoutePlan" component={RoutePlanPage} />
-    <Stack.Screen name="Detail" component={DetailPage} />
   </Stack.Navigator>
 );
 

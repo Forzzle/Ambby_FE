@@ -17,6 +17,7 @@ import DetailTabView from '../components/detailTabView/DetailTabView';
 import {getDetail} from '../apis/placeApi';
 import BookMarkBtn from '../components/BookMarkBtn';
 import SoundButton from '../components/SoundButton';
+import Header from '../components/Header';
 
 const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
@@ -137,16 +138,15 @@ const DetailPage = ({route}) => {
   } else {
     return (
       <View style={{flex: 1}}>
+        <Header
+          title={
+            accessibilityInfo ? '관광공사 인증 시각장애 이용 가능 장소' : null
+          }
+          titleSize={14}
+        />
+        <SoundButton categories={soundList} />
         <ScrollView contentContainerStyle={{paddingBottom: 120}}>
           <View style={styles.container}>
-            {placeInfo?.certification && (
-              <View style={styles.certBanner}>
-                <Text style={{color: theme.colors.textOnPrimary}}>
-                  {certInfo?.label}
-                </Text>
-              </View>
-            )}
-            <SoundButton categories={soundList} />
             <Image
               style={styles.img}
               source={{uri: placeInfo?.image}}

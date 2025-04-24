@@ -14,6 +14,7 @@ import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
 import {searchPlaces} from '../apis/placeApi';
 import icons from '../constants/icons';
+import Header from '../components/Header';
 
 const SearchResultPage = ({route}) => {
   const {data: initialData, query: initialQuery} = route.params;
@@ -79,6 +80,7 @@ const SearchResultPage = ({route}) => {
 
   return (
     <View style={styles.container}>
+      <Header />
       <View style={styles.inputContainer}>
         <Pressable style={styles.searchIcon} onPress={handleSearch}>
           <Image source={icons.search} />
@@ -134,7 +136,7 @@ const getStyles = theme =>
       backgroundColor: theme.colors.primary,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 30,
+      padding: 20,
       marginBottom: 10,
       zIndex: 10,
     },

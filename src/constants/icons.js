@@ -5,6 +5,7 @@ const icons = {
   themeSetting: require('../assets/icons/theme.png'),
   visionSetting: require('../assets/icons/vision.png'),
   help: require('../assets/icons/help.png'),
+  route: require('../assets/icons/route.png'),
 };
 
 export default icons;

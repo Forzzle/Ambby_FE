@@ -53,7 +53,7 @@ const SearchPage = () => {
           <Text style={styles.subTitle}>상세할수록 좋습니다.</Text>
 
           <Pressable style={styles.inputContainer}>
-            <TouchableOpacity style={styles.searchIcon} onPress={handleSearch}>
+            <TouchableOpacity style={styles.iconWrapper} onPress={handleSearch}>
               <Image source={icons.search} />
             </TouchableOpacity>
 
@@ -117,7 +117,7 @@ const getStyles = theme =>
       alignItems: 'center',
       marginBottom: 40,
     },
-    searchIcon: {
+    iconWrapper: {
       backgroundColor: theme.colors.secondary,
       width: 50,
       height: 50,

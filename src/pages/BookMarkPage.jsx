@@ -5,6 +5,8 @@ import {useIsFocused} from '@react-navigation/native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
 import {removeBookmark} from '../utils/bookMarkStorage';
+import Header from '../components/Header';
+import icons from '../constants/icons';
 const ITEMS_PER_PAGE = 5;
 
 const BookMarkPage = () => {
@@ -58,6 +60,7 @@ const BookMarkPage = () => {
   };
   return (
     <View style={styles.container}>
+      <Header height={140} icon={icons.bookmark} title={'북마크 페이지'} />
       <FlatList
         data={visibleData}
         keyExtractor={item => item.id}
