@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useTheme} from '../contexts/themeContext';
 import {useCart} from '../contexts/CartContext';
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Linking,
@@ -20,6 +21,7 @@ import SoundButton from '../components/SoundButton';
 import Header from '../components/Header';
 import FullScreenLoader from '../components/Loading/FullScreenLoader';
 import {useNavigation} from '@react-navigation/native';
+import {useVision} from '../contexts/visionContext';
 
 const StoreOverview = ({placeInfo, placeSummary}) => {
   const {theme} = useTheme();
@@ -73,8 +75,11 @@ const DetailPage = ({route}) => {
   const [loading, setLoading] = useState(true);
   const [placeInfo, setPlaceInfo] = useState([]);
   const [reviewInfo, setReviewInfo] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [accessibilityInfo, setAccessibilityInfo] = useState([]);
   const [soundList, setSoundList] = useState([]);
+  const [imageLoading, setImageLoading] = useState(true);
+  const {visionMode} = useVision();
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
@@ -88,6 +93,7 @@ const DetailPage = ({route}) => {
         setReviewInfo(res.data?.reviewSummary || []);
         setAccessibilityInfo(res.data?.toggle || []);
         setSoundList(res.data?.soundList || []);
+        setPhotos(res.data?.photos || []);
       } catch (error) {
         Alert.alert('오류가 발생했어요.');
         navigation.goBack();
@@ -145,11 +151,27 @@ const DetailPage = ({route}) => {
         <SoundButton categories={soundList} />
         <ScrollView contentContainerStyle={{paddingBottom: 120}}>
           <View style={styles.container}>
-            <Image
-              style={styles.img}
-              source={{uri: placeInfo?.image}}
-              resizeMode="cover"
-            />
+            {visionMode !== '전맹' && (
+              <View style={{position: 'relative', height: 200}}>
+                {imageLoading && (
+                  <View style={styles.imageLoader}>
+                    <ActivityIndicator
+                      size="large"
+                      color={theme.colors.textOnPrimary}
+                    />
+                  </View>
+                )}
+                <Image
+                  style={styles.img}
+                  source={{uri: photos[0]}}
+                  resizeMode="cover"
+                  onLoadEnd={() => setImageLoading(false)}
+                  onError={() => {
+                    setImageLoading(false);
+                  }}
+                />
+              </View>
+            )}
 
             <StoreOverview placeInfo={placeInfo} placeSummary={placeSummary} />
 
@@ -167,7 +189,11 @@ const DetailPage = ({route}) => {
         </ScrollView>
 
         <View style={styles.bottomBtnContainer}>
-          <TouchableOpacity style={styles.addBtn} onPress={handleAddPress}>
+          <TouchableOpacity
+            style={styles.addBtn}
+            onPress={handleAddPress}
+            accessibilityRole="button"
+            accessibilityLabel="이 장소를 여행 루트에 추가하기">
             <Text style={styles.addBtnText}>여행 추가</Text>
           </TouchableOpacity>
 
@@ -193,14 +219,13 @@ const getStyles = theme =>
       padding: 20,
       gap: 4,
     },
-    certBanner: {
-      marginBottom: 10,
-      padding: 20,
-      alignItems: 'center',
-    },
     img: {
       height: 200,
-      backgroundColor: 'grey',
+    },
+    imageLoader: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     headerRow: {
       flexDirection: 'row',
