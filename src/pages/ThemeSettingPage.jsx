@@ -1,112 +1,195 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Modal,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../contexts/themeContext';
-
-const themePresets = [
-  {
-    key: 'default',
-    colors: ['#fff', '#000'],
-    label: '기본 모드',
-  },
-  {
-    key: 'yellowBlack',
-    colors: ['#000', '#FFD700'],
-    label: '검정/노랑',
-  },
-  {
-    key: 'redCyan',
-    colors: ['#B21212', '#B7E2E9'],
-    label: '빨강/청록',
-  },
-];
+import Header from '../components/Header';
+import icons from '../constants/icons';
 
 const ThemeSettingPage = () => {
   const navigation = useNavigation();
-  const {theme, setThemeByKey, themeKey} = useTheme();
+  const {setThemeByKey, themeKey, themes, descriptions} = useTheme();
+  const {theme} = useTheme();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+  const currentTheme = themes[themeKey];
+  const styles = getStyles(currentTheme);
+
+  const openModal = key => {
+    setModalContent(descriptions[key]);
+    setModalVisible(true);
+  };
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <Text style={[styles.title, {color: theme.colors.text}]}>
-        🎨 테마 설정
-      </Text>
+    <View style={styles.container}>
+      <Header title={'색상 선택'} icon={'none'} height={140} />
+      <View style={styles.content}>
+        {Object.entries(themes).map(([key, theme]) => {
+          const isSelected = key === themeKey;
+          return (
+            <View key={key} style={styles.previewWrapper}>
+              <TouchableOpacity
+                style={[
+                  styles.previewButton,
+                  {backgroundColor: theme.colors.primary},
+                  isSelected && styles.selectedBorder,
+                ]}
+                onPress={() => setThemeByKey(key)}>
+                <View
+                  style={[
+                    styles.iconWrapper,
+                    {
+                      backgroundColor:
+                        theme.colors.secondary || theme.colors.accent,
+                    },
+                  ]}>
+                  <Image
+                    style={[styles.icon, {tintColor: theme.colors.primary}]}
+                    source={icons.visionSetting}
+                  />
+                </View>
+                <Text style={styles.previewLabel}>{theme.label}</Text>
 
-      {themePresets.map(preset => (
-        <TouchableOpacity
-          key={preset.key}
-          style={[
-            styles.previewButton,
-            {
-              borderColor:
-                themeKey === preset.key ? theme.colors.primary : '#ccc',
-            },
-          ]}
-          onPress={() => setThemeByKey(preset.key)}>
-          <View style={styles.previewColors}>
-            <View
-              style={[
-                styles.colorHalf,
-                {
-                  backgroundColor: preset.colors[0],
-                  borderTopLeftRadius: 6,
-                  borderBottomLeftRadius: 6,
-                },
-              ]}
-            />
-            <View
-              style={[
-                styles.colorHalf,
-                {
-                  backgroundColor: preset.colors[1],
-                  borderTopRightRadius: 6,
-                  borderBottomRightRadius: 6,
-                },
-              ]}
-            />
+                <TouchableOpacity
+                  style={styles.infoButton}
+                  onPress={() => openModal(key)}>
+                  <Text style={styles.infoText}>!</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+
+      <Modal
+        transparent
+        visible={modalVisible}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>누가 이 테마를 쓰면 좋나요?</Text>
+            <Text style={styles.modalText}>{modalContent}</Text>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.closeBtn}>
+              <Text style={styles.closeBtnText}>X</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={[styles.previewLabel, {color: theme.colors.text}]}>
-            {preset.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+        </View>
+      </Modal>
     </View>
   );
 };
 
 export default ThemeSettingPage;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  previewButton: {
-    borderWidth: 2,
-    borderRadius: 6,
-    padding: 12,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  previewColors: {
-    flexDirection: 'row',
-    width: 120,
-    height: 40,
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 8,
-  },
-  colorHalf: {
-    flex: 1,
-  },
-  previewLabel: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
+const getStyles = theme =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    previewWrapper: {
+      marginHorizontal: 30,
+      marginVertical: 10,
+    },
+    previewButton: {
+      borderRadius: 10,
+      padding: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+    },
+    selectedBorder: {
+      borderWidth: 2,
+      borderColor: '#ffffff',
+    },
+    previewLabel: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: '#ffffff',
+    },
+    iconWrapper: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 12,
+    },
+    icon: {
+      width: 32,
+      height: 32,
+      resizeMode: 'contain',
+    },
+    infoButton: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    infoText: {
+      color: '#333',
+      fontWeight: 'bold',
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContent: {
+      backgroundColor: theme.colors.primary,
+      padding: 20,
+      borderRadius: 10,
+      width: '80%',
+      alignItems: 'center',
+    },
+    modalTitle: {
+      fontWeight: 'bold',
+      color: theme.colors.textOnPrimary,
+      fontSize: 16,
+      marginTop: 20,
+      textAlign: 'center',
+    },
+    modalText: {
+      color: theme.colors.textOnPrimary,
+      fontSize: 16,
+      marginVertical: 20,
+      textAlign: 'center',
+    },
+    closeBtn: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      zIndex: 10,
+      width: 20,
+      height: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.secondary,
+      borderRadius: '50%',
+    },
+    closeBtnText: {
+      fontSize: 14,
+      color: theme.colors.primary,
+    },
+  });

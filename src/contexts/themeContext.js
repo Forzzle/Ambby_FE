@@ -5,7 +5,7 @@ const ThemeContext = createContext();
 
 const themes = {
   default: {
-    mode: 'light',
+    label: '파랑 ㅣ 노랑',
     colors: {
       background: '#F5F9FF',
       primary: '#306DEE',
@@ -17,8 +17,8 @@ const themes = {
       placeholder: '#D7E1F5',
     },
   },
-  yellowBlack: {
-    mode: 'highContrast',
+  greenOrange: {
+    label: '초록 ㅣ 주황',
     colors: {
       background: '#FFF7E7',
       primary: '#0F4F31',
@@ -30,14 +30,16 @@ const themes = {
       placeholder: '#F7D4CC',
     },
   },
-  redCyan: {
-    mode: 'highContrast',
+  whiteBlack: {
+    label: '흰색 ㅣ 검정',
     colors: {
-      background: '#B21212',
-      text: '#B7E2E9',
-      primary: '#B7E2E9',
-      accent: '#B21212',
-      border: '#B7E2E9',
+      background: '#ffffff',
+      primary: '#000000',
+      textPrimary: '#000000',
+      textOnPrimary: '#ffffff',
+      secondary: '#B21212',
+      accent: '#B7E2E9',
+      disabled: '#B0B0B0',
       placeholder: '#B7E2E9',
     },
   },
@@ -53,21 +55,30 @@ export const ThemeProvider = ({children}) => {
         setThemeKey(storedTheme);
       }
     };
-
     loadTheme();
   }, []);
 
   const setThemeByKey = async key => {
     if (themes[key]) {
       setThemeKey(key);
-      await AsyncStorage.setItem('themeKey', key); // Save the selected theme to AsyncStorage
+      await AsyncStorage.setItem('themeKey', key);
     }
   };
 
   const theme = themes[themeKey];
 
+  const descriptions = {
+    default:
+      '파랑 ㅣ 노랑 테마의 경우, 적록색약자, 황녹색약자들을 위한 테마입니다.',
+    greenOrange:
+      '주황 ㅣ 초록 테마의 경우, 적록색약자, 황녹색약자들을 위한 테마입니다.',
+    whiteBlack:
+      '검정 ㅣ 흰색 테마의 경우, 적록색약자, 황녹색약자들을 위한 테마입니다.',
+  };
+
   return (
-    <ThemeContext.Provider value={{theme, setThemeByKey, themeKey}}>
+    <ThemeContext.Provider
+      value={{theme, setThemeByKey, themeKey, themes, descriptions}}>
       {children}
     </ThemeContext.Provider>
   );

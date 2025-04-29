@@ -30,7 +30,9 @@ const Header = ({
       )}
 
       <View style={styles.centerContent}>
-        {icon ? (
+        {icon === 'none' ? (
+          <View style={styles.iconWrapper} />
+        ) : icon ? (
           <View style={styles.iconWrapper}>
             <Image style={styles.icon} source={icon} />
           </View>
