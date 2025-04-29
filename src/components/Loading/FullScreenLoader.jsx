@@ -3,9 +3,9 @@ import {View, StyleSheet, Animated, Text} from 'react-native';
 import {useTheme} from '../../contexts/themeContext';
 import icons from '../../constants/icons';
 
-const FullScreenLoader = () => {
+const FullScreenLoader = ({isBlur = false}) => {
   const {theme} = useTheme();
-  const styles = getStyles(theme);
+  const styles = getStyles(theme, isBlur);
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(0.6)).current;
@@ -13,7 +13,6 @@ const FullScreenLoader = () => {
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
-        //크기
         Animated.parallel([
           Animated.timing(scaleAnim, {
             toValue: 1.05,
@@ -26,7 +25,6 @@ const FullScreenLoader = () => {
             useNativeDriver: true,
           }),
         ]),
-        //투명도
         Animated.parallel([
           Animated.timing(scaleAnim, {
             toValue: 1,
@@ -45,6 +43,7 @@ const FullScreenLoader = () => {
 
   return (
     <View style={styles.container}>
+      {isBlur && <View style={styles.overlay} />}
       <Animated.Image
         style={[
           styles.icon,
@@ -55,23 +54,24 @@ const FullScreenLoader = () => {
         ]}
         source={icons.visionSetting}
       />
-      <Text style={styles.text}>
-        {'AI분석 요청중...\n페이지가 넘어가는 중입니다...'}
-      </Text>
+      <Text style={styles.text}>{'AI분석 요청중...'}</Text>
     </View>
   );
 };
 
-export default FullScreenLoader;
-
-const getStyles = theme =>
+const getStyles = (theme, isBlur) =>
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.background,
+      backgroundColor: isBlur ? 'transparent' : theme.colors.background,
       zIndex: 100,
+    },
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: theme.colors.background,
+      opacity: 0.9,
     },
     icon: {
       width: 60,
@@ -88,3 +88,5 @@ const getStyles = theme =>
       marginBottom: 20,
     },
   });
+
+export default FullScreenLoader;

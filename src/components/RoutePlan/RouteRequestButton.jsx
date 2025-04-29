@@ -4,18 +4,21 @@ import {fetchOptimizedRoute} from '../../apis/routePlan';
 import {useCart} from '../../contexts/CartContext';
 import {useTheme} from '../../contexts/themeContext';
 
-const RouteRequestButton = ({onSuccess, disabled}) => {
+const RouteRequestButton = ({onSuccess, disabled, setIsLoading}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
   const {places} = useCart();
 
   const handlePress = async () => {
     try {
+      setIsLoading(true); // 시작
       const placeList = places.map(place => `${place.address} ${place.name}`);
       const res = await fetchOptimizedRoute(placeList);
       onSuccess(res.data);
     } catch (error) {
       console.error('최적 경로 요청 실패:', error);
+    } finally {
+      setIsLoading(false); // 끝
     }
   };
 
