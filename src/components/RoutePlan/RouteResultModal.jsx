@@ -6,8 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useTheme} from '../../contexts/themeContext';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const RouteResultModal = ({visible, onClose, routeData}) => {
   const {theme} = useTheme();
@@ -16,6 +18,16 @@ const RouteResultModal = ({visible, onClose, routeData}) => {
   if (!routeData) {
     return null;
   }
+
+  const handleCopy = () => {
+    const {summary, humanTraffic} = routeData;
+    const routeList = humanTraffic
+      ?.map((place, idx) => `${idx + 1}. ${place}`)
+      .join('\n');
+    const fullText = `이 경로를 추천해요 😊\n\n${routeList}\n\n${summary}\n-Amby-`;
+    Clipboard.setString(fullText);
+    Alert.alert('추천 경로가 복사되었습니다! 붙여넣기해서 저장하세요');
+  };
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -51,12 +63,8 @@ const RouteResultModal = ({visible, onClose, routeData}) => {
 
             <Text style={styles.summary}>{routeData.summary}</Text>
 
-            <TouchableOpacity
-              style={styles.kakaoShareBtn}
-              onPress={() => {
-                //공유기능 연결
-              }}>
-              <Text style={styles.kakaoShareText}>카카오톡으로 공유하기</Text>
+            <TouchableOpacity style={styles.kakaoShareBtn} onPress={handleCopy}>
+              <Text style={styles.kakaoShareText}>내용 복사하기</Text>
             </TouchableOpacity>
           </View>
         </View>
