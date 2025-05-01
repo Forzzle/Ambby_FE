@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Sound from 'react-native-sound';
 import {useTheme} from '../contexts/themeContext';
+import {useAutoPlay} from '../contexts/AutoPlayContext';
+import {useNavigation} from '@react-navigation/native';
 
 Sound.setCategory('Playback');
 
@@ -25,6 +27,7 @@ let stopAllCallbacks = [];
 
 const SoundButton = ({categories}) => {
   const {theme} = useTheme();
+  const {autoPlayEnabled} = useAutoPlay();
   const styles = getStyles(theme);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -84,14 +87,14 @@ const SoundButton = ({categories}) => {
 
     const hasValidCategory = selectedCategories.some(cat => soundMap[cat]);
 
-    if (hasValidCategory) {
+    if (autoPlayEnabled && hasValidCategory) {
       handlePress(); // 자동 재생
     }
 
     return () => {
       stopCurrentSounds();
     };
-  }, []);
+  }, [autoPlayEnabled, categories]);
 
   const selectedCategories = Array.isArray(categories)
     ? categories

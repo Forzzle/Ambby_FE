@@ -15,6 +15,7 @@ import ThemeSettingPage from './pages/ThemeSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
 import SettingPage from './pages/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
+import {AutoPlayProvider} from './contexts/AutoPlayContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -118,10 +119,12 @@ const Router = () => {
   }
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="MainTab" component={MainTab} />
-      <Stack.Screen name="Detail" component={DetailPage} />
-    </Stack.Navigator>
+    <AutoPlayProvider>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="MainTab" component={MainTab} />
+        <Stack.Screen name="Detail" component={DetailPage} />
+      </Stack.Navigator>
+    </AutoPlayProvider>
   );
 };
 
