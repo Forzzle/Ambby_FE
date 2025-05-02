@@ -37,10 +37,10 @@ const themes = {
       primary: '#000000',
       textPrimary: '#000000',
       textOnPrimary: '#ffffff',
-      secondary: '#B21212',
-      accent: '#B7E2E9',
+      secondary: '#ffffff',
+      accent: '#373737',
       disabled: '#B0B0B0',
-      placeholder: '#B7E2E9',
+      placeholder: '#B0B0B0',
     },
   },
 };

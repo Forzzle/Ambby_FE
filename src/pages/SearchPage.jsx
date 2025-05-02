@@ -54,7 +54,7 @@ const SearchPage = () => {
 
           <Pressable style={styles.inputContainer}>
             <TouchableOpacity style={styles.iconWrapper} onPress={handleSearch}>
-              <Image source={icons.search} />
+              <Image style={styles.icon} source={icons.search} />
             </TouchableOpacity>
 
             <TextInput
@@ -135,6 +135,12 @@ const getStyles = theme =>
       fontWeight: 800,
       lineHeight: 28,
       maxHeight: circleSize - 120,
+    },
+    icon: {
+      width: 30,
+      height: 30,
+      resizeMode: 'contain',
+      tintColor: theme.colors.primary,
     },
     button: {
       paddingVertical: 14,
