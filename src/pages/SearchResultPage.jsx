@@ -82,8 +82,8 @@ const SearchResultPage = ({route}) => {
     <View style={styles.container}>
       <Header />
       <View style={styles.inputContainer}>
-        <Pressable style={styles.searchIcon} onPress={handleSearch}>
-          <Image source={icons.search} />
+        <Pressable style={styles.iconWrapper} onPress={handleSearch}>
+          <Image style={styles.icon} source={icons.search} />
         </Pressable>
         <TextInput
           value={query}
@@ -140,13 +140,20 @@ const getStyles = theme =>
       marginBottom: 10,
       zIndex: 10,
     },
-    searchIcon: {
+    iconWrapper: {
       backgroundColor: theme.colors.secondary,
       width: 50,
       height: 50,
       borderRadius: 25,
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: 12,
+    },
+    icon: {
+      width: 32,
+      height: 32,
+      resizeMode: 'contain',
+      tintColor: theme.colors.primary,
     },
     input: {
       margin: 20,
