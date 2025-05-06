@@ -22,7 +22,11 @@ const RoutePlanPage = () => {
       {isLoading && <FullScreenLoader isBlur={true} />}
       <Header height={140} icon={icons.route} title={'여행 추가 페이지'} />
       {places.length === 0 ? (
-        <Text style={styles.emptyText}>아직 선택한 장소가 없습니다.</Text>
+        <Text style={styles.emptyText}>
+          {
+            '아직 선택한 장소가 없습니다.\n 장소를 저장해두고 최적 경로를 알아보세요.'
+          }
+        </Text>
       ) : (
         <FlatList
           data={places}
@@ -37,13 +41,14 @@ const RoutePlanPage = () => {
           contentContainerStyle={styles.listContainer}
         />
       )}
+      <View style={places.length === 0 && {margin: 'auto'}} />
       <RouteRequestButton
         onSuccess={data => {
           setRouteResult(data);
           setModalVisible(true);
         }}
         disabled={places.length === 0}
-        setIsLoading={setIsLoading} // 전달
+        setIsLoading={setIsLoading}
       />
       <RouteResultModal
         visible={modalVisible}
@@ -64,9 +69,10 @@ const getStyles = theme =>
     },
 
     emptyText: {
-      color: theme.colors.text,
+      color: theme.colors.primary,
       textAlign: 'center',
-      marginTop: 20,
+      marginTop: 100,
+      justifyContent: 'center',
     },
     listContainer: {
       paddingBottom: 40,

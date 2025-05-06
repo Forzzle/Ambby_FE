@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '../contexts/themeContext';
-import {useAutoPlay} from '../contexts/AutoPlayContext'; // AutoPlay context import
-import icons from '../constants/icons';
+import {useTheme} from '../../contexts/themeContext';
+import {useAutoPlay} from '../../contexts/AutoPlayContext'; // AutoPlay context import
+import icons from '../../constants/icons';
 
 const SettingPage = () => {
   const navigation = useNavigation();

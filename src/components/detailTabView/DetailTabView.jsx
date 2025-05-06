@@ -61,7 +61,7 @@ const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      marginBottom: 150,
+      marginBottom: 120,
       backgroundColor: theme.colors.background,
       borderTopWidth: 1,
       borderTopColor: theme.colors.secondary,

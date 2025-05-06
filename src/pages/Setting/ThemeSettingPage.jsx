@@ -7,15 +7,13 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '../contexts/themeContext';
-import Header from '../components/Header';
-import icons from '../constants/icons';
+
+import {useTheme} from '../../contexts/themeContext';
+import Header from '../../components/Header';
+import icons from '../../constants/icons';
 
 const ThemeSettingPage = () => {
-  const navigation = useNavigation();
   const {setThemeByKey, themeKey, themes, descriptions} = useTheme();
-  const {theme} = useTheme();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState('');

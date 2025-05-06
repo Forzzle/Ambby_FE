@@ -74,7 +74,7 @@ const BookMarkPage = () => {
         contentContainerStyle={{paddingBottom: 20}}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
-          <Text style={styles.empty}>북마크된 장소가 없습니다.</Text>
+          <Text style={styles.emptyText}>북마크된 장소가 없습니다.</Text>
         }
       />
     </View>
@@ -104,5 +104,11 @@ const getStyles = theme =>
       fontSize: 18,
       fontWeight: 'bold',
       color: theme.colors.primary,
+    },
+    emptyText: {
+      color: theme.colors.primary,
+      textAlign: 'center',
+      marginTop: 100,
+      justifyContent: 'center',
     },
   });

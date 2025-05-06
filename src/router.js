@@ -10,10 +10,10 @@ import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SoundPage from './pages/SoundPage';
-import VisionSettingPage from './pages/VisionSettingPage';
-import ThemeSettingPage from './pages/ThemeSettingPage';
+import VisionSettingPage from './pages/Setting/VisionSettingPage';
+import ThemeSettingPage from './pages/Setting/ThemeSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
-import SettingPage from './pages/SettingPage';
+import SettingPage from './pages/Setting/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
 import {AutoPlayProvider} from './contexts/AutoPlayContext';
 

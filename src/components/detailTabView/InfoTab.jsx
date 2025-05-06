@@ -104,7 +104,7 @@ const getStyles = theme =>
     },
     tabs: {
       flexDirection: 'row',
-      marginBottom: 16,
+      marginBottom: 10,
       flexWrap: 'wrap',
     },
     tabButton: {
@@ -128,11 +128,11 @@ const getStyles = theme =>
       fontWeight: 'bold',
     },
     infoBox: {
-      flex: 1,
+      // flex: 1,
     },
     item: {
-      marginBottom: 12,
-      padding: 10,
+      marginBottom: 20,
+      // padding: 10,
       borderRadius: 6,
     },
     label: {

@@ -80,7 +80,7 @@ const SearchResultPage = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header height={40} />
       <View style={styles.inputContainer}>
         <Pressable style={styles.iconWrapper} onPress={handleSearch}>
           <Image style={styles.icon} source={icons.search} />
@@ -147,7 +147,6 @@ const getStyles = theme =>
       borderRadius: 25,
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: 12,
     },
     icon: {
       width: 32,
@@ -156,7 +155,7 @@ const getStyles = theme =>
       tintColor: theme.colors.primary,
     },
     input: {
-      margin: 20,
+      margin: 10,
       fontSize: 16,
       textAlign: 'center',
       color: theme.colors.textOnPrimary,
