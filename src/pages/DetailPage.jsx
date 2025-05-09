@@ -164,8 +164,8 @@ const DetailPage = ({route}) => {
           <Header
             title={
               accessibilityInfo === null
-                ? '관광공사 인증 시각장애 이용 가능 장소'
-                : null
+                ? null
+                : '관광공사 인증 시각장애 이용 가능 장소'
             }
             titleSize={14}
           />

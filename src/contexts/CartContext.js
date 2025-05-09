@@ -27,14 +27,14 @@ export const CartProvider = ({children}) => {
     setPlaces(prev => {
       const alreadyExists = prev.some(p => p.id === place.id);
       if (alreadyExists) {
+        Alert.alert('알림', `${place.name}은(는) 이미 추가된 장소입니다.`);
         return prev;
       }
-
-      const updatedPlaces = [place, ...prev]; // 최신순
+      const updatedPlaces = [place, ...prev];
       savePlaces(updatedPlaces);
+      Alert.alert('장소 추가됨', `${place.name}이(가) 루트에 추가되었습니다.`);
       return updatedPlaces;
     });
-    Alert.alert('장소 추가됨', `${place.name}이(가) 루트에 추가되었습니다.`);
   };
 
   // 제거

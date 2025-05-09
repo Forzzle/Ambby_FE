@@ -1,10 +1,16 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import {useVision} from '../../contexts/visionContext';
 import {useTheme} from '../../contexts/themeContext';
 import Header from '../../components/Header';
 import icons from '../../constants/icons';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 const visionOptions = [
   {key: '비장애', label: '비장애'},
@@ -25,7 +31,6 @@ const VisionSettingPage = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Header title={'시각 상태 설정'} icon={'none'} height={140} />
-
         <View style={styles.gridContainer}>
           {visionOptions.map(option => {
             const isSelected = visionMode === option.key;
@@ -46,7 +51,7 @@ const VisionSettingPage = () => {
             );
           })}
         </View>
-      </View>{' '}
+      </View>
     </SafeAreaView>
   );
 };
@@ -66,13 +71,13 @@ const getStyles = theme =>
     gridContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'space-between', // <-- 좌우 여백 균등하게
-      paddingHorizontal: 20, // <-- 양옆 패딩
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
       marginTop: 20,
     },
     button: {
-      width: '47%', // <-- 2열, 살짝 간격 있게
-      aspectRatio: 1, // 정사각형
+      width: '47%',
+      aspectRatio: 1,
       borderRadius: 12,
       alignItems: 'center',
       justifyContent: 'center',
@@ -80,7 +85,7 @@ const getStyles = theme =>
     },
     selectedBorder: {
       borderWidth: 3,
-      borderColor: theme.colors.secondary, // 선택 시 secondary 색 테두리
+      borderColor: theme.colors.secondary,
     },
     iconWrapper: {
       width: 50,

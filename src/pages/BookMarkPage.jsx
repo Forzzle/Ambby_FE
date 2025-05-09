@@ -34,9 +34,9 @@ const BookMarkPage = () => {
     if (isFocused) {
       const loadBookmarkedPlaces = async () => {
         const place = await getBookmarks();
-        setPlaces(place.reverse());
-        setVisibleData([]);
-        setCurrentIndex(0);
+        const initialData = place.slice(0, ITEMS_PER_PAGE);
+        setVisibleData(initialData);
+        setCurrentIndex(ITEMS_PER_PAGE);
       };
       loadBookmarkedPlaces();
     }
@@ -95,6 +95,7 @@ export default BookMarkPage;
 const getStyles = theme =>
   StyleSheet.create({
     safeArea: {
+      flex: 1,
       backgroundColor: theme.colors.primary,
     },
     container: {
