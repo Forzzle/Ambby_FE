@@ -16,6 +16,7 @@ import BookMarkPage from './pages/BookMarkPage';
 import SettingPage from './pages/Setting/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
 import {AutoPlayProvider} from './contexts/AutoPlayContext';
+// import Splash from './pages/Splash';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -121,6 +122,7 @@ const Router = () => {
   return (
     <AutoPlayProvider>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+        {/* <Stack.Screen name="Splash" component={Splash} /> */}
         <Stack.Screen name="MainTab" component={MainTab} />
         <Stack.Screen name="Detail" component={DetailPage} />
       </Stack.Navigator>
@@ -132,17 +134,17 @@ export default Router;
 
 const styles = StyleSheet.create({
   tabButton: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 60,
+    height: 80,
   },
   tabText: {
     fontSize: 16,
     fontWeight: 'bold',
+    paddingBottom: 20,
   },
   tabBar: {
     flexDirection: 'row',
-    height: 60,
+    height: 80,
   },
 });

@@ -1,14 +1,21 @@
 import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../../contexts/themeContext';
-import {useAutoPlay} from '../../contexts/AutoPlayContext'; // AutoPlay context import
+import {useAutoPlay} from '../../contexts/AutoPlayContext';
 import icons from '../../constants/icons';
 
 const SettingPage = () => {
   const navigation = useNavigation();
   const {theme} = useTheme();
-  const {autoPlayEnabled, toggleAutoPlay} = useAutoPlay(); // Access AutoPlay context
+  const {autoPlayEnabled, toggleAutoPlay} = useAutoPlay();
   const styles = getStyles(theme);
 
   const menuItems = [
@@ -22,54 +29,56 @@ const SettingPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.grid}>
-        {menuItems.map(item => (
-          <TouchableOpacity
-            key={item.route}
-            style={styles.box}
-            onPress={() => navigation.navigate(item.route)}>
-            <Image source={icons[item.iconKey]} style={styles.icon} />
-            <Text style={styles.label}>{item.label}</Text>
-          </TouchableOpacity>
-        ))}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.grid}>
+          {menuItems.map(item => (
+            <TouchableOpacity
+              key={item.route}
+              style={styles.box}
+              onPress={() => navigation.navigate(item.route)}>
+              <Image source={icons[item.iconKey]} style={styles.icon} />
+              <Text style={styles.label}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
 
-        {/* 소리 버튼 */}
-        <TouchableOpacity
-          style={[
-            styles.box,
-            {
-              backgroundColor: autoPlayEnabled
-                ? theme.colors.secondary
-                : theme.colors.primary,
-            },
-          ]}
-          onPress={handleSoundButtonPress}>
-          <Image
-            source={autoPlayEnabled ? icons.soundOn : icons.soundOff}
+          {/* 소리 버튼 */}
+          <TouchableOpacity
             style={[
-              styles.icon,
+              styles.box,
               {
-                tintColor: autoPlayEnabled
-                  ? theme.colors.primary
-                  : theme.colors.secondary,
+                backgroundColor: autoPlayEnabled
+                  ? theme.colors.secondary
+                  : theme.colors.primary,
               },
             ]}
-          />
-          <Text
-            style={[
-              styles.label,
-              {
-                color: autoPlayEnabled
-                  ? theme.colors.primary
-                  : theme.colors.textOnPrimary,
-              },
-            ]}>
-            {autoPlayEnabled ? '자동재생 켜짐' : '자동재생 꺼짐'}{' '}
-          </Text>
-        </TouchableOpacity>
+            onPress={handleSoundButtonPress}>
+            <Image
+              source={autoPlayEnabled ? icons.soundOn : icons.soundOff}
+              style={[
+                styles.icon,
+                {
+                  tintColor: autoPlayEnabled
+                    ? theme.colors.primary
+                    : theme.colors.secondary,
+                },
+              ]}
+            />
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: autoPlayEnabled
+                    ? theme.colors.primary
+                    : theme.colors.textOnPrimary,
+                },
+              ]}>
+              {autoPlayEnabled ? '자동재생 켜짐' : '자동재생 꺼짐'}{' '}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -77,6 +86,10 @@ export default SettingPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,

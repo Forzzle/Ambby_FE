@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {searchPlaces} from '../apis/placeApi';
@@ -46,7 +47,7 @@ const SearchPage = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View>
+        <SafeAreaView>
           <Text style={styles.title}>
             {'가고싶은 여행지를 \n 자유롭게 표현해보세요!'}
           </Text>
@@ -75,7 +76,7 @@ const SearchPage = () => {
           </Pressable>
 
           {loading && <MiniLoader />}
-        </View>
+        </SafeAreaView>
       </ScrollView>
     </KeyboardAvoidingView>
   );

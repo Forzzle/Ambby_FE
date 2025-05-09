@@ -18,15 +18,13 @@ export const isBookmarked = async place => {
 };
 
 export const addBookmark = async place => {
-  console.log(place);
   const bookmarks = await getBookmarks();
   const exists = bookmarks.some(item => item.id === place.id);
   if (!exists) {
-    bookmarks.push(place);
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+    const updated = [place, ...bookmarks]; // 최신순
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   }
 };
-
 export const removeBookmark = async id => {
   const bookmarks = await getBookmarks();
   const updated = bookmarks.filter(item => item.id !== id);

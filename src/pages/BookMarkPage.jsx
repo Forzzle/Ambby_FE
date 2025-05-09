@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import {getBookmarks} from '../utils/bookMarkStorage';
 import {useIsFocused} from '@react-navigation/native';
 import ListCard from '../components/ListCard';
@@ -27,7 +34,7 @@ const BookMarkPage = () => {
     if (isFocused) {
       const loadBookmarkedPlaces = async () => {
         const place = await getBookmarks();
-        setPlaces(place);
+        setPlaces(place.reverse());
         setVisibleData([]);
         setCurrentIndex(0);
       };
@@ -59,25 +66,27 @@ const BookMarkPage = () => {
     setVisibleData(prev => prev.filter(item => item.id !== id));
   };
   return (
-    <View style={styles.container}>
-      <Header height={140} icon={icons.bookmark} title={'북마크 페이지'} />
-      <FlatList
-        data={visibleData}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <ListCard
-            item={item}
-            showDelete
-            onDelete={() => handleDelete(item.id)}
-          />
-        )}
-        contentContainerStyle={{paddingBottom: 20}}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>북마크된 장소가 없습니다.</Text>
-        }
-      />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header height={140} icon={icons.bookmark} title={'북마크 페이지'} />
+        <FlatList
+          data={visibleData}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <ListCard
+              item={item}
+              showDelete
+              onDelete={() => handleDelete(item.id)}
+            />
+          )}
+          contentContainerStyle={{paddingBottom: 20}}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>북마크된 장소가 없습니다.</Text>
+          }
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -85,6 +94,9 @@ export default BookMarkPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,

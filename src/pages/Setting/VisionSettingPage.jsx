@@ -4,6 +4,7 @@ import {useVision} from '../../contexts/visionContext';
 import {useTheme} from '../../contexts/themeContext';
 import Header from '../../components/Header';
 import icons from '../../constants/icons';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const visionOptions = [
   {key: '비장애', label: '비장애'},
@@ -21,38 +22,43 @@ const VisionSettingPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header title={'시각 상태 설정'} icon={'none'} height={140} />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header title={'시각 상태 설정'} icon={'none'} height={140} />
 
-      <View style={styles.gridContainer}>
-        {visionOptions.map(option => {
-          const isSelected = visionMode === option.key;
-          return (
-            <TouchableOpacity
-              key={option.key}
-              style={[
-                styles.button,
-                {backgroundColor: theme.colors.primary},
-                isSelected && styles.selectedBorder,
-              ]}
-              onPress={() => handleSelect(option.key)}>
-              <View style={styles.iconWrapper}>
-                <Image style={styles.icon} source={icons.visionSetting} />
-              </View>
-              <Text style={styles.label}>{option.label}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
+        <View style={styles.gridContainer}>
+          {visionOptions.map(option => {
+            const isSelected = visionMode === option.key;
+            return (
+              <TouchableOpacity
+                key={option.key}
+                style={[
+                  styles.button,
+                  {backgroundColor: theme.colors.primary},
+                  isSelected && styles.selectedBorder,
+                ]}
+                onPress={() => handleSelect(option.key)}>
+                <View style={styles.iconWrapper}>
+                  <Image style={styles.icon} source={icons.visionSetting} />
+                </View>
+                <Text style={styles.label}>{option.label}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>{' '}
+    </SafeAreaView>
   );
 };
 
 export default VisionSettingPage;
 
-// 🔥 스타일
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useTheme} from '../contexts/themeContext';
 import {useCart} from '../contexts/CartContext';
 import {
@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
   Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -32,10 +33,14 @@ const StoreOverview = ({placeInfo, placeSummary}) => {
   return (
     <View style={[styles.section]}>
       <View style={styles.headerRow}>
-        <Text style={styles.storeName}>{placeInfo?.displayName?.text}</Text>
-        <Text style={styles.categoryText}>
-          {placeInfo?.primaryTypeDisplayName?.text}
-        </Text>
+        <View style={styles.titleWrapper}>
+          <View style={styles.titleRow}>
+            <Text style={styles.storeName}>{placeInfo?.displayName?.text}</Text>
+            <Text style={styles.categoryText}>
+              {placeInfo?.primaryTypeDisplayName?.text}
+            </Text>
+          </View>
+        </View>
         <BookMarkBtn place={placeSummary} />
       </View>
 
@@ -83,7 +88,8 @@ const DetailPage = ({route}) => {
 
   const {theme} = useTheme();
   const styles = getStyles(theme);
-  const {addPlace} = useCart();
+
+  const {togglePlace, places} = useCart();
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -105,19 +111,31 @@ const DetailPage = ({route}) => {
     fetchDetail();
   }, [placeId]);
 
-  const placeSummary = {
-    id: placeInfo?.id,
-    name: placeInfo?.displayName?.text,
-    simpleAddress: placeInfo?.formattedAddress,
-    category: placeInfo?.primaryTypeDisplayName?.text,
-  };
+  const placeSummary = useMemo(() => {
+    if (!placeInfo?.id) {
+      return null;
+    }
+    return {
+      id: placeInfo.id,
+      name: placeInfo.displayName?.text,
+      simpleAddress: placeInfo.formattedAddress,
+      category: placeInfo.primaryTypeDisplayName?.text,
+    };
+  }, [placeInfo]);
 
-  const handleAddPress = () => {
-    addPlace(placeSummary);
-    Alert.alert(
-      '장소 추가됨',
-      `${placeSummary.name}이(가) 루트에 추가되었습니다.`,
-    );
+  const isAdded = useMemo(() => {
+    if (!placeSummary) {
+      return false;
+    }
+    return places.some(p => p.id === placeSummary.id);
+  }, [places, placeSummary]);
+
+  const handleRouteBtn = () => {
+    if (!placeSummary) {
+      Alert.alert('장소 정보가 없습니다.');
+      return;
+    }
+    togglePlace(placeSummary);
   };
 
   const handleCallPress = () => {
@@ -142,59 +160,71 @@ const DetailPage = ({route}) => {
   } else {
     return (
       <View style={{flex: 1}}>
-        <Header
-          title={
-            accessibilityInfo ? '관광공사 인증 시각장애 이용 가능 장소' : null
-          }
-          titleSize={14}
-        />
-        <SoundButton categories={soundList} />
-        <ScrollView contentContainerStyle={{paddingBottom: 120}}>
-          <View style={styles.container}>
-            {visionMode !== '전맹' && (
-              <View style={{position: 'relative', height: 200}}>
-                {imageLoading && (
-                  <View style={styles.imageLoader}>
-                    <ActivityIndicator
-                      size="large"
-                      color={theme.colors.textOnPrimary}
-                    />
-                  </View>
-                )}
-                <Image
-                  style={styles.img}
-                  source={{uri: photos[0]}}
-                  resizeMode="cover"
-                  onLoadEnd={() => setImageLoading(false)}
-                  onError={() => {
-                    setImageLoading(false);
-                  }}
+        <SafeAreaView style={styles.safeArea}>
+          <Header
+            title={
+              accessibilityInfo === null
+                ? '관광공사 인증 시각장애 이용 가능 장소'
+                : null
+            }
+            titleSize={14}
+          />
+          <SoundButton categories={soundList} />
+          <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+            <View style={styles.container}>
+              {visionMode !== '전맹' && (
+                <View style={{position: 'relative', height: 200}}>
+                  {imageLoading && (
+                    <View style={styles.imageLoader}>
+                      <ActivityIndicator
+                        size="large"
+                        color={theme.colors.textOnPrimary}
+                      />
+                    </View>
+                  )}
+                  <Image
+                    style={styles.img}
+                    source={{uri: photos[0]}}
+                    resizeMode="cover"
+                    onLoadEnd={() => setImageLoading(false)}
+                    onError={() => {
+                      setImageLoading(false);
+                    }}
+                  />
+                </View>
+              )}
+
+              <StoreOverview
+                placeInfo={placeInfo}
+                placeSummary={placeSummary}
+              />
+
+              <View
+                style={{
+                  height: '100%',
+                  backgroundColor: theme.colors.background,
+                }}>
+                <DetailTabView
+                  review={reviewInfo}
+                  accessibility={accessibilityInfo}
                 />
               </View>
-            )}
-
-            <StoreOverview placeInfo={placeInfo} placeSummary={placeSummary} />
-
-            <View
-              style={{
-                height: '100%',
-                backgroundColor: theme.colors.background,
-              }}>
-              <DetailTabView
-                review={reviewInfo}
-                accessibility={accessibilityInfo}
-              />
             </View>
-          </View>
-        </ScrollView>
-
+          </ScrollView>
+        </SafeAreaView>
         <View style={styles.bottomBtnContainer}>
           <TouchableOpacity
-            style={styles.addBtn}
-            onPress={handleAddPress}
+            style={styles.routeBtn}
+            onPress={handleRouteBtn}
             accessibilityRole="button"
-            accessibilityLabel="이 장소를 여행 루트에 추가하기">
-            <Text style={styles.addBtnText}>여행 추가</Text>
+            accessibilityLabel={
+              isAdded
+                ? '이 장소를 여행 루트에서 제거하기'
+                : '이 장소를 여행 루트에 추가하기'
+            }>
+            <Text style={styles.addBtnText}>
+              {isAdded ? '추가됨' : '여행 추가'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
@@ -210,6 +240,10 @@ export default DetailPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.primary,
@@ -229,18 +263,28 @@ const getStyles = theme =>
     },
     headerRow: {
       flexDirection: 'row',
-      gap: 10,
+      alignItems: 'flex-start',
+      marginBottom: 6,
+    },
+    titleWrapper: {
+      flex: 1,
+    },
+    titleRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
       alignItems: 'flex-end',
     },
     storeName: {
       color: theme.colors.secondary,
-      fontWeight: '800',
+      fontWeight: '600',
       fontSize: 18,
-      maxWidth: '80%',
+      lineHeight: 22,
+      marginRight: 8,
     },
     categoryText: {
       color: theme.colors.textOnPrimary,
-      marginRight: 'auto',
+      fontWeight: '400',
+      fontSize: 14,
     },
     openStatusRow: {
       flexDirection: 'row',
@@ -259,12 +303,14 @@ const getStyles = theme =>
     callBtn: {
       backgroundColor: theme.colors.primary,
       paddingVertical: 20,
+      paddingBottom: 36,
       alignItems: 'center',
       flex: 1,
     },
-    addBtn: {
+    routeBtn: {
       backgroundColor: theme.colors.secondary,
       paddingVertical: 20,
+      paddingBottom: 36,
       alignItems: 'center',
       aspectRatio: 1.6,
     },

@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
+  StyleSheet,
   View,
   Text,
-  StyleSheet,
+  SafeAreaView,
   FlatList,
   TextInput,
   ActivityIndicator,
@@ -79,48 +80,50 @@ const SearchResultPage = ({route}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header height={40} />
-      <View style={styles.inputContainer}>
-        <Pressable style={styles.iconWrapper} onPress={handleSearch}>
-          <Image style={styles.icon} source={icons.search} />
-        </Pressable>
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          onSubmitEditing={handleSearch}
-          returnKeyType="search"
-          style={styles.input}
-          multiline={true}
-          placeholder={'가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!'}
-          placeholderTextColor={theme.colors.placeholder}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header height={40} />
+        <View style={styles.inputContainer}>
+          <Pressable style={styles.iconWrapper} onPress={handleSearch}>
+            <Image style={styles.icon} source={icons.search} />
+          </Pressable>
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            onSubmitEditing={handleSearch}
+            returnKeyType="search"
+            style={styles.input}
+            multiline={true}
+            placeholder={'가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!'}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        <FlatList
+          data={data.previews}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => <ListCard item={item} />}
+          ListEmptyComponent={
+            <Text style={[styles.empty, {color: theme.colors.text}]}>
+              검색 결과가 없습니다.
+            </Text>
+          }
+          ListFooterComponent={
+            loadingMore ? (
+              <ActivityIndicator
+                size="small"
+                color={theme.colors.primary}
+                style={{margin: 20}}
+              />
+            ) : data.nextPageToken ? (
+              <TouchableOpacity style={styles.button} onPress={loadMore}>
+                <Text style={styles.buttonText}>+ 더보기</Text>
+              </TouchableOpacity>
+            ) : null
+          }
         />
       </View>
-
-      <FlatList
-        data={data.previews}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => <ListCard item={item} />}
-        ListEmptyComponent={
-          <Text style={[styles.empty, {color: theme.colors.text}]}>
-            검색 결과가 없습니다.
-          </Text>
-        }
-        ListFooterComponent={
-          loadingMore ? (
-            <ActivityIndicator
-              size="small"
-              color={theme.colors.primary}
-              style={{margin: 20}}
-            />
-          ) : data.nextPageToken ? (
-            <TouchableOpacity style={styles.button} onPress={loadMore}>
-              <Text style={styles.buttonText}>+ 더보기</Text>
-            </TouchableOpacity>
-          ) : null
-        }
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -128,6 +131,10 @@ export default SearchResultPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, FlatList, StyleSheet, SafeAreaView} from 'react-native';
 import {useTheme} from '../contexts/themeContext';
 import {useCart} from '../contexts/CartContext';
 import ListCard from '../components/ListCard';
@@ -18,44 +18,46 @@ const RoutePlanPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <View style={styles.container}>
-      {isLoading && <FullScreenLoader isBlur={true} />}
-      <Header height={140} icon={icons.route} title={'여행 추가 페이지'} />
-      {places.length === 0 ? (
-        <Text style={styles.emptyText}>
-          {
-            '아직 선택한 장소가 없습니다.\n 장소를 저장해두고 최적 경로를 알아보세요.'
-          }
-        </Text>
-      ) : (
-        <FlatList
-          data={places}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <ListCard
-              item={item}
-              showDelete
-              onDelete={() => removePlace(item.id)}
-            />
-          )}
-          contentContainerStyle={styles.listContainer}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        {isLoading && <FullScreenLoader isBlur={true} />}
+        <Header height={140} icon={icons.route} title={'여행 추가 페이지'} />
+        {places.length === 0 ? (
+          <Text style={styles.emptyText}>
+            {
+              '아직 선택한 장소가 없습니다.\n 장소를 저장해두고 최적 경로를 알아보세요.'
+            }
+          </Text>
+        ) : (
+          <FlatList
+            data={places}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <ListCard
+                item={item}
+                showDelete
+                onDelete={() => removePlace(item)}
+              />
+            )}
+            contentContainerStyle={styles.listContainer}
+          />
+        )}
+        <View style={places.length === 0 && {margin: 'auto'}} />
+        <RouteRequestButton
+          onSuccess={data => {
+            setRouteResult(data);
+            setModalVisible(true);
+          }}
+          disabled={places.length === 0}
+          setIsLoading={setIsLoading}
         />
-      )}
-      <View style={places.length === 0 && {margin: 'auto'}} />
-      <RouteRequestButton
-        onSuccess={data => {
-          setRouteResult(data);
-          setModalVisible(true);
-        }}
-        disabled={places.length === 0}
-        setIsLoading={setIsLoading}
-      />
-      <RouteResultModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        routeData={routeResult}
-      />
-    </View>
+        <RouteResultModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          routeData={routeResult}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -63,6 +65,10 @@ export default RoutePlanPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
