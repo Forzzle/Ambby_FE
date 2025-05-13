@@ -30,11 +30,22 @@ const BookMarkBtn = ({place, size = 24}) => {
   };
 
   return (
-    <TouchableOpacity onPress={toggleBookmark}>
+    <TouchableOpacity
+      onPress={toggleBookmark}
+      accessibilityRole="button"
+      accessibilityLabel={bookmarked ? '북마크 제거 버튼' : '북마크 추가 버튼'}
+      accessibilityHint={
+        bookmarked
+          ? '이 장소의 북마크를 제거합니다.'
+          : '이 장소를 북마크에 추가합니다.'
+      }>
       <Icon
         name={bookmarked ? 'bookmark' : 'bookmark-border'}
         size={size}
         color={theme.colors.secondary}
+        accessibilityLabel={
+          bookmarked ? '북마크가 추가된 아이콘' : '북마크가 없는 아이콘'
+        }
       />
     </TouchableOpacity>
   );

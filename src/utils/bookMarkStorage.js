@@ -28,12 +28,13 @@ export const addBookmark = async place => {
   try {
     const bookmarks = await getBookmarks();
     const exists = bookmarks.some(item => item.id === place.id);
+    Alert.alert('성공', '북마크에 추가되었습니다.');
     if (!exists) {
       const updated = [place, ...bookmarks];
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      Alert.alert('성공', '북마크에 추가되었습니다.');
+      // Alert.alert('성공', '북마크에 추가되었습니다.');
     } else {
-      Alert.alert('알림', '이미 북마크에 추가된 장소입니다.');
+      // Alert.alert('알림', '이미 북마크에 추가된 장소입니다.');
     }
   } catch (e) {
     console.error('북마크 추가 오류:', e);

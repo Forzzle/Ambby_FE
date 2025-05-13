@@ -73,7 +73,6 @@ const StoreOverview = ({placeInfo, placeSummary}) => {
     </View>
   );
 };
-
 const DetailPage = ({route}) => {
   const navigation = useNavigation();
   const {placeId} = route.params;
@@ -168,8 +167,12 @@ const DetailPage = ({route}) => {
                 : '관광공사 인증 시각장애 이용 가능 장소'
             }
             titleSize={14}
+            accessibilityLabel="장소 정보 페이지"
           />
-          <SoundButton categories={soundList} />
+          <SoundButton
+            categories={soundList}
+            accessibilityLabel="사운드 관련 정보"
+          />
           <ScrollView contentContainerStyle={{paddingBottom: 120}}>
             <View style={styles.container}>
               {visionMode !== '전맹' && (
@@ -227,7 +230,11 @@ const DetailPage = ({route}) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.callBtn} onPress={handleCallPress}>
+          <TouchableOpacity
+            style={styles.callBtn}
+            onPress={handleCallPress}
+            accessibilityRole="button"
+            accessibilityLabel="전화 문의하기 버튼">
             <Text style={styles.callBtnText}>전화 문의하기</Text>
           </TouchableOpacity>
         </View>
