@@ -6,6 +6,8 @@ const icons = {
   visionSetting: require('../assets/icons/vision.png'),
   help: require('../assets/icons/help.png'),
   route: require('../assets/icons/route.png'),
+  soundOn: require('../assets/icons/sound-on.png'),
+  soundOff: require('../assets/icons/sound-off.png'),
 };
 
 export default icons;

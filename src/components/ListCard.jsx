@@ -16,7 +16,12 @@ const ListCard = ({item, showDelete = false, onDelete}) => {
         <View style={styles.textContainer}>
           <View style={styles.row}>
             <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.category}>{item.category}</Text>
+            <Text
+              style={styles.category}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {item.category}
+            </Text>
           </View>
           <Text style={styles.address}>{item.simpleAddress}</Text>
         </View>
@@ -58,17 +63,19 @@ const getStyles = theme =>
       flexDirection: 'row',
       alignItems: 'baseline',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
     },
     title: {
       fontSize: 20,
       fontWeight: 'bold',
       color: theme.colors.textPrimary,
-      maxWidth: '75%',
+      maxWidth: '80%',
     },
     category: {
       fontSize: 14,
       fontWeight: '400',
       color: theme.colors.text,
+      flexShrink: 1,
     },
     address: {
       marginTop: 4,

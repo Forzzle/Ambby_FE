@@ -6,16 +6,15 @@ import {
   StyleSheet,
   Image,
   Modal,
+  SafeAreaView,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useTheme} from '../contexts/themeContext';
-import Header from '../components/Header';
-import icons from '../constants/icons';
+
+import {useTheme} from '../../contexts/themeContext';
+import Header from '../../components/Header';
+import icons from '../../constants/icons';
 
 const ThemeSettingPage = () => {
-  const navigation = useNavigation();
   const {setThemeByKey, themeKey, themes, descriptions} = useTheme();
-  const {theme} = useTheme();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState('');
@@ -29,64 +28,66 @@ const ThemeSettingPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header title={'색상 선택'} icon={'none'} height={140} />
-      <View style={styles.content}>
-        {Object.entries(themes).map(([key, theme]) => {
-          const isSelected = key === themeKey;
-          return (
-            <View key={key} style={styles.previewWrapper}>
-              <TouchableOpacity
-                style={[
-                  styles.previewButton,
-                  {backgroundColor: theme.colors.primary},
-                  isSelected && styles.selectedBorder,
-                ]}
-                onPress={() => setThemeByKey(key)}>
-                <View
-                  style={[
-                    styles.iconWrapper,
-                    {
-                      backgroundColor:
-                        theme.colors.secondary || theme.colors.accent,
-                    },
-                  ]}>
-                  <Image
-                    style={[styles.icon, {tintColor: theme.colors.primary}]}
-                    source={icons.visionSetting}
-                  />
-                </View>
-                <Text style={styles.previewLabel}>{theme.label}</Text>
-
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header title={'색상 선택'} icon={'none'} height={140} />
+        <View style={styles.content}>
+          {Object.entries(themes).map(([key, theme]) => {
+            const isSelected = key === themeKey;
+            return (
+              <View key={key} style={styles.previewWrapper}>
                 <TouchableOpacity
-                  style={styles.infoButton}
-                  onPress={() => openModal(key)}>
-                  <Text style={styles.infoText}>!</Text>
+                  style={[
+                    styles.previewButton,
+                    {backgroundColor: theme.colors.primary},
+                    isSelected && styles.selectedBorder,
+                  ]}
+                  onPress={() => setThemeByKey(key)}>
+                  <View
+                    style={[
+                      styles.iconWrapper,
+                      {
+                        backgroundColor:
+                          theme.colors.secondary || theme.colors.accent,
+                      },
+                    ]}>
+                    <Image
+                      style={[styles.icon, {tintColor: theme.colors.primary}]}
+                      source={icons.visionSetting}
+                    />
+                  </View>
+                  <Text style={styles.previewLabel}>{theme.label}</Text>
+
+                  <TouchableOpacity
+                    style={styles.infoButton}
+                    onPress={() => openModal(key)}>
+                    <Text style={styles.infoText}>!</Text>
+                  </TouchableOpacity>
                 </TouchableOpacity>
+              </View>
+            );
+          })}
+        </View>
+
+        <Modal
+          transparent
+          visible={modalVisible}
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>누가 이 테마를 쓰면 좋나요?</Text>
+              <Text style={styles.modalText}>{modalContent}</Text>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={styles.closeBtn}>
+                <Text style={styles.closeBtnText}>X</Text>
               </TouchableOpacity>
             </View>
-          );
-        })}
-      </View>
-
-      <Modal
-        transparent
-        visible={modalVisible}
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>누가 이 테마를 쓰면 좋나요?</Text>
-            <Text style={styles.modalText}>{modalContent}</Text>
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={styles.closeBtn}>
-              <Text style={styles.closeBtnText}>X</Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -94,6 +95,10 @@ export default ThemeSettingPage;
 
 const getStyles = theme =>
   StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,

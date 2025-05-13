@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Hodeum.app"
-               BlueprintName = "Hodeum"
-               ReferencedContainer = "container:Hodeum.xcodeproj">
+               BuildableName = "Ambby.app"
+               BlueprintName = "Ambby"
+               ReferencedContainer = "container:Ambby.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "HodeumTests.xctest"
                BlueprintName = "HodeumTests"
-               ReferencedContainer = "container:Hodeum.xcodeproj">
+               ReferencedContainer = "container:Ambby.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -50,16 +50,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Hodeum.app"
-            BlueprintName = "Hodeum"
-            ReferencedContainer = "container:Hodeum.xcodeproj">
+            BuildableName = "Ambby.app"
+            BlueprintName = "Ambby"
+            ReferencedContainer = "container:Ambby.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -72,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Hodeum.app"
-            BlueprintName = "Hodeum"
-            ReferencedContainer = "container:Hodeum.xcodeproj">
+            BuildableName = "Ambby.app"
+            BlueprintName = "Ambby"
+            ReferencedContainer = "container:Ambby.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

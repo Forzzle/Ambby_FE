@@ -10,11 +10,13 @@ import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SoundPage from './pages/SoundPage';
-import VisionSettingPage from './pages/VisionSettingPage';
-import ThemeSettingPage from './pages/ThemeSettingPage';
+import VisionSettingPage from './pages/Setting/VisionSettingPage';
+import ThemeSettingPage from './pages/Setting/ThemeSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
-import SettingPage from './pages/SettingPage';
+import SettingPage from './pages/Setting/SettingPage';
 import RoutePlanPage from './pages/RoutePlanPage';
+import {AutoPlayProvider} from './contexts/AutoPlayContext';
+// import Splash from './pages/Splash';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -118,10 +120,13 @@ const Router = () => {
   }
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="MainTab" component={MainTab} />
-      <Stack.Screen name="Detail" component={DetailPage} />
-    </Stack.Navigator>
+    <AutoPlayProvider>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        {/* <Stack.Screen name="Splash" component={Splash} /> */}
+        <Stack.Screen name="MainTab" component={MainTab} />
+        <Stack.Screen name="Detail" component={DetailPage} />
+      </Stack.Navigator>
+    </AutoPlayProvider>
   );
 };
 
@@ -129,17 +134,17 @@ export default Router;
 
 const styles = StyleSheet.create({
   tabButton: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 60,
+    height: 80,
   },
   tabText: {
     fontSize: 16,
     fontWeight: 'bold',
+    paddingBottom: 20,
   },
   tabBar: {
     flexDirection: 'row',
-    height: 60,
+    height: 80,
   },
 });

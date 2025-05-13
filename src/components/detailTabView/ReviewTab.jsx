@@ -34,7 +34,7 @@ const getStyles = theme =>
       body: {
         color: theme.colors.textPrimary,
         fontSize: 16,
-        lineHeight: 22,
+        lineHeight: 20,
       },
     },
   });

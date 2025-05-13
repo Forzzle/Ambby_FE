@@ -1,28 +1,42 @@
 import React from 'react';
-import {VisionProvider} from './src/contexts/visionContext';
-import Router from './src/router';
-import {ThemeProvider} from './src/contexts/themeContext';
-import {CartProvider} from './src/contexts/CartContext';
-import {NavigationContainer} from '@react-navigation/native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 
-const App = () => {
+import {ThemeProvider, useTheme} from './src/contexts/themeContext';
+import {VisionProvider} from './src/contexts/visionContext';
+import {CartProvider} from './src/contexts/CartContext';
+import Router from './src/router';
+
+const AppInner = () => {
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
+
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <GestureHandlerRootView>
-        <ThemeProvider>
-          <CartProvider>
-            <VisionProvider>
-              <NavigationContainer>
-                <Router />
-              </NavigationContainer>
-            </VisionProvider>
-          </CartProvider>
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </SafeAreaView>
+    <GestureHandlerRootView style={styles.gestureRoot}>
+      <CartProvider>
+        <VisionProvider>
+          <NavigationContainer>
+            <Router />
+          </NavigationContainer>
+        </VisionProvider>
+      </CartProvider>
+    </GestureHandlerRootView>
   );
 };
 
+const App = () => (
+  <ThemeProvider>
+    <AppInner />
+  </ThemeProvider>
+);
+
 export default App;
+
+const getStyles = theme =>
+  StyleSheet.create({
+    gestureRoot: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+  });
