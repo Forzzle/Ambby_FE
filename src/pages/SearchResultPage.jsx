@@ -84,7 +84,12 @@ const SearchResultPage = ({route}) => {
       <View style={styles.container}>
         <Header height={40} />
         <View style={styles.inputContainer}>
-          <Pressable style={styles.iconWrapper} onPress={handleSearch}>
+          <Pressable
+            style={styles.iconWrapper}
+            onPress={handleSearch}
+            accessibilityLabel="검색 버튼"
+            accessibilityHint="입력한 문장으로 장소를 검색합니다"
+            accessibilityRole="button">
             <Image style={styles.icon} source={icons.search} />
           </Pressable>
           <TextInput

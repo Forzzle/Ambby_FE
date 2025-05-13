@@ -107,7 +107,16 @@ const SoundButton = ({categories}) => {
   }
 
   return (
-    <TouchableOpacity style={styles.btn} onPress={handlePress}>
+    <TouchableOpacity
+      style={styles.btn}
+      onPress={handlePress}
+      accessibilityRole="button"
+      accessibilityLabel={
+        isPlaying ? '소리 정지 버튼' : '소리로 장소 알기 버튼'
+      }
+      accessibilityHint={
+        isPlaying ? '소리를 멈추는 버튼입니다.' : '소리를 시작하는 버튼입니다.'
+      }>
       <Text style={styles.text}>
         {isPlaying ? '소리 정지' : '소리로 장소 알기'}
       </Text>

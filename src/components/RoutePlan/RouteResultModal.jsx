@@ -34,11 +34,21 @@ const RouteResultModal = ({visible, onClose, routeData}) => {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.closeIcon}
+              accessibilityRole="button"
+              accessibilityLabel="닫기 버튼"
+              accessibilityHint="최적 경로 모달을 닫습니다">
               <Text style={styles.closeIconText}>✕</Text>
             </TouchableOpacity>
 
-            <Text style={styles.title}>최적 여행 경로</Text>
+            <Text
+              style={styles.title}
+              accessibilityRole="header"
+              accessibilityLabel="최적 여행 경로 제목">
+              최적 여행 경로
+            </Text>
           </View>
 
           <View style={{padding: 20}}>
@@ -63,7 +73,12 @@ const RouteResultModal = ({visible, onClose, routeData}) => {
 
             <Text style={styles.summary}>{routeData.summary}</Text>
 
-            <TouchableOpacity style={styles.kakaoShareBtn} onPress={handleCopy}>
+            <TouchableOpacity
+              style={styles.kakaoShareBtn}
+              onPress={handleCopy}
+              accessibilityRole="button"
+              accessibilityLabel="내용 복사하기 버튼"
+              accessibilityHint="추천 경로를 클립보드에 복사합니다.">
               <Text style={styles.kakaoShareText}>내용 복사하기</Text>
             </TouchableOpacity>
           </View>

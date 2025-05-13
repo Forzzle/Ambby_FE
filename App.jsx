@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -8,12 +8,12 @@ import {VisionProvider} from './src/contexts/visionContext';
 import {CartProvider} from './src/contexts/CartContext';
 import Router from './src/router';
 
-const AppInner = () => {
+const AppContent = () => {
   const {theme} = useTheme();
-  const styles = getStyles(theme);
 
   return (
-    <GestureHandlerRootView style={styles.gestureRoot}>
+    <GestureHandlerRootView
+      style={[styles.gestureRoot, {backgroundColor: theme.colors.background}]}>
       <CartProvider>
         <VisionProvider>
           <NavigationContainer>
@@ -25,18 +25,18 @@ const AppInner = () => {
   );
 };
 
-const App = () => (
-  <ThemeProvider>
-    <AppInner />
-  </ThemeProvider>
-);
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+};
 
 export default App;
 
-const getStyles = theme =>
-  StyleSheet.create({
-    gestureRoot: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-    },
-  });
+const styles = StyleSheet.create({
+  gestureRoot: {
+    flex: 1,
+  },
+});

@@ -8,30 +8,48 @@ const ListCard = ({item, showDelete = false, onDelete}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
+  const accessibilityLabel = `${item.name}, ${item.category}. 주소는 ${item.simpleAddress}입니다. `;
+
   return (
     <View style={styles.card}>
       <TouchableOpacity
         onPress={() => navigation.navigate('Detail', {placeId: item.id})}
-        style={styles.content}>
+        style={styles.content}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint="장소 상세 페이지로 이동합니다">
         <View style={styles.textContainer}>
           <View style={styles.row}>
-            <Text style={styles.title}>{item.name}</Text>
+            <Text
+              style={styles.title}
+              accessible={false} // 이미 위에서 접근성 텍스트 제공하므로 중복 방지
+            >
+              {item.name}
+            </Text>
             <Text
               style={styles.category}
               numberOfLines={1}
-              ellipsizeMode="tail">
+              ellipsizeMode="tail"
+              accessible={false}>
               {item.category}
             </Text>
           </View>
-          <Text style={styles.address}>{item.simpleAddress}</Text>
+          <Text style={styles.address} accessible={false}>
+            {item.simpleAddress}
+          </Text>
         </View>
       </TouchableOpacity>
 
       {showDelete && (
         <TouchableOpacity
           style={styles.deleteButton}
-          onPress={() => onDelete?.(item.id)}>
-          <Text style={styles.deleteText}>×</Text>
+          onPress={() => onDelete?.(item.id)}
+          accessibilityRole="button"
+          accessibilityLabel={`${item.name} 삭제 버튼`}
+          accessibilityHint="이 장소를 리스트에서 삭제합니다">
+          <Text style={styles.deleteText} accessible={false}>
+            ×
+          </Text>
         </TouchableOpacity>
       )}
     </View>

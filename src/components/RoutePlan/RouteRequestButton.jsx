@@ -26,6 +26,10 @@ const RouteRequestButton = ({onSuccess, disabled, setIsLoading}) => {
     <TouchableOpacity
       onPress={handlePress}
       disabled={disabled}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel="최적 경로 보기 버튼"
+      accessibilityHint="장바구니에 담긴 장소들을 기반으로 최적 경로를 요청합니다"
       style={[
         styles.button,
         {
