@@ -44,7 +44,7 @@ const VisionSettingPage = () => {
                 ]}
                 onPress={() => handleSelect(option.key)}>
                 <View style={styles.iconWrapper}>
-                  <Image style={styles.icon} source={icons.visionSetting} />
+                  <Image style={styles.icon} source={icons.visionOn} />
                 </View>
                 <Text style={styles.label}>{option.label}</Text>
               </TouchableOpacity>

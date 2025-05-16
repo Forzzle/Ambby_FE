@@ -82,7 +82,6 @@ const InfoTab = ({data}) => {
           );
         })}
       </View>
-
       <View style={styles.infoBox}>
         {currentData?.length > 0 ? (
           currentData?.map(renderItem)
@@ -100,7 +99,6 @@ const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
     },
     tabs: {
       flexDirection: 'row',

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View, StyleSheet, Image} from 'react-native';
 import {useTheme} from '../contexts/themeContext';
+import icons from '../constants/icons';
 
 const RatingStars = ({rating = 0}) => {
   const {theme} = useTheme();
@@ -17,18 +17,26 @@ const RatingStars = ({rating = 0}) => {
       {Array(fullStars)
         .fill()
         .map((_, i) => (
-          <Ionicons key={`full-${i}`} name="star" size={16} color={starColor} />
+          <Image
+            key={`full-${i}`}
+            source={icons.starFill}
+            style={[styles.star, {tintColor: starColor}]}
+          />
         ))}
-      {hasHalfStar && <Ionicons name="star-half" size={16} color={starColor} />}
-
+      {hasHalfStar && (
+        <Image
+          source={icons.starHalf}
+          style={[styles.star, {tintColor: starColor}]}
+          key="half"
+        />
+      )}
       {Array(emptyStars)
         .fill()
         .map((_, i) => (
-          <Ionicons
+          <Image
             key={`empty-${i}`}
-            name="star-outline"
-            size={16}
-            color={starColor}
+            source={icons.starOutline}
+            style={[styles.star, {tintColor: starColor}]}
           />
         ))}
     </View>
@@ -38,7 +46,11 @@ const RatingStars = ({rating = 0}) => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    gap: 4,
+  },
+  star: {
+    width: 16,
+    height: 16,
   },
 });
 
