@@ -1,5 +1,5 @@
 import {TabView, TabBar} from 'react-native-tab-view';
-import {StyleSheet, Text, useWindowDimensions} from 'react-native';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {useState} from 'react';
 import {useTheme} from '../../contexts/themeContext';
 import ReviewTab from './ReviewTab';
@@ -17,14 +17,16 @@ const DetailTabView = ({review, accessibility}) => {
   const styles = getStyles(theme);
 
   const renderScene = ({route}) => {
+    let content = null;
     switch (route.key) {
       case 'review':
-        return <ReviewTab data={review} />;
+        content = <ReviewTab data={review} />;
+        break;
       case 'info':
-        return <InfoTab data={accessibility} />;
-      default:
-        return null;
+        content = <InfoTab data={accessibility} />;
+        break;
     }
+    return <View style={styles.scene}>{content}</View>;
   };
 
   return (
@@ -61,9 +63,14 @@ const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      marginBottom: 120,
+      marginBottom: 100,
       backgroundColor: theme.colors.background,
       borderTopWidth: 1,
       borderTopColor: theme.colors.secondary,
+    },
+    scene: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: theme.colors.background,
     },
   });

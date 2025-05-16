@@ -7,7 +7,7 @@ export const useAutoPlay = () => {
 };
 
 export const AutoPlayProvider = ({children}) => {
-  const [autoPlayEnabled, setAutoPlayEnabled] = useState(false);
+  const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
 
   const toggleAutoPlay = () => {
     setAutoPlayEnabled(prevState => !prevState);

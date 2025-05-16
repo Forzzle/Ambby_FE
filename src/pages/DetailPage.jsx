@@ -173,45 +173,36 @@ const DetailPage = ({route}) => {
             categories={soundList}
             accessibilityLabel="사운드 관련 정보"
           />
-          <ScrollView contentContainerStyle={{paddingBottom: 120}}>
-            <View style={styles.container}>
-              {visionMode !== '전맹' && (
-                <View style={{position: 'relative', height: 200}}>
-                  {imageLoading && (
-                    <View style={styles.imageLoader}>
-                      <ActivityIndicator
-                        size="large"
-                        color={theme.colors.textOnPrimary}
-                      />
-                    </View>
-                  )}
-                  <Image
-                    style={styles.img}
-                    source={{uri: photos[0]}}
-                    resizeMode="cover"
-                    onLoadEnd={() => setImageLoading(false)}
-                    onError={() => {
-                      setImageLoading(false);
-                    }}
-                  />
-                </View>
-              )}
-
-              <StoreOverview
-                placeInfo={placeInfo}
-                placeSummary={placeSummary}
-              />
-
-              <View
-                style={{
-                  height: '100%',
-                  backgroundColor: theme.colors.background,
-                }}>
-                <DetailTabView
-                  review={reviewInfo}
-                  accessibility={accessibilityInfo}
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+            }}
+            showsVerticalScrollIndicator={false}>
+            {visionMode !== '전맹' && (
+              <View style={{height: 200}}>
+                {imageLoading && (
+                  <View style={styles.imageLoader}>
+                    <ActivityIndicator
+                      size="large"
+                      color={theme.colors.textOnPrimary}
+                    />
+                  </View>
+                )}
+                <Image
+                  style={styles.img}
+                  source={{uri: photos[0]}}
+                  resizeMode="cover"
+                  onLoadEnd={() => setImageLoading(false)}
+                  onError={() => setImageLoading(false)}
                 />
               </View>
+            )}
+            <StoreOverview placeInfo={placeInfo} placeSummary={placeSummary} />
+            <View style={{minHeight: '100%', marginBottom: 400}}>
+              <DetailTabView
+                review={reviewInfo}
+                accessibility={accessibilityInfo}
+              />
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -251,12 +242,8 @@ const getStyles = theme =>
       flex: 1,
       backgroundColor: theme.colors.primary,
     },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.primary,
-      paddingBottom: 100,
-    },
     section: {
+      backgroundColor: theme.colors.primary,
       padding: 20,
       gap: 4,
     },

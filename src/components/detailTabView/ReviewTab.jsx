@@ -26,8 +26,7 @@ const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingHorizontal: 20,
-      paddingTop: 10,
+      paddingHorizontal: 10,
       backgroundColor: theme.colors.background,
     },
     markdown: {
