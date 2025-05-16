@@ -52,7 +52,7 @@ const FullScreenLoader = ({isBlur = false}) => {
             opacity: opacityAnim,
           },
         ]}
-        source={icons.visionSetting}
+        source={icons.visionOn}
       />
       <Text style={styles.text}>{'AI분석 요청중...'}</Text>
     </View>

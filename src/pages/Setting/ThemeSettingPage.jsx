@@ -53,7 +53,7 @@ const ThemeSettingPage = () => {
                     ]}>
                     <Image
                       style={[styles.icon, {tintColor: theme.colors.primary}]}
-                      source={icons.visionSetting}
+                      source={icons.visionOn}
                     />
                   </View>
                   <Text style={styles.previewLabel}>{theme.label}</Text>

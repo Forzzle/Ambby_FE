@@ -19,8 +19,8 @@ const SettingPage = () => {
   const styles = getStyles(theme);
 
   const menuItems = [
-    {label: '색상 선택', route: 'ThemeSetting', iconKey: 'themeSetting'},
-    {label: '시각 상태', route: 'VisionSetting', iconKey: 'visionSetting'},
+    {label: '색상 선택', route: 'ThemeSetting', iconKey: 'theme'},
+    {label: '시각 상태', route: 'VisionSetting', iconKey: 'visionOn'},
     {label: '도움말', route: 'Help', iconKey: 'help'},
   ];
 
@@ -120,7 +120,7 @@ const getStyles = theme =>
     icon: {
       resizeMode: 'contain',
       tintColor: theme.colors.secondary,
-      width: 28,
-      height: 28,
+      width: 40,
+      height: 40,
     },
   });

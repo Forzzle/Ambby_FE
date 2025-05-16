@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../contexts/themeContext';
+import icons from '../constants/icons';
 
 const ListCard = ({item, showDelete = false, onDelete}) => {
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ const ListCard = ({item, showDelete = false, onDelete}) => {
           <View style={styles.row}>
             <Text
               style={styles.title}
-              accessible={false} // 이미 위에서 접근성 텍스트 제공하므로 중복 방지
+              accessible={false} // 접근성 텍스트 중복 방지
             >
               {item.name}
             </Text>
@@ -45,11 +46,9 @@ const ListCard = ({item, showDelete = false, onDelete}) => {
           style={styles.deleteButton}
           onPress={() => onDelete?.(item.id)}
           accessibilityRole="button"
-          accessibilityLabel={`${item.name} 삭제 버튼`}
+          accessibilityLabel={`${item.name} 삭제`}
           accessibilityHint="이 장소를 리스트에서 삭제합니다">
-          <Text style={styles.deleteText} accessible={false}>
-            ×
-          </Text>
+          <Image source={icons.delete} style={styles.deleteIcon} />
         </TouchableOpacity>
       )}
     </View>
@@ -101,17 +100,17 @@ const getStyles = theme =>
       color: theme.colors.text,
     },
     deleteButton: {
-      backgroundColor: '#FF5E5E',
       borderRadius: 14,
       width: 30,
       height: 30,
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: 14,
+      backgroundColor: '#FF5E5E',
     },
-    deleteText: {
-      color: '#fff',
-      fontSize: 16,
-      fontWeight: 'bold',
+    deleteIcon: {
+      width: 20,
+      height: 20,
+      tintColor: 'white',
     },
   });

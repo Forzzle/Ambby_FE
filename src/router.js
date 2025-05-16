@@ -9,7 +9,7 @@ import {useTheme} from './contexts/themeContext';
 import DetailPage from './pages/DetailPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
-import SoundPage from './pages/SoundPage';
+import HelpPage from './pages/Setting/HelpPage';
 import VisionSettingPage from './pages/Setting/VisionSettingPage';
 import ThemeSettingPage from './pages/Setting/ThemeSettingPage';
 import BookMarkPage from './pages/BookMarkPage';
@@ -98,7 +98,7 @@ const SettingStack = () => (
     <Stack.Screen name="Setting" component={SettingPage} />
     <Stack.Screen name="VisionSetting" component={VisionSettingPage} />
     <Stack.Screen name="ThemeSetting" component={ThemeSettingPage} />
-    <Stack.Screen name="Sound" component={SoundPage} />
+    <Stack.Screen name="Help" component={HelpPage} />
   </Stack.Navigator>
 );
 

@@ -1,8 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet, Platform, StatusBar, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../contexts/themeContext';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import icons from '../constants/icons';
 
 const Header = ({
   title,
@@ -15,18 +23,18 @@ const Header = ({
   const {theme} = useTheme();
   const styles = getStyles(theme, height, titleSize);
 
+  const isTallHeader = height > 60;
+
   return (
     <View style={styles.container}>
       {showBack ? (
-        <View style={styles.backBtn} onTouchEnd={() => navigation.goBack()}>
-          <Ionicons
-            name="chevron-back"
-            size={24}
-            color={theme.colors.textOnPrimary}
-          />
-        </View>
+        <TouchableOpacity
+          style={[styles.sideBtn, isTallHeader && styles.sideBtnTop]}
+          onPress={() => navigation.goBack()}>
+          <Image style={styles.backIcon} source={icons.back} />
+        </TouchableOpacity>
       ) : (
-        <View style={styles.backBtn} />
+        <View style={styles.sideBtn} />
       )}
 
       <View style={styles.centerContent}>
@@ -36,13 +44,11 @@ const Header = ({
           <View style={styles.iconWrapper}>
             <Image style={styles.icon} source={icon} />
           </View>
-        ) : (
-          <View />
-        )}
+        ) : null}
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      <View style={styles.backBtn} />
+      <View style={styles.sideBtn} />
     </View>
   );
 };
@@ -50,22 +56,28 @@ const Header = ({
 const getStyles = (theme, height, titleSize) =>
   StyleSheet.create({
     container: {
-      height: height,
-      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+      height,
       backgroundColor: theme.colors.primary,
       flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       paddingHorizontal: 16,
     },
-    backBtn: {
+    sideBtn: {
       width: 40,
       height: 40,
-
-      marginTop: 18,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    sideBtnTop: {
+      alignSelf: 'flex-start',
+      marginTop: 20,
     },
     centerContent: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      flexDirection: 'column',
     },
     title: {
       fontSize: titleSize,
@@ -79,13 +91,19 @@ const getStyles = (theme, height, titleSize) =>
       borderRadius: 25,
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: 12,
+      marginBottom: 6,
     },
     icon: {
       width: 32,
       height: 32,
       resizeMode: 'contain',
       tintColor: theme.colors.primary,
+    },
+    backIcon: {
+      width: 24,
+      height: 24,
+      resizeMode: 'contain',
+      tintColor: theme.colors.textOnPrimary,
     },
   });
 
