@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Platform} from 'react-native';
 import {
   Alert,
   TextInput,
@@ -46,8 +47,12 @@ const SearchPage = () => {
     }
   };
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled">
         <SafeAreaView>
           <Text style={styles.title}>
             {'가고싶은 여행지를 \n 자유롭게 표현해보세요!'}

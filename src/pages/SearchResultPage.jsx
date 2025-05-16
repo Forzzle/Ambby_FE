@@ -11,6 +11,8 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
@@ -28,7 +30,6 @@ const SearchResultPage = ({route}) => {
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
-  // 초기 데이터 설정
   useEffect(() => {
     setQuery(initialQuery);
     setData(initialData);
@@ -38,10 +39,7 @@ const SearchResultPage = ({route}) => {
     if (!data.nextPageToken || loadingMore) {
       return;
     }
-    console.log('클릭됨');
-
     setLoadingMore(true);
-
     try {
       const res = await searchPlaces(query, data.nextPageToken);
       setData(prev => {
@@ -54,7 +52,6 @@ const SearchResultPage = ({route}) => {
             newItem => !prev.previews.some(item => item.id === newItem.id),
           ),
         ];
-
         return {
           previews: uniquePreviews,
           nextPageToken: nextToken,
@@ -67,7 +64,6 @@ const SearchResultPage = ({route}) => {
     }
   };
 
-  // 검색 기능
   const handleSearch = async () => {
     setLoadingSearch(true);
     try {
@@ -83,7 +79,9 @@ const SearchResultPage = ({route}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <Header height={40} />
         <View style={styles.inputContainer}>
           <Pressable
@@ -110,6 +108,7 @@ const SearchResultPage = ({route}) => {
           data={data.previews}
           keyExtractor={item => item.id}
           renderItem={({item}) => <ListCard item={item} />}
+          keyboardShouldPersistTaps="handled"
           ListEmptyComponent={
             <Text style={[styles.empty, {color: theme.colors.text}]}>
               검색 결과가 없습니다.
@@ -129,7 +128,7 @@ const SearchResultPage = ({route}) => {
             ) : null
           }
         />
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
