@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-  View,
+  Alert,
   TextInput,
   StyleSheet,
   Text,
@@ -39,6 +39,7 @@ const SearchPage = () => {
       });
       console.log('검색 결과:', res);
     } catch (error) {
+      Alert.alert('오류', '검색 중 오류가 발생했습니다. 다시 시도해 주세요.');
       console.log('API 호출 에러:', error);
     } finally {
       setLoading(false);

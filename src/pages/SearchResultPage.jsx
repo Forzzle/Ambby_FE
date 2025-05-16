@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
+  Alert,
   View,
   Text,
   SafeAreaView,
@@ -73,6 +74,7 @@ const SearchResultPage = ({route}) => {
       const res = await searchPlaces(query);
       setData(res.data);
     } catch (error) {
+      Alert.alert('오류', '검색 중 오류가 발생했습니다. 다시 시도해 주세요.');
       console.error('재검색 실패:', error);
     } finally {
       setLoadingSearch(false);
