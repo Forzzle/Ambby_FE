@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Alert,
@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from 'react-native';
 import ListCard from '../components/ListCard';
 import {useTheme} from '../contexts/themeContext';
@@ -27,6 +28,7 @@ const SearchResultPage = ({route}) => {
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const flatListRef = useRef(null);
   const {theme} = useTheme();
   const styles = getStyles(theme);
 
@@ -65,10 +67,15 @@ const SearchResultPage = ({route}) => {
   };
 
   const handleSearch = async () => {
+    Keyboard.dismiss(); // 키보드 닫기
     setLoadingSearch(true);
     try {
       const res = await searchPlaces(query);
       setData(res.data);
+      //FlatList 최상단 스크롤
+      setTimeout(() => {
+        flatListRef.current?.scrollToOffset({offset: 0, animated: true});
+      }, 100);
     } catch (error) {
       Alert.alert('오류', '검색 중 오류가 발생했습니다. 다시 시도해 주세요.');
       console.error('재검색 실패:', error);
@@ -92,19 +99,10 @@ const SearchResultPage = ({route}) => {
             accessibilityRole="button">
             <Image style={styles.icon} source={icons.search} />
           </Pressable>
-          <TextInput
-            value={query}
-            onChangeText={setQuery}
-            onSubmitEditing={handleSearch}
-            returnKeyType="search"
-            style={styles.input}
-            multiline={true}
-            placeholder={'가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!'}
-            placeholderTextColor={theme.colors.placeholder}
-          />
         </View>
 
         <FlatList
+          ref={flatListRef}
           data={data.previews}
           keyExtractor={item => item.id}
           renderItem={({item}) => <ListCard item={item} />}
@@ -172,7 +170,7 @@ const getStyles = theme =>
       fontSize: 16,
       textAlign: 'center',
       color: theme.colors.textOnPrimary,
-      fontWeight: 800,
+      fontWeight: '800',
       lineHeight: 28,
       minHeight: 64,
       textAlignVertical: 'center',
