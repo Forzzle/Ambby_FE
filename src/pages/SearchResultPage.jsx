@@ -99,6 +99,17 @@ const SearchResultPage = ({route}) => {
             accessibilityRole="button">
             <Image style={styles.icon} source={icons.search} />
           </Pressable>
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            onSubmitEditing={handleSearch}
+            returnKeyType="search"
+            style={styles.input}
+            multiline={true}
+            blurOnSubmit={true}
+            placeholder={'가고 싶은 여행지를 문장으로 자유롭게 표현해 보세요!'}
+            placeholderTextColor={theme.colors.placeholder}
+          />
         </View>
 
         <FlatList
